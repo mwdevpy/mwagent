@@ -14,6 +14,16 @@ Docs: https://docs.telethon.dev
 import tg_user
 
 
+class Record(dict):
+    """A result that works both as tg.me()["username"] and tg.me().username."""
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+
 def raw():
     return tg_user.open_session()
 
@@ -31,7 +41,7 @@ def _chat(value):
 def me():
     async def fetch(client):
         user = await client.get_me()
-        return {"id": user.id, "username": user.username or "", "first_name": user.first_name or "", "phone": user.phone or ""}
+        return Record(id=user.id, username=user.username or "", first_name=user.first_name or "", phone=user.phone or "")
 
     return _run(fetch)
 
@@ -40,7 +50,7 @@ def dialogs(limit=20):
     async def fetch(client):
         result = []
         async for dialog in client.iter_dialogs(limit=limit):
-            result.append({"id": dialog.id, "name": dialog.name or "", "unread": dialog.unread_count})
+            result.append(Record(id=dialog.id, name=dialog.name or "", unread=dialog.unread_count))
         return result
 
     return _run(fetch)
@@ -50,12 +60,12 @@ def messages(chat, limit=20):
     async def fetch(client):
         result = []
         async for message in client.iter_messages(_chat(chat), limit=limit):
-            result.append({
-                "id": message.id,
-                "date": message.date.isoformat() if message.date else "",
-                "out": bool(message.out),
-                "text": message.text or "",
-            })
+            result.append(Record(
+                id=message.id,
+                date=message.date.isoformat() if message.date else "",
+                out=bool(message.out),
+                text=message.text or "",
+            ))
         return result
 
     return _run(fetch)
@@ -64,7 +74,7 @@ def messages(chat, limit=20):
 def send(chat, text):
     async def push(client):
         sent = await client.send_message(_chat(chat), text)
-        return {"id": sent.id}
+        return Record(id=sent.id)
 
     return _run(push)
 

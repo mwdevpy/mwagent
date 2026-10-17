@@ -23,7 +23,8 @@ class PythonRuntime(private val context: Context) {
 
     /** Calls one function of a bundled Python module and returns its result as text. Runs off the main thread. */
     suspend fun call(module: String, function: String, vararg args: Any?): String = withContext(Dispatchers.IO) {
-        interpreter().getModule(module).callAttr(function, *args).toString()
+        val result: PyObject? = interpreter().getModule(module).callAttr(function, *args)
+        result?.toString().orEmpty()
     }
 
     suspend fun run(code: String, workdir: File, timeoutSeconds: Long, bridge: ScriptBridge? = null): PythonResult {
