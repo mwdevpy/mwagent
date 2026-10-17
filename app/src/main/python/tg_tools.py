@@ -21,8 +21,8 @@ def me():
         try:
             from telethon.tl.functions.users import GetFullUserRequest
 
-            loop, client = tg.raw()
-            full = loop.run_until_complete(client(GetFullUserRequest("me")))
+            _, client = tg.raw()
+            full = tg.run(client(GetFullUserRequest("me")))
             info["about"] = full.full_user.about or ""
         except Exception:
             info["about"] = ""

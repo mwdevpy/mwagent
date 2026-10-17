@@ -6,6 +6,7 @@ a JSON string; on a known Telegram error it returns {"error": "<code>"}.
 """
 
 import asyncio
+import inspect
 import json
 
 from telethon import TelegramClient
@@ -109,18 +110,25 @@ def configure(api_id, api_hash, session):
     close_session()
 
 
+def wait(loop, value):
+    """Runs a Telethon call to completion. After `import telethon.sync` its methods return results directly."""
+    return loop.run_until_complete(value) if inspect.isawaitable(value) else value
+
+
 def open_session():
     """Returns (loop, client) for the linked account, connected and signed in. Reused for the whole script."""
     if _session["client"] is not None:
+        asyncio.set_event_loop(_session["loop"])
         return _session["loop"], _session["client"]
     if _creds["api_id"] is None or not _creds["session"]:
         raise RuntimeError("No Telegram account is linked. Link it in Settings > Telegram first.")
     loop = asyncio.new_event_loop()
-    client = TelegramClient(StringSession(_creds["session"]), _creds["api_id"], _creds["api_hash"], loop=loop)
-    loop.run_until_complete(client.connect())
-    if not loop.run_until_complete(client.is_user_authorized()):
-        loop.run_until_complete(client.disconnect())
-        loop.close()
+    asyncio.set_event_loop(loop)
+    client = TelegramClient(StringSession(_creds["session"]), _creds["api_id"], _creds["api_hash"])
+    wait(loop, client.connect())
+    if not wait(loop, client.is_user_authorized()):
+        wait(loop, client.disconnect())
+        _forget(loop)
         raise RuntimeError("The linked Telegram session is no longer valid. Link the account again in Settings > Telegram.")
     _session["loop"] = loop
     _session["client"] = client
@@ -132,5 +140,18 @@ def close_session():
     _session["client"] = None
     _session["loop"] = None
     if client is not None:
-        loop.run_until_complete(client.disconnect())
-        loop.close()
+        asyncio.set_event_loop(loop)
+        try:
+            wait(loop, client.disconnect())
+        finally:
+            _forget(loop)
+
+
+def _forget(loop):
+    loop.close()
+    try:
+        current = asyncio.get_event_loop_policy().get_event_loop()
+    except RuntimeError:
+        current = None
+    if current is loop:
+        asyncio.set_event_loop(None)

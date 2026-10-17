@@ -1,3 +1,4 @@
+import asyncio
 import ctypes
 import io
 import os
@@ -85,6 +86,8 @@ class Script:
         for capture in captures:
             capture.attach(self.output)
         phone.attach(self.bridge)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         try:
             os.chdir(self.workdir)
             exec(compile(self.code, "<agent>", "exec"), {"__name__": "__main__"})
@@ -96,6 +99,8 @@ class Script:
             self.failed = True
             self.output.write(traceback.format_exc())
         finally:
+            asyncio.set_event_loop(None)
+            loop.close()
             phone.detach()
             for capture in captures:
                 capture.detach(self.output)

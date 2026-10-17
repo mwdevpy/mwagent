@@ -7,13 +7,15 @@
     tg.send("@some_user", "hello")
 
 For anything else, use the full Telethon client through `tg.raw()`, which returns
-(loop, client). Run a Telethon coroutine with loop.run_until_complete(...), e.g.
+(loop, client). Run any Telethon call with tg.run(...), e.g.
 
     from telethon.tl.functions.users import GetFullUserRequest
     loop, client = tg.raw()
-    me = loop.run_until_complete(client.get_me())
-    full = loop.run_until_complete(client(GetFullUserRequest(me)))
+    me = tg.run(client.get_me())
+    full = tg.run(client(GetFullUserRequest(me)))
     print(full.full_user.about)
+
+Do not create your own TelegramClient and do not import telethon.sync: use tg.
 Docs: https://docs.telethon.dev
 """
 
@@ -32,6 +34,12 @@ class Record(dict):
 
 def raw():
     return tg_user.open_session()
+
+
+def run(call):
+    """Finishes a Telethon call on the linked account's loop and returns its result."""
+    loop, _ = tg_user.open_session()
+    return tg_user.wait(loop, call)
 
 
 def _run(coroutine_factory):
