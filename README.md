@@ -16,8 +16,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/mwdevpy/mwagent?style=flat-square&label=release&color=FF7A45"></a>
-  <a href="https://github.com/mwdevpy/mwagent/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/mwdevpy/mwagent/total?style=flat-square&color=FF3D7F"></a>
+  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Version 0.11.0" src="https://img.shields.io/badge/version-0.11.0-FF7A45?style=flat-square"></a>
+  <a href="https://github.com/mwdevpy/mwagent/releases"><img alt="Releases" src="https://img.shields.io/badge/releases-GitHub-FF3D7F?style=flat-square&logo=github&logoColor=white"></a>
   <a href="LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPLv3-9B4DFF?style=flat-square"></a>
   <img alt="Android 10 and up" src="https://img.shields.io/badge/Android-10%2B-3DDC84?style=flat-square&logo=android&logoColor=white">
   <img alt="Python on device" src="https://img.shields.io/badge/Python_3.13-on_device-3776AB?style=flat-square&logo=python&logoColor=white">
