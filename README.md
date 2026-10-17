@@ -94,7 +94,7 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 | `ask_user` | A multiple-choice question that waits for you | Auto |
 | `memory_save`, `memory_update`, `memory_delete`, `memory_search` | Manage and search memories | Auto |
 | `run_command` | Shell command in the sandbox, Termux, Shizuku or root | Ask |
-| `run_python` | Python 3.13 script, standard library only | Ask |
+| `run_python` | Python 3.13 script, standard library and Telethon for your Telegram account | Ask |
 | `list_files`, `read_file` | Browse and read files inside the allowed scope | Auto |
 | `write_file` | Write or append text | Ask |
 | `send_files` | Show phone files and images in the chat | Auto |
@@ -115,7 +115,13 @@ Tools that come from MCP servers always start as Ask.
 - Shell modes: sandbox (default, no root), Termux, Shizuku or root.
 - Phone control through an accessibility service. It reads the screen as numbered elements and refuses to act on MW AGENT's own screen.
 - File scope: the app folder (default), phone storage with All files access, or root.
-- Python 3.13 through Chaquopy, bundled, standard library only.
+- Python 3.13 through Chaquopy, bundled, standard library and Telethon (`import tg`, see below).
+
+**Telegram**
+- Link your own Telegram account through the user API (MTProto, Telethon). Get the API ID and API hash at my.telegram.org, then sign in with the phone number, the login code and the two-step password if you have one.
+- The session is kept encrypted on the phone, like provider keys. Sign out here ends that session.
+- Scripts from `run_python` can use `import tg`: `me()`, `dialogs()`, `messages()`, `send()`, and `raw()` for the full Telethon client. The model reads the current Telethon docs at docs.telethon.dev before writing unfamiliar calls.
+- Each script run asks first, so a message is never sent without your approval.
 
 **Memory**
 - Two tiers: instant memories are always in the system prompt, long-term ones are searched when needed.
@@ -165,7 +171,7 @@ Android restricts accessibility for apps that were installed from outside a stor
 ## Privacy
 
 - No analytics, no crash reporting, no accounts. Chats are stored in a local database on the phone, provider keys and tool settings are encrypted with an Android Keystore key, and cloud backup is switched off.
-- Your messages, tool results and attachments go to the provider you configured. Nothing goes to the developer.
+- Your messages, tool results and attachments go to the provider you configured. Nothing goes to the developer. Telegram traffic goes only to Telegram, and only when a script you approved uses the linked account.
 - A few tools use public services by default, and each can be changed in Settings: DuckDuckGo for `web_search`, r.jina.ai for `read_webpage` and Open-Meteo for `get_weather`. Source pills load each site's favicon straight from that site. The update check talks to `api.github.com` when you tap it.
 - Permissions: internet, vibration, microphone (dictation), notifications, exact alarms and boot (reminders), location (`get_location`, asked for only when you grant it in Device access) and a foreground service (streaming in the background). Termux commands, All files access and the accessibility service for phone control are optional and stay off until you enable them. The app has no access to camera or contacts. Location is read only when a reply calls `get_location`, and that tool asks first by default. Its address lookup uses the system geocoder, which on some phones sends the coordinates to the phone maker's service.
 

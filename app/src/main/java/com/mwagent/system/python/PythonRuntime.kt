@@ -21,6 +21,11 @@ class PythonRuntime(private val context: Context) {
 
     val version: String get() = PYTHON_VERSION
 
+    /** Calls one function of a bundled Python module and returns its result as text. Runs off the main thread. */
+    suspend fun call(module: String, function: String, vararg args: Any?): String = withContext(Dispatchers.IO) {
+        interpreter().getModule(module).callAttr(function, *args).toString()
+    }
+
     suspend fun run(code: String, workdir: File, timeoutSeconds: Long, bridge: ScriptBridge? = null): PythonResult {
         val script = withContext(Dispatchers.IO) {
             workdir.mkdirs()

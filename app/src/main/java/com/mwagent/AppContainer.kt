@@ -67,6 +67,8 @@ import com.mwagent.tools.reminders.SetReminderTool
 import com.mwagent.tools.reminders.SetTimerTool
 import com.mwagent.system.files.DeviceFiles
 import com.mwagent.system.location.DeviceLocation
+import com.mwagent.data.telegram.TelegramAccountStore
+import com.mwagent.telegram.TelegramUserApi
 import com.mwagent.system.python.PythonRuntime
 import com.mwagent.tools.files.ListFilesTool
 import com.mwagent.tools.files.ReadFileTool
@@ -125,6 +127,8 @@ class AppContainer(context: Context) {
     val library = FileLibrary(appContext.contentResolver, uploads, shellAccess.workspace, ChatSentFiles(database.messageDao(), attachments))
 
     val python = PythonRuntime(appContext)
+    val telegramAccounts = TelegramAccountStore(appContext, SecretCipher())
+    val telegram = TelegramUserApi(python, telegramAccounts)
     val phoneControl = PhoneControl(appContext) {
         when {
             shellAccess.shizuku.status() == AccessStatus.READY -> shellAccess.shizuku
@@ -160,7 +164,7 @@ class AppContainer(context: Context) {
             MemoryDeleteTool(memories),
             MemorySearchTool(memories),
             RunCommandTool(shellAccess),
-            RunPythonTool(python, shellAccess.workspace, phoneControl),
+            RunPythonTool(python, shellAccess.workspace, phoneControl, telegram),
             ListFilesTool(deviceFiles),
             ReadFileTool(deviceFiles, attachments),
             WriteFileTool(deviceFiles),

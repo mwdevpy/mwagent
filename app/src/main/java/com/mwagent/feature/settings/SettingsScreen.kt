@@ -30,6 +30,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Neurology
 import com.composables.icons.materialsymbols.rounded.Notifications_active
+import com.composables.icons.materialsymbols.rounded.Send
+import com.mwagent.data.telegram.TelegramAccount
 import com.composables.icons.materialsymbols.rounded.Extension
 import com.composables.icons.materialsymbols.rounded.Touch_app
 import com.composables.icons.materialsymbols.rounded.Info
@@ -68,6 +70,7 @@ data class SettingsDestinations(
     val network: () -> Unit,
     val tools: () -> Unit,
     val reminders: () -> Unit,
+    val telegram: () -> Unit,
     val voice: () -> Unit,
     val access: () -> Unit,
     val phoneUse: () -> Unit,
@@ -80,6 +83,7 @@ fun SettingsScreen(destinations: SettingsDestinations) {
     val container = (LocalContext.current.applicationContext as App).container
     val toolRegistry = container.tools
     val reminderCount by remember(container) { container.reminders.observeAll().map { it.size } }.collectAsStateWithLifecycle(initialValue = 0)
+    val telegramAccount by container.telegramAccounts.account.collectAsStateWithLifecycle(initialValue = null)
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var isAssistant by remember { mutableStateOf(AssistantRole.isHeld(context)) }
@@ -151,6 +155,12 @@ fun SettingsScreen(destinations: SettingsDestinations) {
                 title = stringResource(R.string.settings_reminders),
                 summary = remindersSummary(reminderCount),
                 onClick = destinations.reminders,
+            ),
+            SettingsEntry(
+                icon = MaterialSymbols.Rounded.Send,
+                title = stringResource(R.string.settings_telegram),
+                summary = telegramSummary(telegramAccount),
+                onClick = destinations.telegram,
             ),
         )
         val systemEntries = listOf(
@@ -234,6 +244,13 @@ private fun voiceSummary(settings: AppSettings): String {
         },
     )
     return stringResource(R.string.settings_voice_summary, provider, speak)
+}
+
+@Composable
+private fun telegramSummary(account: TelegramAccount?): String = when {
+    account?.linked != true -> stringResource(R.string.settings_telegram_summary_none)
+    account.username.isNotEmpty() -> stringResource(R.string.settings_telegram_summary_linked, account.username)
+    else -> stringResource(R.string.settings_telegram_summary_linked_unnamed)
 }
 
 @Composable

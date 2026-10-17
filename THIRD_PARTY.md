@@ -25,3 +25,10 @@ Vendor glyphs in `app/src/main/res/drawable/ic_vendor_*.xml` are monochrome trac
 
 - [dyn4j](https://github.com/dyn4j/dyn4j) (BSD-3-Clause, Copyright (c) William Bittle): 2D physics for the avatar knockout and the about screen playground
 - [jlatexmath-android](https://github.com/noties/jlatexmath-android) (GPL-2.0, JLaTeXMath): LaTeX formula rendering in replies
+
+# Python libraries (bundled sources)
+
+- [Telethon](https://github.com/LonamiWebs/Telethon) 1.42.0 (MIT): Telegram user API, `app/src/main/python/telethon/`
+- [pyaes](https://github.com/ricmoo/pyaes) 1.6.1 (MIT): AES for Telethon, `app/src/main/python/pyaes/`
+- [rsa](https://github.com/sybrenstuvel/python-rsa) 4.9.1 (Apache-2.0): RSA for Telethon, `app/src/main/python/rsa/`
+- [pyasn1](https://github.com/pyasn1/pyasn1) 0.6.1 (BSD-2-Clause): ASN.1 for rsa, `app/src/main/python/pyasn1/`
