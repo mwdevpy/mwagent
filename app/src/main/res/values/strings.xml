@@ -64,6 +64,15 @@
     <string name="tools_location_title">Location</string>
     <string name="tools_location_summary">Where the phone is, with the nearest street address</string>
     <string name="tools_category_telegram">Telegram</string>
+    <string name="tools_category_skills">Skills</string>
+    <string name="tools_skill_save_title">Save a skill</string>
+    <string name="tools_skill_save_summary">The agent writes its own Python logic for things no tool does</string>
+    <string name="tools_skill_run_title">Run a skill</string>
+    <string name="tools_skill_run_summary">Runs a skill the agent saved earlier</string>
+    <string name="tools_skill_list_title">List skills</string>
+    <string name="tools_skill_list_summary">Saved skills and their source</string>
+    <string name="tools_skill_delete_title">Delete a skill</string>
+    <string name="tools_skill_delete_summary">Removes a saved skill</string>
     <string name="tools_telegram_me_title">Telegram account</string>
     <string name="tools_telegram_me_summary">Name, username, phone, Premium and bio of your linked account</string>
     <string name="tools_telegram_chats_title">Telegram chats</string>

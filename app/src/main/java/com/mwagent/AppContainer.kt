@@ -54,6 +54,11 @@ import com.mwagent.tools.ShowDiagramTool
 import com.mwagent.tools.ShowUiTool
 import com.mwagent.tools.system.RunCommandTool
 import com.mwagent.tools.system.RunPythonTool
+import com.mwagent.system.skills.SkillLibrary
+import com.mwagent.tools.skills.SkillDeleteTool
+import com.mwagent.tools.skills.SkillListTool
+import com.mwagent.tools.skills.SkillRunTool
+import com.mwagent.tools.skills.SkillSaveTool
 import com.mwagent.system.shell.AccessStatus
 import com.mwagent.system.shell.ShellAccess
 import com.mwagent.tools.ToolRegistry
@@ -149,6 +154,9 @@ class AppContainer(context: Context) {
     val mcpSignIn = McpSignIn(mcpOAuth, settings)
     val mcp = McpToolbox(httpClients, attachments, prompts, mcpOAuth, ::saveMcpSession, applicationScope)
 
+    val skills = SkillLibrary(File(shellAccess.workspace, SKILLS_DIR))
+    private val runPython = RunPythonTool(python, shellAccess.workspace, phoneControl, telegram)
+
     val tools = ToolRegistry(
         listOf(
             WebSearchTool(WebSearcher(httpClients)),
@@ -172,7 +180,11 @@ class AppContainer(context: Context) {
             MemoryDeleteTool(memories),
             MemorySearchTool(memories),
             RunCommandTool(shellAccess),
-            RunPythonTool(python, shellAccess.workspace, phoneControl, telegram),
+            runPython,
+            SkillSaveTool(skills),
+            SkillRunTool(skills, runPython),
+            SkillListTool(skills),
+            SkillDeleteTool(skills),
             ListFilesTool(deviceFiles),
             ReadFileTool(deviceFiles, attachments),
             WriteFileTool(deviceFiles),
@@ -245,5 +257,6 @@ class AppContainer(context: Context) {
         const val FILE_STAGING_DIR = "file-staging"
         const val UPLOADS_DIR = "uploads"
         const val MODEL_CATALOG_DIR = "model-catalog"
+        const val SKILLS_DIR = "skills"
     }
 }

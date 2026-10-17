@@ -5,7 +5,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Account_circle
 import com.composables.icons.materialsymbols.rounded.Chat
+import com.composables.icons.materialsymbols.rounded.Construction
+import com.composables.icons.materialsymbols.rounded.Delete
+import com.composables.icons.materialsymbols.rounded.Library_books
 import com.composables.icons.materialsymbols.rounded.Location_on
+import com.composables.icons.materialsymbols.rounded.Play_circle
 import com.composables.icons.materialsymbols.rounded.Send
 import com.composables.icons.materialsymbols.rounded.Manage_search
 import com.composables.icons.materialsymbols.rounded.Bookmark_remove
@@ -54,6 +58,10 @@ import com.mwagent.tools.files.ReadFileTool
 import com.mwagent.tools.files.SendFilesTool
 import com.mwagent.tools.files.WriteFileTool
 import com.mwagent.tools.location.LocationTool
+import com.mwagent.tools.skills.SkillDeleteTool
+import com.mwagent.tools.skills.SkillListTool
+import com.mwagent.tools.skills.SkillRunTool
+import com.mwagent.tools.skills.SkillSaveTool
 import com.mwagent.tools.telegram.TelegramChatsTool
 import com.mwagent.tools.telegram.TelegramMeTool
 import com.mwagent.tools.telegram.TelegramMessagesTool
@@ -88,6 +96,7 @@ enum class ToolCategory(@StringRes val title: Int) {
     FILES(R.string.tools_category_files),
     TIME(R.string.tools_category_time),
     SYSTEM(R.string.tools_category_system),
+    SKILLS(R.string.tools_category_skills),
     MCP(R.string.tools_category_mcp),
     OTHER(R.string.tools_category_other),
 }
@@ -114,6 +123,10 @@ object ToolCatalog {
         ShowChartTool.NAME to known(ToolCategory.SCREEN, MaterialSymbols.Rounded.Bar_chart, R.string.tools_show_chart_title, R.string.tools_show_chart_summary),
         PhoneScreenTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Phone_android, R.string.tools_phone_screen_title, R.string.tools_phone_screen_summary),
         PhoneScreenshotTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Screenshot_monitor, R.string.tools_phone_screenshot_title, R.string.tools_phone_screenshot_summary),
+        SkillSaveTool.NAME to known(ToolCategory.SKILLS, MaterialSymbols.Rounded.Construction, R.string.tools_skill_save_title, R.string.tools_skill_save_summary),
+        SkillRunTool.NAME to known(ToolCategory.SKILLS, MaterialSymbols.Rounded.Play_circle, R.string.tools_skill_run_title, R.string.tools_skill_run_summary),
+        SkillListTool.NAME to known(ToolCategory.SKILLS, MaterialSymbols.Rounded.Library_books, R.string.tools_skill_list_title, R.string.tools_skill_list_summary),
+        SkillDeleteTool.NAME to known(ToolCategory.SKILLS, MaterialSymbols.Rounded.Delete, R.string.tools_skill_delete_title, R.string.tools_skill_delete_summary),
         TelegramMeTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Account_circle, R.string.tools_telegram_me_title, R.string.tools_telegram_me_summary),
         TelegramChatsTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Forum, R.string.tools_telegram_chats_title, R.string.tools_telegram_chats_summary),
         TelegramMessagesTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Chat, R.string.tools_telegram_messages_title, R.string.tools_telegram_messages_summary),

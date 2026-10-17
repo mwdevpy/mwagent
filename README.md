@@ -74,7 +74,7 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 
 **Tools**
 
-34 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
+38 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
 
 <details>
 <summary>All built-in tools</summary>
@@ -99,6 +99,10 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 | `memory_save`, `memory_update`, `memory_delete`, `memory_search` | Manage and search memories | Auto |
 | `run_command` | Shell command in the sandbox, Termux, Shizuku or root | Ask |
 | `run_python` | Python 3.13 script, standard library and Telethon for your Telegram account | Ask |
+| `skill_save` | The agent saves its own Python logic as a reusable skill | Ask |
+| `skill_run` | Run a saved skill with JSON params | Ask |
+| `skill_list` | List saved skills or show the source of one | Auto |
+| `skill_delete` | Delete a saved skill | Ask |
 | `list_files`, `read_file` | Browse and read files inside the allowed scope | Auto |
 | `write_file` | Write or append text | Ask |
 | `send_files` | Show phone files and images in the chat | Auto |
@@ -126,6 +130,11 @@ Tools that come from MCP servers always start as Ask.
 - The session is kept encrypted on the phone, like provider keys. Sign out here ends that session.
 - Scripts from `run_python` can use `import tg`: `me()`, `dialogs()`, `messages()`, `send()`, and `raw()` for the full Telethon client. The model reads the current Telethon docs at docs.telethon.dev before writing unfamiliar calls.
 - Each script run asks first, so a message is never sent without your approval.
+
+**Skills**
+- When no tool does what you ask, the agent writes the missing logic itself as a Python skill, saves it in `workspace/skills/` and runs it. If it fails, it reads the error, fixes the code and saves it again.
+- Saved skills are listed for the model in every chat, so it reuses them instead of writing them again. Skills can use the standard library, Telethon through `import tg`, and the phone module when phone control from Python is on.
+- Saving and running a skill asks first.
 
 **Memory**
 - Two tiers: instant memories are always in the system prompt, long-term ones are searched when needed.

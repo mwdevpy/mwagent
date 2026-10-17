@@ -63,6 +63,15 @@
     <string name="tools_location_title">Местоположение</string>
     <string name="tools_location_summary">Где находится телефон, с ближайшим адресом</string>
     <string name="tools_category_telegram">Telegram</string>
+    <string name="tools_category_skills">Навыки</string>
+    <string name="tools_skill_save_title">Сохранить навык</string>
+    <string name="tools_skill_save_summary">Агент сам пишет логику на Python для того, чего нет в инструментах</string>
+    <string name="tools_skill_run_title">Запустить навык</string>
+    <string name="tools_skill_run_summary">Запускает навык, который агент сохранил раньше</string>
+    <string name="tools_skill_list_title">Список навыков</string>
+    <string name="tools_skill_list_summary">Сохранённые навыки и их код</string>
+    <string name="tools_skill_delete_title">Удалить навык</string>
+    <string name="tools_skill_delete_summary">Удаляет сохранённый навык</string>
     <string name="tools_telegram_me_title">Аккаунт Telegram</string>
     <string name="tools_telegram_me_summary">Имя, ник, телефон, Premium и описание привязанного аккаунта</string>
     <string name="tools_telegram_chats_title">Чаты Telegram</string>
