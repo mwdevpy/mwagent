@@ -1,222 +1,251 @@
-<h1 align="center">
-  <img src="docs/header.svg" alt="MW" width="275">
-</h1>
+<p align="center">
+  <img src="docs/header.svg" alt="MW" width="240">
+</p>
+
+<h3 align="center">MW AGENT: an AI agent that lives on your phone and actually does things</h3>
 
 <p align="center">
-  <b>An AI agent that lives on your Android phone and actually does things.</b><br>
   Any model, your own key. It reads the screen, taps through apps, runs Python,<br>
-  works with your Telegram account and writes new skills for itself when it lacks one.
+  downloads videos, works with your Telegram and writes new skills for itself.
 </p>
 
 <p align="center">
-  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/mwdevpy/mwagent?style=for-the-badge&label=release&color=3DDC84"></a>
-  <a href="https://github.com/mwdevpy/mwagent/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/mwdevpy/mwagent/total?style=for-the-badge&color=4285F4"></a>
-  <a href="LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPLv3-7F52FF?style=for-the-badge"></a>
+  <a href="https://github.com/mwdevpy/mwagent/releases/latest">
+    <img alt="Download the APK" src="https://img.shields.io/badge/Download_APK-FF3D7F?style=for-the-badge&logo=android&logoColor=white" height="42">
+  </a>
 </p>
 
 <p align="center">
+  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/mwdevpy/mwagent?style=flat-square&label=release&color=FF7A45"></a>
+  <a href="https://github.com/mwdevpy/mwagent/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/mwdevpy/mwagent/total?style=flat-square&color=FF3D7F"></a>
+  <a href="LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPLv3-9B4DFF?style=flat-square"></a>
   <img alt="Android 10 and up" src="https://img.shields.io/badge/Android-10%2B-3DDC84?style=flat-square&logo=android&logoColor=white">
-  <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.4-7F52FF?style=flat-square&logo=kotlin&logoColor=white">
-  <img alt="Jetpack Compose" src="https://img.shields.io/badge/Compose-Material_3_Expressive-4285F4?style=flat-square&logo=jetpackcompose&logoColor=white">
-  <img alt="Python 3.13" src="https://img.shields.io/badge/Python-3.13_on_device-3776AB?style=flat-square&logo=python&logoColor=white">
-  <img alt="Telethon" src="https://img.shields.io/badge/Telegram-user_API-26A5E4?style=flat-square&logo=telegram&logoColor=white">
+  <img alt="Python on device" src="https://img.shields.io/badge/Python_3.13-on_device-3776AB?style=flat-square&logo=python&logoColor=white">
+  <img alt="Telegram user API" src="https://img.shields.io/badge/Telegram-user_API-26A5E4?style=flat-square&logo=telegram&logoColor=white">
 </p>
 
 <p align="center">
-  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><b>Download the APK</b></a> ·
-  <a href="#quick-start">Quick start</a> ·
-  <a href="#tools">Tools</a> ·
-  <a href="#privacy-and-safety">Privacy</a> ·
-  <a href="#по-русски">По-русски</a>
+  <a href="#-what-it-can-do">Features</a> ·
+  <a href="#-try-saying">Examples</a> ·
+  <a href="#-tools">Tools</a> ·
+  <a href="#-quick-start">Install</a> ·
+  <a href="#-privacy-and-safety">Privacy</a> ·
+  <a href="#-по-русски">По-русски</a>
 </p>
 
+<br>
+
 <p align="center">
-  <img src="docs/screenshots/chats.png" width="32%" alt="The chat list, each chat with its own icon, color and shape">
-  <img src="docs/screenshots/chat-tools.png" width="32%" alt="A reply that checked the weather and searched the web">
-  <img src="docs/screenshots/chat-chart.png" width="32%" alt="A chart drawn inside a reply">
-</p>
-<p align="center">
-  <img src="docs/screenshots/assistant.png" width="32%" alt="The assistant sheet opened over a web page, reading the screen and searching for similar pictures">
-  <img src="docs/screenshots/models.png" width="32%" alt="Model picker with search and capability filters">
-  <img src="docs/screenshots/playground.png" width="32%" alt="The hidden playground, where avatar shapes fall and pile up">
+  <img src="docs/screenshots/chats.png" width="30%" alt="The chat list, each chat with its own icon, color and shape">
+  &nbsp;
+  <img src="docs/screenshots/chat-tools.png" width="30%" alt="A reply that checked the weather and searched the web">
+  &nbsp;
+  <img src="docs/screenshots/assistant.png" width="30%" alt="The assistant sheet opened over a web page, reading the screen">
 </p>
 
-## Why MW AGENT
+<br>
+
+## ✨ What it can do
 
 <table>
   <tr>
     <td width="33%" valign="top">
-      <h3>🧠 Any model</h3>
-      OpenAI-compatible, Anthropic and Gemini APIs natively. OpenRouter, Ollama, LM Studio or your own server. Bring your own key, the app talks to the provider directly.
+      <h4>🧠 Any model</h4>
+      OpenAI-compatible, Anthropic and Gemini natively. OpenRouter, Ollama, LM Studio or your own server, with your own key.
     </td>
     <td width="33%" valign="top">
-      <h3>📱 Runs your phone</h3>
-      Reads the screen, taps, types, scrolls and opens apps through an accessibility service. Python scripts can drive long flows with loops and conditions.
+      <h4>📱 Runs your phone</h4>
+      Reads the screen, taps, types, scrolls and opens apps. Python scripts drive long flows with loops and conditions.
     </td>
     <td width="33%" valign="top">
-      <h3>✈️ Your Telegram</h3>
-      Link your own account through the user API. The agent reads chats, searches messages, sends text and files, and writes Telethon scripts for anything else.
+      <h4>✈️ Your Telegram</h4>
+      Your own account through the user API: read chats, search, send text and files, or script anything with Telethon.
     </td>
   </tr>
   <tr>
     <td valign="top">
-      <h3>🛠️ Grows new skills</h3>
-      When no tool fits, it writes the missing logic in Python, saves it as a skill, runs it and fixes it on errors. Saved skills come back in every chat.
+      <h4>🎬 Downloads videos</h4>
+      YouTube, TikTok, Instagram, X, VK and many more by link. Video or just the sound, straight to Downloads.
     </td>
     <td valign="top">
-      <h3>📍 Knows the context</h3>
-      Location with a street address, battery, network, storage and volume, the clipboard and the screen you opened it over. You choose what it may see.
+      <h4>🛠️ Grows new skills</h4>
+      No tool for it? It writes the logic in Python, saves it as a skill, fixes it on errors and reuses it later.
     </td>
     <td valign="top">
-      <h3>🔒 Yours only</h3>
-      No backend, no account, no analytics. Keys and the Telegram session are encrypted with the Android Keystore. Every tool is Off, Ask or Auto.
+      <h4>📍 Knows the context</h4>
+      Location with an address, battery, network, storage, the clipboard and the app you opened it over.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h4>🗓️ Works with your apps</h4>
+      Calendar events, calls, SMS, email, map routes and the share sheet, filled in for you to confirm.
+    </td>
+    <td valign="top">
+      <h4>🧩 MCP and memory</h4>
+      Connect remote MCP servers. Two-tier memory keeps what matters about you across chats.
+    </td>
+    <td valign="top">
+      <h4>🔒 Yours only</h4>
+      No backend, no account, no analytics. Keys are encrypted. Every tool is Off, Ask or Auto.
     </td>
   </tr>
 </table>
 
-## Try saying
+## 🔄 How it works
 
-> **"How's my phone doing?"** battery, temperature, network, free space in one answer
->
-> **"Find the messages about the invoice in my Telegram and send the PDF from Downloads to Anna"** search, then a file with a caption, after you approve
->
-> **"Where am I, and build a walking route to the nearest pharmacy"** GPS, web search, maps
->
-> **"Download this TikTok and the sound from this YouTube video"** saved to Downloads and shown in the chat
->
-> **"How much is 250 euros in rubles?"** today's rate and the amount
->
-> **"Make a QR code for my Wi-Fi so guests can join"** a scannable picture right in the chat
->
-> **"Put a dentist appointment on Friday at 15:30 in my calendar"** a filled-in event, you tap save
->
-> **"Every morning I want a summary of my unread Telegram chats"** it writes a skill once and reuses it
+```mermaid
+flowchart LR
+    You(["🙂 You"]) -->|ask| App["📱 MW AGENT"]
+    App -->|chat + tool list| Model["🧠 Your model<br/>OpenAI · Claude · Gemini · local"]
+    Model -->|tool call| App
+    App --> Phone["Screen & apps"]
+    App --> TG["Telegram"]
+    App --> Py["Python & skills"]
+    App --> Web["Web, video, weather, rates"]
+    App -.->|risky step?| Ask{{"Allow / Deny"}}
+    Ask -.-> You
+```
 
-## Features
+The app is only a client. It sends your message to the model you chose, the model picks tools, and the app runs them on the phone. Anything risky waits for your tap.
 
-<details open>
-<summary><b>Models and providers</b></summary>
+## 💬 Try saying
 
-- Three native formats: OpenAI-compatible (anything that serves `/chat/completions`), Anthropic Messages and Google Gemini.
+| You say | What happens |
+|---|---|
+| *"How's my phone doing?"* | Battery, temperature, network and free space in one answer |
+| *"Download this TikTok and the sound from this YouTube video"* | Both files in the chat and in Downloads/MW AGENT |
+| *"Find the invoice messages in my Telegram and send the PDF to Anna"* | A search, then a file with a caption, after you approve |
+| *"Where am I? Walking route to the nearest pharmacy"* | GPS, a web search, then maps open with the route |
+| *"How much is 250 euros in rubles?"* | Today's rate and the amount |
+| *"QR code for my Wi-Fi so guests can join"* | A scannable picture right in the chat |
+| *"Dentist on Friday at 15:30, put it in my calendar"* | A filled-in event, you tap save |
+| *"Count my unread Telegram chats by folder"* | It writes a skill once and reuses it next time |
+
+## 📚 Features in detail
+
+<details>
+<summary><b>🧠 Models and providers</b></summary>
+<br>
+
+- Three native formats: OpenAI-compatible (anything with `/chat/completions`), Anthropic Messages and Google Gemini.
 - Custom base URL and extra headers per provider.
-- Live model list with search and filters for vision, reasoning and image output. The last picked model is used for new chats.
+- Live model list with search and filters for vision, reasoning and image output. New chats start with the last model you picked.
 - Streaming everywhere, including tool calls and token usage.
-- Reasoning effort per chat, with the thinking shown in a collapsible block. Anthropic thinking signatures, Gemini thought signatures and OpenAI `reasoning_details` are kept across tool calls.
+- Reasoning effort per chat with the thinking in a collapsible block. Anthropic thinking signatures, Gemini thought signatures and OpenAI `reasoning_details` are kept across tool calls.
 - Prompt caching for Claude and image output for models that can draw.
 
 </details>
 
-<details open>
-<summary><b>Telegram</b></summary>
+<details>
+<summary><b>✈️ Telegram</b></summary>
+<br>
 
 - Sign in with your own account: API ID and hash from [my.telegram.org](https://my.telegram.org), phone, login code and the two-step password if you have one.
-- Built-in tools for your profile, chat list, messages, search across all chats, and sending text or files, also as a reply to a message.
-- Chats are found by @username, phone, id, `me` for Saved Messages, or simply by their name in your chat list.
-- Python scripts get `import tg`: `me()`, `dialogs()`, `messages()`, `search()`, `send()`, `send_file()`, and `raw()` with `run()` for the full [Telethon](https://docs.telethon.dev) client.
-- The session is stored encrypted on the phone and never leaves it except to Telegram. Sending and reading ask first by default.
+- Built-in tools for your profile, chat list, messages, search across all chats and sending text or files, also as a reply.
+- Chats are found by @username, phone, id, `me` for Saved Messages, or simply by their name.
+- Scripts get `import tg`: `me()`, `dialogs()`, `messages()`, `search()`, `send()`, `send_file()`, and `raw()` with `run()` for the full [Telethon](https://docs.telethon.dev) client.
+- The session is encrypted on the phone and only ever talks to Telegram.
 
 </details>
 
-<details open>
-<summary><b>Skills: the agent extends itself</b></summary>
+<details>
+<summary><b>🎬 Video downloads</b></summary>
+<br>
 
-- When nothing built-in does what you ask, the agent writes a Python skill, saves it in `workspace/skills/` and runs it with JSON parameters.
+- **YouTube** videos and Shorts up to 1080p. Video and sound arrive separately and are joined on the phone with Android's own muxer, no ffmpeg needed.
+- **TikTok** videos, photo posts and sounds.
+- **Everything else yt-dlp supports**: Instagram, X, VK, Reddit, Twitch clips, SoundCloud and more than a thousand other sites.
+- Sound only on request. Files are shown in the chat and saved to Downloads/MW AGENT.
+
+</details>
+
+<details>
+<summary><b>🛠️ Skills: the agent extends itself</b></summary>
+<br>
+
+- When nothing built-in fits, the agent writes a Python skill, saves it in `workspace/skills/` and runs it with JSON parameters.
 - If it fails, the agent reads the traceback, fixes the code and saves it again.
-- Saved skills are listed for the model in every chat, so it reuses them instead of starting over.
+- Saved skills are listed for the model in every chat, so it reuses them.
 - Skills can use the standard library, Telegram through `import tg`, and the `phone` module when phone control from Python is on.
-- Saving and running ask first. Skills follow the `run_python` switch: turn Python off and skills are off too.
+- Saving and running ask first, and skills follow the `run_python` switch.
 
 </details>
 
 <details>
-<summary><b>Phone and device</b></summary>
+<summary><b>📱 Phone and device</b></summary>
+<br>
 
-- Phone control through an accessibility service: the screen as numbered elements, screenshots, taps, typing, swipes, system keys and opening apps. It refuses to act on MW AGENT's own screen.
-- Python 3.13 on the phone (Chaquopy) with a `phone` module for long automated flows and saved routines.
+- Phone control through an accessibility service: the screen as numbered elements, screenshots, taps, typing, swipes, system keys and opening apps. It never acts on MW AGENT's own screen.
+- Python 3.13 on the phone (Chaquopy) with a `phone` module for long flows and saved routines.
 - Shell in a sandbox (default), Termux, Shizuku or root.
-- Device status, flashlight, volume, clipboard and QR codes.
-- Video downloads by link: YouTube up to 1080p with the sound joined on the phone, TikTok videos, photo posts and sounds, plus Instagram, X, VK, Reddit and the other sites yt-dlp supports. Files land in Downloads/MW AGENT.
-- Calendar events, the dialer, SMS and email drafts and map routes open in your own apps, and you finish the action there.
-- Location from GPS or the network with the nearest street address.
-- File access limited to the app folder by default, or phone storage with All files access, or root.
+- Device status, flashlight, volume, clipboard, QR codes and exchange rates.
+- Calendar, dialer, SMS, email, maps and the share sheet open filled in, and you finish there.
+- Location from GPS or the network with the nearest address.
+- Files limited to the app folder by default, or phone storage with All files access, or root.
 
 </details>
 
 <details>
-<summary><b>Chats and agents</b></summary>
+<summary><b>💬 Chats and agents</b></summary>
+<br>
 
-- Folders, archive, a trash that empties after 30 days, configurable swipe actions and multi-select.
-- Search across titles and messages with highlighted snippets that jump to the message.
-- Every chat gets a title, icon, color and shape after the first reply.
-- Replies keep streaming in the background, with a Stop button in the notification.
-- Markdown with highlighted code, LaTeX, charts and flow diagrams in the chat, quick-reply chips and source pills.
-- As many agents as you like, each with a system prompt, an animated avatar, its own tool permissions and voice. Prompts accept `{agent_name}`, `{date}`, `{time}`, `{weekday}`, `{timezone}`, `{device}`, `{android}`, `{battery}` and `{locale}`.
+- Folders, archive, a 30-day trash, swipe actions and multi-select.
+- Search across titles and messages with highlighted snippets.
+- Each chat gets a title, icon, color and shape after the first reply.
+- Replies keep streaming in the background with a Stop button in the notification.
+- Markdown with highlighted code, LaTeX, charts and diagrams, quick-reply chips and source pills.
+- As many agents as you like, each with its own prompt, animated avatar, tool permissions and voice. Prompts accept `{agent_name}`, `{date}`, `{time}`, `{weekday}`, `{timezone}`, `{device}`, `{android}`, `{battery}` and `{locale}`.
 
 <p align="center">
-  <img src="docs/screenshots/agents.png" width="24%" alt="The agent list with Assistant, Coder, Chef and Tutor">
-  <img src="docs/screenshots/editor-assistant.png" width="24%" alt="The agent editor for Assistant, with a name field and a grid of avatar shapes">
-  <img src="docs/screenshots/editor-tutor.png" width="24%" alt="The agent editor for Tutor, with a four-leaf clover avatar in mint">
-  <img src="docs/screenshots/editor-chef.png" width="24%" alt="The agent editor for Chef, with a flower avatar in peach">
+  <img src="docs/screenshots/agents.png" width="24%" alt="The agent list">
+  <img src="docs/screenshots/editor-assistant.png" width="24%" alt="The agent editor">
+  <img src="docs/screenshots/chat-chart.png" width="24%" alt="A chart drawn inside a reply">
+  <img src="docs/screenshots/models.png" width="24%" alt="Model picker with search and filters">
 </p>
 
 </details>
 
 <details>
-<summary><b>Memory, voice and assistant</b></summary>
+<summary><b>🧩 Memory, voice, assistant and MCP</b></summary>
+<br>
 
-- Two-tier memory: instant memories always in the prompt, long-term ones searched by keyword or by embeddings (Gemini or any OpenAI-compatible `/embeddings`).
+- Two-tier memory: instant memories always in the prompt, long-term ones searched by keyword or embeddings.
 - Dictation through OpenAI-format, Gemini or ElevenLabs transcription. Replies read aloud with the system voice or a provider voice.
-- Set MW AGENT as the default digital assistant to open it over any app with a gesture. It can read the app underneath.
+- Set MW AGENT as the default assistant to open it over any app with a gesture. It can read the app underneath.
+- Remote [MCP](https://modelcontextprotocol.io) servers over Streamable HTTP with a token or OAuth. Server tools appear as `mcp_<server>_<tool>`.
+- Material 3 Expressive, dynamic color, dark theme, English and Russian, optional DNS over HTTPS.
 
 </details>
 
-<details>
-<summary><b>MCP</b></summary>
+## 🧰 Tools
 
-- Remote [MCP](https://modelcontextprotocol.io) servers over Streamable HTTP, with a bearer token or OAuth (discovery, dynamic client registration, PKCE).
-- Server tools appear as `mcp_<server>_<tool>`, server instructions go into the prompt, and elicitation requests show up as forms in the chat.
-
-</details>
+**55 built-in tools** plus any MCP server. Each one is **Off**, **Ask** or **Auto**, globally and per agent. An Ask tool pauses the reply with a card: Allow, Deny, or Always allow in this session.
 
 <details>
-<summary><b>Look and feel</b></summary>
+<summary><b>Show all 55 tools</b></summary>
+<br>
 
-- Material 3 Expressive, dynamic color on Android 12+, dark theme, Google Sans, haptics and predictive back.
-- English and Russian.
-- Optional DNS over HTTPS for all traffic.
-
-</details>
-
-## Tools
-
-55 built-in tools plus any number of MCP servers. Each one is **Off**, **Ask** or **Auto**, globally in Settings and per agent. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session.
-
-<details>
-<summary><b>See all 55 tools</b></summary>
-
-**Web and world**
-
+#### 🌐 Web and world
 | Tool | What it does | Default |
 |---|---|---|
 | `web_search` | DuckDuckGo (default), SearXNG or Brave | Auto |
-| `read_webpage` | A page as clean text through Jina Reader, directly or your own reader | Auto |
-| `get_weather` | Current weather and a 1 to 7 day forecast from Open-Meteo | Auto |
+| `read_webpage` | A page as clean text | Auto |
+| `get_weather` | Weather and a 1 to 7 day forecast from Open-Meteo | Auto |
 | `get_location` | GPS or network position with the nearest address | Ask |
-| `currency_rates` | Rates for 160 currencies and conversion, from exchangerate-api.com | Auto |
-| `download_media` | Video, sound or photos by link: YouTube, TikTok, Instagram, X, VK and more | Auto |
+| `currency_rates` | Rates for 160 currencies and conversion | Auto |
+| `download_media` | Video, sound or photos by link | Auto |
 
-**Telegram**
-
+#### ✈️ Telegram
 | Tool | What it does | Default |
 |---|---|---|
 | `telegram_me` | Your account: name, username, phone, Premium, bio | Auto |
 | `telegram_chats` | Chat list with unread counts | Ask |
-| `telegram_messages` | Recent messages of a chat, with media and replies marked | Ask |
-| `telegram_search` | Find messages by text in one chat or all of them | Ask |
+| `telegram_messages` | Recent messages of a chat | Ask |
+| `telegram_search` | Find messages in one chat or all of them | Ask |
 | `telegram_send` | Send text or a file, optionally as a reply | Ask |
 
-**Phone control**
-
+#### 📱 Phone control
 | Tool | What it does | Default |
 |---|---|---|
 | `read_screen` | Text of the app the assistant was opened over | Auto |
@@ -224,41 +253,37 @@
 | `phone_screenshot` | A screenshot the model can look at | Auto |
 | `phone_action` | Tap, type, scroll, swipe, keys, open apps | Ask |
 
-**Device**
-
+#### 🔦 Device
 | Tool | What it does | Default |
 |---|---|---|
-| `device_status` | Battery, charging, network, storage, RAM, volume, brightness | Auto |
+| `device_status` | Battery, network, storage, RAM, volume, brightness | Auto |
 | `flashlight` | Flashlight on or off | Auto |
 | `set_volume` | Media, ring, notification, alarm or call volume | Ask |
 | `copy_to_clipboard` | Put text on the clipboard | Auto |
 | `read_clipboard` | Read the copied text | Ask |
 | `make_qr_code` | QR code for a link, Wi-Fi, contact or text | Auto |
 
-**Other apps** (open filled in, you finish there)
-
+#### 🗓️ Other apps
 | Tool | What it does | Default |
 |---|---|---|
 | `add_calendar_event` | A new event in your calendar | Ask |
 | `dial_number` | The dialer with the number | Ask |
 | `compose_message` | A ready SMS or email | Ask |
 | `navigate_to` | A route in your maps app | Auto |
-| `open_link` | A link in the browser or the app that handles it | Auto |
+| `open_link` | A link in the browser or its app | Auto |
 | `share` | The share sheet with text or files | Ask |
 
-**Code and skills**
-
+#### 🛠️ Code and skills
 | Tool | What it does | Default |
 |---|---|---|
 | `run_command` | Shell in the sandbox, Termux, Shizuku or root | Ask |
 | `run_python` | Python 3.13 with Telethon and the phone module | Ask |
 | `skill_save` | Save or fix a skill the agent wrote | Ask |
-| `skill_run` | Run a saved skill with JSON params | Ask |
+| `skill_run` | Run a saved skill | Ask |
 | `skill_list` | List skills or show the source of one | Auto |
 | `skill_delete` | Delete a skill | Ask |
 
-**Files**
-
+#### 📁 Files
 | Tool | What it does | Default |
 |---|---|---|
 | `list_files`, `read_file` | Browse and read files in the allowed scope | Auto |
@@ -266,23 +291,20 @@
 | `send_files` | Show files and images in the chat | Auto |
 | `save_to_downloads` | Put a file in Downloads/MW AGENT | Auto |
 
-**Time**
-
+#### ⏰ Time
 | Tool | What it does | Default |
 |---|---|---|
 | `set_reminder`, `list_reminders`, `cancel_reminder` | Reminders that notify you and open the chat | Auto |
 | `set_alarm`, `set_timer` | Alarm or timer in the clock app | Auto |
 
-**Memory and chats**
-
+#### 🧠 Memory and chats
 | Tool | What it does | Default |
 |---|---|---|
 | `memory_save`, `memory_update`, `memory_delete`, `memory_search` | Manage and search memories | Auto |
 | `list_chats`, `read_chat`, `search_messages` | Look through your other chats | Auto |
 | `export_chat` | Save a chat as Markdown | Ask |
 
-**In the chat**
-
+#### 🎨 In the chat
 | Tool | What it does | Default |
 |---|---|---|
 | `show_ui` | Quick-reply chips and buttons | Auto |
@@ -294,18 +316,21 @@ Tools from MCP servers always start as Ask.
 
 </details>
 
-## Quick start
+## 🚀 Quick start
 
-1. Download `mw-agent-<version>.apk` from the [latest release](https://github.com/mwdevpy/mwagent/releases/latest). Android 10 or newer, 64-bit ARM (arm64-v8a).
-2. Open the file and allow installs from that app when Android asks.
-3. **Settings → Models**: add a provider, pick the API format, paste the base URL (prefilled for OpenAI, Anthropic and Gemini) and your key.
-4. Pick a model at the top of a new chat and say hi.
-5. Optional: **Settings → Telegram** to link your account, **Device access** for location, phone control and files.
+| Step | |
+|:-:|---|
+| **1** | Download `mw-agent-<version>.apk` from the [latest release](https://github.com/mwdevpy/mwagent/releases/latest). Android 10+, 64-bit ARM. |
+| **2** | Open the file and allow installs from that app when Android asks. |
+| **3** | **Settings → Models**: add a provider, pick the API format, paste the base URL and your key. |
+| **4** | Pick a model at the top of a new chat and say hi. |
+| **5** | Optional: **Settings → Telegram** to link your account, **Device access** for location, phone control and files. |
 
 The app never updates itself. **About → Check for updates** asks GitHub only when you tap it.
 
 <details>
-<summary><b>Verify the APK</b></summary>
+<summary><b>🔏 Verify the APK</b></summary>
+<br>
 
 Run `apksigner verify --print-certs mw-agent-<version>.apk` and compare the SHA-256 digest of the signer certificate:
 
@@ -315,19 +340,21 @@ Run `apksigner verify --print-certs mw-agent-<version>.apk` and compare the SHA-
 
 </details>
 
-## Troubleshooting
+## 🩺 Troubleshooting
 
 <details>
 <summary><b>Play Protect says "App blocked to protect your device"</b></summary>
+<br>
 
-Play Protect blocks sideloaded apps that declare an accessibility service, because such permissions are often abused. MW AGENT declares one for phone control, so it matches the rule. The service does nothing until you switch it on, and the block is a blanket rule, not a finding about this app. The code is all here and the release can be checked against the fingerprint above.
+Play Protect blocks sideloaded apps that declare an accessibility service, because such permissions are often abused. MW AGENT declares one for phone control. The service does nothing until you switch it on, and the block is a blanket rule, not a finding about this app. The code is all here and the release can be checked against the fingerprint above.
 
-To install anyway: Google Play → profile picture → Play Protect → gear → switch off **Scan apps with Play Protect**, then open the APK again. Whether to turn scanning back on afterwards is your call. If you only pause it, Play Protect may remove the app when it resumes.
+To install anyway: Google Play → profile picture → Play Protect → gear → switch off **Scan apps with Play Protect**, then open the APK again. Whether to turn scanning back on is your call; if you only pause it, Play Protect may remove the app when it resumes.
 
 </details>
 
 <details>
 <summary><b>The accessibility switch is greyed out</b></summary>
+<br>
 
 Android restricts accessibility for apps installed outside a store. Open App info for MW AGENT, tap ⋮, choose **Allow restricted settings**, then switch the service on.
 
@@ -335,43 +362,57 @@ Android restricts accessibility for apps installed outside a store. Open App inf
 
 <details>
 <summary><b>Telegram tools say no account is linked</b></summary>
+<br>
 
-Link it in **Settings → Telegram** with an API ID and hash from my.telegram.org. If Telegram ended the session (for example from another device), link it again.
+Link it in **Settings → Telegram** with an API ID and hash from my.telegram.org. If Telegram ended the session, for example from another device, link it again.
 
 </details>
 
 <details>
-<summary><b>Calendar, dialer, SMS or maps did not open</b></summary>
+<summary><b>Calendar, dialer, SMS, maps or sharing did not open</b></summary>
+<br>
 
 Android only lets an app open other apps while it is on screen. Keep MW AGENT open while the agent does it.
 
 </details>
 
-## Privacy and safety
+<details>
+<summary><b>A video did not download</b></summary>
+<br>
 
-- **Nothing goes to us.** No analytics, no crash reports, no accounts, cloud backup off.
-- **Local and encrypted.** Chats sit in a local database. Provider keys, tool settings and the Telegram session are encrypted with an Android Keystore key.
-- **Direct traffic only.** Your messages go to the provider you set up, Telegram traffic only to Telegram. Defaults that touch public services, each replaceable in Settings: DuckDuckGo (`web_search`), r.jina.ai (`read_webpage`), Open-Meteo (`get_weather`). `currency_rates` asks open.er-api.com, and `download_media` talks only to the site of the link. Source pills load favicons from the sites themselves. The update check calls `api.github.com` when you tap it.
-- **You approve the risky parts.** Sending, reading private data, running code and changing settings ask first by default. Calls, SMS, emails and calendar events are only prepared, you finish them yourself.
-- **Permissions:** internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders), location (only after you grant it in Device access) and a foreground service (background streaming). Termux, All files access and the accessibility service are optional and off until you enable them. No camera or contacts permission. Location is read only when a reply calls `get_location`; address lookup uses the system geocoder, which on some phones contacts the phone maker's service.
+The video may be private, age-restricted, region-locked or larger than the limit. Sites also change often; a newer MW AGENT release usually brings an updated downloader.
 
-## По-русски
+</details>
 
-**MW AGENT** — ИИ-агент для Android, который не просто отвечает, а делает: читает экран и нажимает кнопки в приложениях, запускает Python, работает с твоим аккаунтом Telegram, знает, где ты, следит за состоянием телефона и сам пишет себе новые навыки, когда готового инструмента нет.
+## 🔐 Privacy and safety
 
-- Любая модель через свой ключ: OpenAI-совместимые, Anthropic, Gemini, OpenRouter, Ollama, LM Studio.
-- Telegram через user API: чаты, поиск, отправка сообщений и файлов, скрипты на Telethon.
-- Навыки: агент пишет недостающую логику на Python, сохраняет и исправляет её сам.
-- Скачивание видео и звука по ссылке: YouTube, TikTok, Instagram, X, VK и другие, сразу в Загрузки.
-- Курсы валют, фонарик, громкость, буфер обмена, QR-коды, события в календаре, звонилка, SMS, письма, маршруты и «Поделиться».
-- Без сервера, аккаунта и аналитики. Ключи и сессия Telegram зашифрованы, опасные действия спрашивают разрешение.
+|  |  |
+|---|---|
+| 🚫 **Nothing goes to us** | No analytics, no crash reports, no accounts, cloud backup off. |
+| 🗝️ **Local and encrypted** | Chats sit in a local database. Provider keys, tool settings and the Telegram session are encrypted with an Android Keystore key. |
+| ➡️ **Direct traffic only** | Messages go to the provider you set up, Telegram traffic only to Telegram, downloads only to the site of the link. Defaults that use public services, each replaceable in Settings: DuckDuckGo, r.jina.ai and Open-Meteo. Exchange rates come from open.er-api.com. The update check calls GitHub when you tap it. |
+| ✋ **You approve the risky parts** | Sending, reading private data, running code and changing settings ask first by default. Calls, SMS, emails and calendar events are only prepared; you finish them yourself. |
+| 📋 **Permissions** | Internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders), location (only after you grant it) and a foreground service (background replies). Termux, All files access and the accessibility service stay off until you enable them. No camera or contacts permission. |
 
-Скачать: [последний релиз](https://github.com/mwdevpy/mwagent/releases/latest). Интерфейс на русском и английском.
+## 🇷🇺 По-русски
 
-## License
+**MW AGENT** — ИИ-агент для Android, который не просто отвечает, а делает: читает экран и нажимает кнопки в приложениях, запускает Python, качает видео, работает с твоим Telegram и сам пишет себе новые навыки, когда готового инструмента нет.
+
+- 🧠 Любая модель через свой ключ: OpenAI-совместимые, Claude, Gemini, OpenRouter, Ollama, LM Studio.
+- ✈️ Telegram через user API: чаты, поиск, отправка сообщений и файлов, скрипты на Telethon.
+- 🎬 Видео и звук по ссылке: YouTube, TikTok, Instagram, X, VK и другие, сразу в Загрузки.
+- 🛠️ Навыки: агент сам пишет, сохраняет и чинит недостающую логику на Python.
+- 🔦 Курсы валют, фонарик, громкость, буфер обмена, QR-коды, календарь, звонки, SMS, письма, маршруты и «Поделиться».
+- 🔒 Без сервера, аккаунта и аналитики. Ключи и сессия Telegram зашифрованы, опасные действия спрашивают разрешение.
+
+<p align="center">
+  <a href="https://github.com/mwdevpy/mwagent/releases/latest">
+    <img alt="Скачать APK" src="https://img.shields.io/badge/Скачать_APK-FF3D7F?style=for-the-badge&logo=android&logoColor=white" height="38">
+  </a>
+</p>
+
+## 📄 License
 
 GNU General Public License v3.0, see [LICENSE](LICENSE).
 
-MW AGENT is a fork of [MD3 Agent](https://github.com/huecoder/MD3-Agent) by huecoder, modified and distributed under the same GPL v3 terms. The original project is not affiliated with this fork and is not responsible for it.
-
-Third-party libraries and assets are listed in [THIRD_PARTY.md](THIRD_PARTY.md). Vendor trademarks belong to their owners.
+MW AGENT is a fork of [MD3 Agent](https://github.com/huecoder/MD3-Agent) by huecoder, modified and distributed under the same GPL v3 terms. The original project is not affiliated with this fork and is not responsible for it. Third-party libraries and assets are listed in [THIRD_PARTY.md](THIRD_PARTY.md).
