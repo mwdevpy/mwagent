@@ -34,7 +34,7 @@ class RunPythonTool(
         description = "Runs a Python ${python.version} script inside the app and returns everything it printed. " +
             "Use it for calculations, parsing and converting data, and working with files. " +
             "The standard library and Telethon are available, no other pip packages. " +
-            "For the user's own linked Telegram account, use `import tg` (me, dialogs, messages, send, raw). Current Telethon docs: https://docs.telethon.dev. " +
+            "For the user's own linked Telegram account, use `import tg` (me, dialogs, messages, send, raw). An empty field such as me.username means the account has none set in Telegram, not that the tool failed. Current Telethon docs: https://docs.telethon.dev. " +
             "Each call starts with fresh globals, so save anything you need later to a file. " +
             "The working directory is the app workspace ${workspace.path}, files saved there can be shown to the user with send_files.",
         parameters = objectSchema(required = listOf(CODE)) {
@@ -51,7 +51,7 @@ class RunPythonTool(
         val bridge = if (settings.phoneUse.pythonControl) PhoneScriptBridge(phone, context.chatId) else null
         telegram?.prepareScripts()
         val result = python.run(code, workspace, timeoutSeconds, bridge)
-        val output = result.output.ifBlank { "(no output)" }.let {
+        val output = result.output.ifBlank { "(the script finished and printed nothing, or printed only empty values)" }.let {
             if (it.length > MAX_OUTPUT_CHARS) it.take(MAX_OUTPUT_CHARS) + "\n…[output truncated at $MAX_OUTPUT_CHARS characters]" else it
         }
         val text = if (result.timedOut) "$output\nStopped after $timeoutSeconds s" else output

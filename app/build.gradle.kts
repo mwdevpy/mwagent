@@ -21,8 +21,8 @@ android {
         applicationId = "com.mwagent"
         minSdk = 29
         targetSdk = 36
-        versionCode = 13
-        versionName = "0.9.3"
+        versionCode = 14
+        versionName = "0.9.4"
 
         ndk { abiFilters += "arm64-v8a" }
     }
