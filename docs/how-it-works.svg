@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 330" width="880" height="330" role="img" aria-label="You ask MW AGENT, the app sends the chat to your model, the model calls tools, the app runs them on the phone and asks you before risky steps">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF7A45"/><stop offset=".5" stop-color="#FF3D7F"/><stop offset="1" stop-color="#9B4DFF"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8B93A7"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+      .card { fill: #1C2130; stroke: #33394A; stroke-width: 1.5; }
+      .title { fill: #FFFFFF; font-size: 19px; font-weight: 700; }
+      .sub { fill: #AEB5C6; font-size: 13px; }
+      .chip { fill: #232938; stroke: #3A4154; stroke-width: 1.2; }
+      .chiptext { fill: #E8EBF2; font-size: 14px; font-weight: 600; }
+      .label { fill: #8B93A7; font-size: 13px; font-weight: 600; }
+      .line { stroke: #8B93A7; stroke-width: 2; fill: none; }
+      .dash { stroke: #FF3D7F; stroke-width: 2; fill: none; stroke-dasharray: 6 6; }
+    </style>
+  </defs>
+
+  <!-- You -->
+  <rect class="card" x="20" y="40" width="170" height="96" rx="22"/>
+  <text x="105" y="84" text-anchor="middle" class="title">🙂 You</text>
+  <text x="105" y="108" text-anchor="middle" class="sub">ask in a chat</text>
+
+  <!-- MW AGENT -->
+  <rect x="300" y="28" width="280" height="120" rx="26" fill="url(#brand)"/>
+  <text x="440" y="82" text-anchor="middle" fill="#FFFFFF" font-size="26" font-weight="800">MW AGENT</text>
+  <text x="440" y="110" text-anchor="middle" fill="#FFFFFF" fill-opacity=".9" font-size="14">on your phone, no server</text>
+
+  <!-- Model -->
+  <rect class="card" x="690" y="40" width="170" height="96" rx="22"/>
+  <text x="775" y="80" text-anchor="middle" class="title">🧠 Model</text>
+  <text x="775" y="102" text-anchor="middle" class="sub">OpenAI · Claude</text>
+  <text x="775" y="120" text-anchor="middle" class="sub">Gemini · local</text>
+
+  <!-- arrows top row -->
+  <path class="line" d="M192 76H296" marker-end="url(#arrow)"/>
+  <text x="244" y="66" text-anchor="middle" class="label">ask</text>
+  <path class="line" d="M582 70H686" marker-end="url(#arrow)"/>
+  <text x="634" y="60" text-anchor="middle" class="label">chat + tools</text>
+  <path class="line" d="M686 110H584" marker-end="url(#arrow)"/>
+  <text x="634" y="130" text-anchor="middle" class="label">tool call</text>
+
+  <!-- tools -->
+  <path class="line" d="M440 150V196"/>
+  <path class="line" d="M128 196H752"/>
+  <path class="line" d="M128 196V226" marker-end="url(#arrow)"/>
+  <path class="line" d="M336 196V226" marker-end="url(#arrow)"/>
+  <path class="line" d="M544 196V226" marker-end="url(#arrow)"/>
+  <path class="line" d="M752 196V226" marker-end="url(#arrow)"/>
+
+  <rect class="chip" x="38" y="230" width="180" height="50" rx="25"/>
+  <text x="128" y="261" text-anchor="middle" class="chiptext">📱 Screen &amp; apps</text>
+  <rect class="chip" x="246" y="230" width="180" height="50" rx="25"/>
+  <text x="336" y="261" text-anchor="middle" class="chiptext">✈️ Telegram</text>
+  <rect class="chip" x="454" y="230" width="180" height="50" rx="25"/>
+  <text x="544" y="261" text-anchor="middle" class="chiptext">🐍 Python &amp; skills</text>
+  <rect class="chip" x="662" y="230" width="180" height="50" rx="25"/>
+  <text x="752" y="261" text-anchor="middle" class="chiptext">🌐 Web &amp; video</text>
+
+  <!-- approval loop -->
+  <path class="dash" d="M300 120C240 150 160 160 105 140" marker-end="url(#arrow)"/>
+  <text x="196" y="174" text-anchor="middle" fill="#FF3D7F" font-size="13" font-weight="700">risky step? Allow / Deny</text>
+
+  <text x="440" y="316" text-anchor="middle" class="label">the model picks tools, the app runs them on the phone</text>
+</svg>

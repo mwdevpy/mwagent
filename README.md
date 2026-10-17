@@ -94,18 +94,9 @@
 
 ## 🔄 How it works
 
-```mermaid
-flowchart LR
-    You(["🙂 You"]) -->|ask| App["📱 MW AGENT"]
-    App -->|chat + tool list| Model["🧠 Your model<br/>OpenAI · Claude · Gemini · local"]
-    Model -->|tool call| App
-    App --> Phone["Screen & apps"]
-    App --> TG["Telegram"]
-    App --> Py["Python & skills"]
-    App --> Web["Web, video, weather, rates"]
-    App -.->|risky step?| Ask{{"Allow / Deny"}}
-    Ask -.-> You
-```
+<p align="center">
+  <img src="docs/how-it-works.svg" width="100%" alt="You ask MW AGENT, it sends the chat and the tool list to your model, the model calls tools, the app runs them on the phone: screen and apps, Telegram, Python and skills, web and video. Risky steps wait for Allow or Deny.">
+</p>
 
 The app is only a client. It sends your message to the model you chose, the model picks tools, and the app runs them on the phone. Anything risky waits for your tap.
 
