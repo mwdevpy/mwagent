@@ -7,7 +7,13 @@
     tg.send("@some_user", "hello")
 
 For anything else, use the full Telethon client through `tg.raw()`, which returns
-(loop, client). Run a Telethon coroutine with loop.run_until_complete(...).
+(loop, client). Run a Telethon coroutine with loop.run_until_complete(...), e.g.
+
+    from telethon.tl.functions.users import GetFullUserRequest
+    loop, client = tg.raw()
+    me = loop.run_until_complete(client.get_me())
+    full = loop.run_until_complete(client(GetFullUserRequest(me)))
+    print(full.full_user.about)
 Docs: https://docs.telethon.dev
 """
 
@@ -41,7 +47,15 @@ def _chat(value):
 def me():
     async def fetch(client):
         user = await client.get_me()
-        return Record(id=user.id, username=user.username or "", first_name=user.first_name or "", phone=user.phone or "")
+        return Record(
+            id=user.id,
+            username=user.username or "",
+            first_name=user.first_name or "",
+            last_name=user.last_name or "",
+            phone=user.phone or "",
+            premium=bool(getattr(user, "premium", False)),
+            bot=bool(user.bot),
+        )
 
     return _run(fetch)
 

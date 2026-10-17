@@ -65,12 +65,19 @@ class RunPythonToolTest {
 
     @Test
     fun `the phone notes appear only when python may control the phone`() {
-        assertNull(tool.promptNote(ToolSettings()))
+        val withoutPhone = tool.promptNote(ToolSettings())
+        assertNotNull(withoutPhone)
+        assertFalse(withoutPhone!!.contains("routines/<name>.py"))
 
         val note = tool.promptNote(ToolSettings(phoneUse = PhoneUseSettings(pythonControl = true)))
 
         assertNotNull(note)
         assertTrue(note!!.contains("routines/<name>.py"))
+    }
+
+    @Test
+    fun `the telegram note is always there so the model uses the linked account instead of refusing`() {
+        assertTrue(tool.promptNote(ToolSettings())!!.contains("import tg"))
     }
 
     @Test

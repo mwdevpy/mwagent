@@ -43,7 +43,10 @@ class RunPythonTool(
         },
     )
 
-    override fun promptNote(settings: ToolSettings): String? = PHONE_NOTE.takeIf { settings.phoneUse.pythonControl }
+    override fun promptNote(settings: ToolSettings): String? = listOfNotNull(
+        TELEGRAM_NOTE,
+        PHONE_NOTE.takeIf { settings.phoneUse.pythonControl },
+    ).joinToString("\n").ifEmpty { null }
 
     override suspend fun execute(arguments: JsonObject, settings: ToolSettings, context: ToolContext): ToolOutcome {
         val code = arguments.requireString(CODE)
@@ -71,6 +74,11 @@ class RunPythonTool(
         fun usesPhone(code: String): Boolean = PHONE_IMPORT.containsMatchIn(code)
 
         fun usesPhone(arguments: JsonObject): Boolean = usesPhone((arguments[CODE] as? JsonPrimitive)?.content.orEmpty())
+
+        private const val TELEGRAM_NOTE =
+            "You can look at and act on the user's linked Telegram account. When asked about it (name, username, Premium, chats, messages), " +
+                "do not say you lack access: write a run_python script with `import tg` (me(), dialogs(), messages(), send()) or the full Telethon client through tg.raw(), " +
+                "run it, and answer from its output. Look up Telethon's current docs at https://docs.telethon.dev when unsure of a call."
 
         private val PHONE_NOTE = listOf(
             "run_python can drive the phone through the built-in phone module (import phone). Use it for long or repetitive flows with loops and conditions, and give it a long timeout_seconds (up to $MAX_TIMEOUT_S). For a few single steps use phone_action directly.",
