@@ -25,6 +25,7 @@ Vendor glyphs in `app/src/main/res/drawable/ic_vendor_*.xml` are monochrome trac
 
 - [dyn4j](https://github.com/dyn4j/dyn4j) (BSD-3-Clause, Copyright (c) William Bittle): 2D physics for the avatar knockout and the about screen playground
 - [jlatexmath-android](https://github.com/noties/jlatexmath-android) (GPL-2.0, JLaTeXMath): LaTeX formula rendering in replies
+- [ZXing](https://github.com/zxing/zxing) 3.5.3 (Apache-2.0): QR code generation for make_qr_code
 
 # Python libraries (bundled sources)
 
