@@ -74,7 +74,7 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 
 **Tools**
 
-30 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
+34 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
 
 <details>
 <summary>All built-in tools</summary>
@@ -85,6 +85,10 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 | `read_webpage` | Read a page as clean text through Jina Reader (default), directly or a reader of your own | Auto |
 | `get_weather` | Current weather and a 1 to 7 day forecast from Open-Meteo | Auto |
 | `get_location` | The phone's position with the nearest street address, from GPS or the network | Ask |
+| `telegram_me` | Your linked Telegram account: name, username, phone, Premium, bio | Auto |
+| `telegram_chats` | Your Telegram chat list with unread counts | Ask |
+| `telegram_messages` | Recent messages of one Telegram chat, found by @username, id or chat name | Ask |
+| `telegram_send` | Send a Telegram message from your account | Ask |
 | `read_screen` | Text of the app the assistant overlay was opened over | Auto |
 | `phone_screen` | The live screen as a numbered list of elements, through the accessibility service | Auto |
 | `phone_action` | Tap, type, scroll, swipe, press system keys, open apps | Ask |

@@ -184,6 +184,7 @@ class ChatViewModel(
     fun selectModel(selection: ModelSelection) {
         val id = chatId.value
         if (id == null) pendingSelection.value = selection else viewModelScope.launch { chats.setModel(id, selection) }
+        appScope.launch { settings.setActiveSelection(selection) }
     }
 
     fun selectAgent(agentId: String) {

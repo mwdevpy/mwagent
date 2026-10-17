@@ -75,6 +75,10 @@ import com.mwagent.tools.files.ReadFileTool
 import com.mwagent.tools.files.SendFilesTool
 import com.mwagent.tools.files.WriteFileTool
 import com.mwagent.tools.location.LocationTool
+import com.mwagent.tools.telegram.TelegramChatsTool
+import com.mwagent.tools.telegram.TelegramMeTool
+import com.mwagent.tools.telegram.TelegramMessagesTool
+import com.mwagent.tools.telegram.TelegramSendTool
 import com.mwagent.tools.weather.WeatherTool
 import com.mwagent.tools.web.PageFetcher
 import com.mwagent.tools.web.ReadWebpageTool
@@ -151,6 +155,10 @@ class AppContainer(context: Context) {
             ReadWebpageTool(PageFetcher(httpClients)),
             WeatherTool(httpClients),
             LocationTool(deviceLocation),
+            TelegramMeTool(telegram),
+            TelegramChatsTool(telegram),
+            TelegramMessagesTool(telegram),
+            TelegramSendTool(telegram),
             ReadScreenTool(screenContext),
             PhoneScreenTool(phoneControl),
             PhoneScreenshotTool(phoneControl, attachments),

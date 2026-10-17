@@ -63,6 +63,15 @@
     <string name="tools_weather_summary">Current conditions and up to a week of forecast</string>
     <string name="tools_location_title">Location</string>
     <string name="tools_location_summary">Where the phone is, with the nearest street address</string>
+    <string name="tools_category_telegram">Telegram</string>
+    <string name="tools_telegram_me_title">Telegram account</string>
+    <string name="tools_telegram_me_summary">Name, username, phone, Premium and bio of your linked account</string>
+    <string name="tools_telegram_chats_title">Telegram chats</string>
+    <string name="tools_telegram_chats_summary">Your chat list with unread counts</string>
+    <string name="tools_telegram_messages_title">Read Telegram messages</string>
+    <string name="tools_telegram_messages_summary">Recent messages of one chat</string>
+    <string name="tools_telegram_send_title">Send Telegram message</string>
+    <string name="tools_telegram_send_summary">Sends a message from your account</string>
     <string name="tools_read_screen_title">Reading the screen</string>
     <string name="tools_read_screen_summary">Text of the app the assistant was opened over</string>
     <string name="tools_show_ui_title">Buttons and reply options</string>

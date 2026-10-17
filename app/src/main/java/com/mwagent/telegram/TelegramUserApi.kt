@@ -52,6 +52,11 @@ class TelegramUserApi(
         }
     }
 
+    suspend fun tool(function: String, vararg args: Any?): String {
+        prepareScripts()
+        return python.call(TOOLS_MODULE, function, *args)
+    }
+
     suspend fun sendCode(account: TelegramAccount, phone: String): TelegramReply =
         call("send_code", account.apiId, account.apiHash, phone, account.session)
 
@@ -66,5 +71,6 @@ class TelegramUserApi(
 
     private companion object {
         const val MODULE = "tg_user"
+        const val TOOLS_MODULE = "tg_tools"
     }
 }

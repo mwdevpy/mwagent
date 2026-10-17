@@ -62,6 +62,15 @@
     <string name="tools_weather_summary">Сейчас и прогноз до недели</string>
     <string name="tools_location_title">Местоположение</string>
     <string name="tools_location_summary">Где находится телефон, с ближайшим адресом</string>
+    <string name="tools_category_telegram">Telegram</string>
+    <string name="tools_telegram_me_title">Аккаунт Telegram</string>
+    <string name="tools_telegram_me_summary">Имя, ник, телефон, Premium и описание привязанного аккаунта</string>
+    <string name="tools_telegram_chats_title">Чаты Telegram</string>
+    <string name="tools_telegram_chats_summary">Список чатов с непрочитанными</string>
+    <string name="tools_telegram_messages_title">Чтение сообщений Telegram</string>
+    <string name="tools_telegram_messages_summary">Последние сообщения одного чата</string>
+    <string name="tools_telegram_send_title">Отправка сообщения в Telegram</string>
+    <string name="tools_telegram_send_summary">Отправляет сообщение от вашего аккаунта</string>
     <string name="tools_read_screen_title">Чтение экрана</string>
     <string name="tools_read_screen_summary">Текст приложения, поверх которого вызван ассистент</string>
     <string name="tools_show_ui_title">Кнопки и варианты ответа</string>

@@ -44,6 +44,26 @@ def _chat(value):
     return int(text) if text.lstrip("-").isdigit() else text
 
 
+async def _entity(client, chat):
+    """Finds a chat by @username, phone, numeric id, "me", or by its name as shown in the chat list."""
+    target = _chat(chat)
+    try:
+        return await client.get_entity(target)
+    except (ValueError, TypeError):
+        pass
+    wanted = str(chat).strip().lstrip("@").casefold()
+    fallback = None
+    async for dialog in client.iter_dialogs():
+        name = (dialog.name or "").casefold()
+        if name == wanted:
+            return dialog.entity
+        if fallback is None and wanted and wanted in name:
+            fallback = dialog.entity
+    if fallback is not None:
+        return fallback
+    raise ValueError("No chat matches %r. Use tg.dialogs() to see the chat names." % chat)
+
+
 def me():
     async def fetch(client):
         user = await client.get_me()
@@ -73,7 +93,7 @@ def dialogs(limit=20):
 def messages(chat, limit=20):
     async def fetch(client):
         result = []
-        async for message in client.iter_messages(_chat(chat), limit=limit):
+        async for message in client.iter_messages(await _entity(client, chat), limit=limit):
             result.append(Record(
                 id=message.id,
                 date=message.date.isoformat() if message.date else "",
@@ -87,7 +107,7 @@ def messages(chat, limit=20):
 
 def send(chat, text):
     async def push(client):
-        sent = await client.send_message(_chat(chat), text)
+        sent = await client.send_message(await _entity(client, chat), text)
         return Record(id=sent.id)
 
     return _run(push)

@@ -3,7 +3,10 @@ package com.mwagent.ui.components
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.composables.icons.materialsymbols.MaterialSymbols
+import com.composables.icons.materialsymbols.rounded.Account_circle
+import com.composables.icons.materialsymbols.rounded.Chat
 import com.composables.icons.materialsymbols.rounded.Location_on
+import com.composables.icons.materialsymbols.rounded.Send
 import com.composables.icons.materialsymbols.rounded.Manage_search
 import com.composables.icons.materialsymbols.rounded.Bookmark_remove
 import com.composables.icons.materialsymbols.rounded.Edit_note
@@ -51,6 +54,10 @@ import com.mwagent.tools.files.ReadFileTool
 import com.mwagent.tools.files.SendFilesTool
 import com.mwagent.tools.files.WriteFileTool
 import com.mwagent.tools.location.LocationTool
+import com.mwagent.tools.telegram.TelegramChatsTool
+import com.mwagent.tools.telegram.TelegramMeTool
+import com.mwagent.tools.telegram.TelegramMessagesTool
+import com.mwagent.tools.telegram.TelegramSendTool
 import com.mwagent.tools.memory.MemoryDeleteTool
 import com.mwagent.tools.memory.MemorySaveTool
 import com.mwagent.tools.memory.MemorySearchTool
@@ -77,6 +84,7 @@ enum class ToolCategory(@StringRes val title: Int) {
     WEB(R.string.tools_category_web),
     SCREEN(R.string.tools_category_screen),
     PHONE(R.string.tools_category_phone),
+    TELEGRAM(R.string.tools_category_telegram),
     FILES(R.string.tools_category_files),
     TIME(R.string.tools_category_time),
     SYSTEM(R.string.tools_category_system),
@@ -106,6 +114,10 @@ object ToolCatalog {
         ShowChartTool.NAME to known(ToolCategory.SCREEN, MaterialSymbols.Rounded.Bar_chart, R.string.tools_show_chart_title, R.string.tools_show_chart_summary),
         PhoneScreenTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Phone_android, R.string.tools_phone_screen_title, R.string.tools_phone_screen_summary),
         PhoneScreenshotTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Screenshot_monitor, R.string.tools_phone_screenshot_title, R.string.tools_phone_screenshot_summary),
+        TelegramMeTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Account_circle, R.string.tools_telegram_me_title, R.string.tools_telegram_me_summary),
+        TelegramChatsTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Forum, R.string.tools_telegram_chats_title, R.string.tools_telegram_chats_summary),
+        TelegramMessagesTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Chat, R.string.tools_telegram_messages_title, R.string.tools_telegram_messages_summary),
+        TelegramSendTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Send, R.string.tools_telegram_send_title, R.string.tools_telegram_send_summary),
         LocationTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Location_on, R.string.tools_location_title, R.string.tools_location_summary),
         PhoneActionTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Touch_app, R.string.tools_phone_action_title, R.string.tools_phone_action_summary),
         RunCommandTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Terminal, R.string.tools_run_command_title, R.string.tools_run_command_summary),
