@@ -80,7 +80,13 @@
     <string name="tools_telegram_messages_title">Read Telegram messages</string>
     <string name="tools_telegram_messages_summary">Recent messages of one chat</string>
     <string name="tools_telegram_send_title">Send Telegram message</string>
-    <string name="tools_telegram_send_summary">Sends a message from your account</string>
+    <string name="tools_telegram_send_summary">Sends a message or a file from your account, can reply to a message</string>
+    <string name="tools_telegram_search_title">Search Telegram</string>
+    <string name="tools_telegram_search_summary">Finds messages by text in one chat or in all chats</string>
+    <string name="tools_copy_clipboard_title">Copy to clipboard</string>
+    <string name="tools_copy_clipboard_summary">Puts text on the clipboard for you to paste</string>
+    <string name="tools_read_clipboard_title">Read clipboard</string>
+    <string name="tools_read_clipboard_summary">Reads the text you copied</string>
     <string name="tools_read_screen_title">Reading the screen</string>
     <string name="tools_read_screen_summary">Text of the app the assistant was opened over</string>
     <string name="tools_show_ui_title">Buttons and reply options</string>

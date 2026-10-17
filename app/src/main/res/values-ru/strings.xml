@@ -79,7 +79,13 @@
     <string name="tools_telegram_messages_title">Чтение сообщений Telegram</string>
     <string name="tools_telegram_messages_summary">Последние сообщения одного чата</string>
     <string name="tools_telegram_send_title">Отправка сообщения в Telegram</string>
-    <string name="tools_telegram_send_summary">Отправляет сообщение от вашего аккаунта</string>
+    <string name="tools_telegram_send_summary">Отправляет сообщение или файл от вашего аккаунта, может ответить на сообщение</string>
+    <string name="tools_telegram_search_title">Поиск в Telegram</string>
+    <string name="tools_telegram_search_summary">Ищет сообщения по тексту в одном чате или во всех</string>
+    <string name="tools_copy_clipboard_title">Копирование в буфер</string>
+    <string name="tools_copy_clipboard_summary">Кладёт текст в буфер обмена, чтобы вы его вставили</string>
+    <string name="tools_read_clipboard_title">Чтение буфера обмена</string>
+    <string name="tools_read_clipboard_summary">Читает текст, который вы скопировали</string>
     <string name="tools_read_screen_title">Чтение экрана</string>
     <string name="tools_read_screen_summary">Текст приложения, поверх которого вызван ассистент</string>
     <string name="tools_show_ui_title">Кнопки и варианты ответа</string>

@@ -5,6 +5,9 @@
     for chat in tg.dialogs(10):
         print(chat["name"])
     tg.send("@some_user", "hello")
+    tg.send_file("me", "report.pdf", caption="for later")
+    for found in tg.search("invoice"):
+        print(found.chat, found.text)
 
 For anything else, use the full Telethon client through `tg.raw()`, which returns
 (loop, client). Run any Telethon call with tg.run(...), e.g.
@@ -98,24 +101,65 @@ def dialogs(limit=20):
     return _run(fetch)
 
 
+def _message(message, chat_name=None):
+    record = Record(
+        id=message.id,
+        date=message.date.isoformat() if message.date else "",
+        out=bool(message.out),
+        text=message.text or "",
+    )
+    if message.media is not None:
+        record["media"] = type(message.media).__name__.replace("MessageMedia", "").lower()
+    if message.reply_to_msg_id:
+        record["reply_to"] = message.reply_to_msg_id
+    if chat_name is not None:
+        record["chat"] = chat_name
+        record["chat_id"] = message.chat_id
+    return record
+
+
+def _name(entity):
+    if entity is None:
+        return ""
+    title = getattr(entity, "title", None)
+    if title:
+        return title
+    return " ".join(part for part in (getattr(entity, "first_name", None), getattr(entity, "last_name", None)) if part)
+
+
 def messages(chat, limit=20):
     async def fetch(client):
         result = []
         async for message in client.iter_messages(await _entity(client, chat), limit=limit):
-            result.append(Record(
-                id=message.id,
-                date=message.date.isoformat() if message.date else "",
-                out=bool(message.out),
-                text=message.text or "",
-            ))
+            result.append(_message(message))
         return result
 
     return _run(fetch)
 
 
-def send(chat, text):
+def search(query, chat=None, limit=20):
+    """Messages containing `query`, newest first: in one chat, or in all chats when chat is None."""
+    async def fetch(client):
+        target = await _entity(client, chat) if chat not in (None, "") else None
+        result = []
+        async for message in client.iter_messages(target, search=query, limit=limit):
+            result.append(_message(message, _name(message.chat)))
+        return result
+
+    return _run(fetch)
+
+
+def send(chat, text, reply_to=None):
     async def push(client):
-        sent = await client.send_message(await _entity(client, chat), text)
+        sent = await client.send_message(await _entity(client, chat), text, reply_to=reply_to)
+        return Record(id=sent.id)
+
+    return _run(push)
+
+
+def send_file(chat, path, caption="", reply_to=None):
+    async def push(client):
+        sent = await client.send_file(await _entity(client, chat), path, caption=caption or None, reply_to=reply_to)
         return Record(id=sent.id)
 
     return _run(push)

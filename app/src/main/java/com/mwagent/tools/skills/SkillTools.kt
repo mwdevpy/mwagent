@@ -22,6 +22,11 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
+/** Skills are Python, so they follow the run_python setting: turning it off turns off saving and running skills too. */
+internal fun ToolSettings.allowsPython(): Boolean = permission(RunPythonTool.NAME, RunPythonTool.DEFAULT_PERMISSION) != ToolPermission.OFF
+
+private const val PYTHON_OFF = "Python is turned off in the tool settings, so skills cannot be saved or run. The user can turn on run_python."
+
 class SkillSaveTool(private val skills: SkillLibrary) : Tool {
     override val spec = ToolSpec(
         name = NAME,
@@ -37,7 +42,7 @@ class SkillSaveTool(private val skills: SkillLibrary) : Tool {
 
     override val defaultPermission = ToolPermission.ASK
 
-    override fun promptNote(settings: ToolSettings): String = buildString {
+    override fun promptNote(settings: ToolSettings): String? = if (!settings.allowsPython()) null else buildString {
         append(
             "You can extend yourself with skills. When no tool covers what the user needs, write the missing logic as a Python skill, " +
                 "save it with skill_save, run it with skill_run, and if it fails read the error, fix the code and save it again. " +
@@ -51,6 +56,7 @@ class SkillSaveTool(private val skills: SkillLibrary) : Tool {
     }
 
     override suspend fun execute(arguments: JsonObject, settings: ToolSettings): ToolOutcome {
+        if (!settings.allowsPython()) return ToolOutcome.error(PYTHON_OFF)
         val name = arguments.requireString(NAME_ARG)
         if (!SkillLibrary.isValidName(name)) throw ToolArgumentException("Use a snake_case name that starts with a letter")
         val existed = skills.find(name) != null
@@ -80,6 +86,7 @@ class SkillRunTool(private val skills: SkillLibrary, private val python: RunPyth
     override val timeoutMs: Long get() = python.timeoutMs
 
     override suspend fun execute(arguments: JsonObject, settings: ToolSettings, context: ToolContext): ToolOutcome {
+        if (!settings.allowsPython()) return ToolOutcome.error(PYTHON_OFF)
         val name = arguments.requireString(NAME_ARG)
         val skill = skills.find(name) ?: return ToolOutcome.error("No skill called $name. Saved: ${skills.list().joinToString { it.name }.ifEmpty { "none" }}")
         val params = arguments.optionalString(PARAMS) ?: "{}"

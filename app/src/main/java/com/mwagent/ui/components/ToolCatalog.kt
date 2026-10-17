@@ -6,6 +6,8 @@ import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Account_circle
 import com.composables.icons.materialsymbols.rounded.Chat
 import com.composables.icons.materialsymbols.rounded.Construction
+import com.composables.icons.materialsymbols.rounded.Content_copy
+import com.composables.icons.materialsymbols.rounded.Content_paste
 import com.composables.icons.materialsymbols.rounded.Delete
 import com.composables.icons.materialsymbols.rounded.Library_books
 import com.composables.icons.materialsymbols.rounded.Location_on
@@ -65,6 +67,9 @@ import com.mwagent.tools.skills.SkillSaveTool
 import com.mwagent.tools.telegram.TelegramChatsTool
 import com.mwagent.tools.telegram.TelegramMeTool
 import com.mwagent.tools.telegram.TelegramMessagesTool
+import com.mwagent.tools.telegram.TelegramSearchTool
+import com.mwagent.tools.system.CopyToClipboardTool
+import com.mwagent.tools.system.ReadClipboardTool
 import com.mwagent.tools.telegram.TelegramSendTool
 import com.mwagent.tools.memory.MemoryDeleteTool
 import com.mwagent.tools.memory.MemorySaveTool
@@ -130,11 +135,14 @@ object ToolCatalog {
         TelegramMeTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Account_circle, R.string.tools_telegram_me_title, R.string.tools_telegram_me_summary),
         TelegramChatsTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Forum, R.string.tools_telegram_chats_title, R.string.tools_telegram_chats_summary),
         TelegramMessagesTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Chat, R.string.tools_telegram_messages_title, R.string.tools_telegram_messages_summary),
+        TelegramSearchTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Manage_search, R.string.tools_telegram_search_title, R.string.tools_telegram_search_summary),
         TelegramSendTool.NAME to known(ToolCategory.TELEGRAM, MaterialSymbols.Rounded.Send, R.string.tools_telegram_send_title, R.string.tools_telegram_send_summary),
         LocationTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Location_on, R.string.tools_location_title, R.string.tools_location_summary),
         PhoneActionTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Touch_app, R.string.tools_phone_action_title, R.string.tools_phone_action_summary),
         RunCommandTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Terminal, R.string.tools_run_command_title, R.string.tools_run_command_summary),
         RunPythonTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Code, R.string.tools_run_python_title, R.string.tools_run_python_summary),
+        CopyToClipboardTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Content_copy, R.string.tools_copy_clipboard_title, R.string.tools_copy_clipboard_summary),
+        ReadClipboardTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Content_paste, R.string.tools_read_clipboard_title, R.string.tools_read_clipboard_summary),
         ListFilesTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Folder_open, R.string.tools_list_files_title, R.string.tools_list_files_summary),
         ReadFileTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Description, R.string.tools_read_file_title, R.string.tools_read_file_summary),
         WriteFileTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Edit_document, R.string.tools_write_file_title, R.string.tools_write_file_summary),

@@ -8,6 +8,7 @@ a JSON string; on a known Telegram error it returns {"error": "<code>"}.
 import asyncio
 import inspect
 import json
+import threading
 
 from telethon import TelegramClient
 from telethon.errors import (
@@ -99,7 +100,7 @@ def log_out(api_id, api_hash, session):
 # ---- Used by scripts (see tg.py). The app sets the credentials before each run. ----
 
 _creds = {"api_id": None, "api_hash": None, "session": None}
-_session = {"loop": None, "client": None}
+_local = threading.local()  # each thread (a script, a tool call) keeps its own loop and client
 
 
 def configure(api_id, api_hash, session):
@@ -117,9 +118,9 @@ def wait(loop, value):
 
 def open_session():
     """Returns (loop, client) for the linked account, connected and signed in. Reused for the whole script."""
-    if _session["client"] is not None:
-        asyncio.set_event_loop(_session["loop"])
-        return _session["loop"], _session["client"]
+    if getattr(_local, "client", None) is not None:
+        asyncio.set_event_loop(_local.loop)
+        return _local.loop, _local.client
     if _creds["api_id"] is None or not _creds["session"]:
         raise RuntimeError("No Telegram account is linked. Link it in Settings > Telegram first.")
     loop = asyncio.new_event_loop()
@@ -130,15 +131,15 @@ def open_session():
         wait(loop, client.disconnect())
         _forget(loop)
         raise RuntimeError("The linked Telegram session is no longer valid. Link the account again in Settings > Telegram.")
-    _session["loop"] = loop
-    _session["client"] = client
+    _local.loop = loop
+    _local.client = client
     return loop, client
 
 
 def close_session():
-    client, loop = _session["client"], _session["loop"]
-    _session["client"] = None
-    _session["loop"] = None
+    client, loop = getattr(_local, "client", None), getattr(_local, "loop", None)
+    _local.client = None
+    _local.loop = None
     if client is not None:
         asyncio.set_event_loop(loop)
         try:

@@ -83,6 +83,10 @@ import com.mwagent.tools.location.LocationTool
 import com.mwagent.tools.telegram.TelegramChatsTool
 import com.mwagent.tools.telegram.TelegramMeTool
 import com.mwagent.tools.telegram.TelegramMessagesTool
+import com.mwagent.tools.telegram.TelegramSearchTool
+import com.mwagent.tools.system.CopyToClipboardTool
+import com.mwagent.tools.system.ReadClipboardTool
+import com.mwagent.system.clipboard.DeviceClipboard
 import com.mwagent.tools.telegram.TelegramSendTool
 import com.mwagent.tools.weather.WeatherTool
 import com.mwagent.tools.web.PageFetcher
@@ -147,6 +151,7 @@ class AppContainer(context: Context) {
     }
     val phoneSounds = PhoneUseSounds(appContext)
     val deviceLocation = DeviceLocation(appContext)
+    private val clipboard = DeviceClipboard(appContext)
 
     val prompts = UserPrompts()
     private val clockApp = ClockApp(appContext) { visibility.isVisible.value }
@@ -166,7 +171,8 @@ class AppContainer(context: Context) {
             TelegramMeTool(telegram),
             TelegramChatsTool(telegram),
             TelegramMessagesTool(telegram),
-            TelegramSendTool(telegram),
+            TelegramSearchTool(telegram),
+            TelegramSendTool(telegram, deviceFiles),
             ReadScreenTool(screenContext),
             PhoneScreenTool(phoneControl),
             PhoneScreenshotTool(phoneControl, attachments),
@@ -189,6 +195,8 @@ class AppContainer(context: Context) {
             ReadFileTool(deviceFiles, attachments),
             WriteFileTool(deviceFiles),
             SendFilesTool(deviceFiles, attachments),
+            CopyToClipboardTool(clipboard),
+            ReadClipboardTool(clipboard),
             SetReminderTool(reminders),
             ListRemindersTool(reminders),
             CancelReminderTool(reminders),

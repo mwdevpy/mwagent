@@ -74,7 +74,7 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 
 **Tools**
 
-38 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
+41 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
 
 <details>
 <summary>All built-in tools</summary>
@@ -88,7 +88,8 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 | `telegram_me` | Your linked Telegram account: name, username, phone, Premium, bio | Auto |
 | `telegram_chats` | Your Telegram chat list with unread counts | Ask |
 | `telegram_messages` | Recent messages of one Telegram chat, found by @username, id or chat name | Ask |
-| `telegram_send` | Send a Telegram message from your account | Ask |
+| `telegram_search` | Search Telegram messages in one chat or all chats | Ask |
+| `telegram_send` | Send a Telegram message or file from your account, optionally as a reply | Ask |
 | `read_screen` | Text of the app the assistant overlay was opened over | Auto |
 | `phone_screen` | The live screen as a numbered list of elements, through the accessibility service | Auto |
 | `phone_action` | Tap, type, scroll, swipe, press system keys, open apps | Ask |
@@ -106,6 +107,8 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 | `list_files`, `read_file` | Browse and read files inside the allowed scope | Auto |
 | `write_file` | Write or append text | Ask |
 | `send_files` | Show phone files and images in the chat | Auto |
+| `copy_to_clipboard` | Put text on the clipboard | Auto |
+| `read_clipboard` | Read the copied text | Ask |
 | `set_reminder`, `list_reminders`, `cancel_reminder` | Reminders that notify you and open the chat | Auto |
 | `set_alarm`, `set_timer` | Alarm or timer in the system clock app, needs MW AGENT on screen | Auto |
 | `list_chats`, `read_chat`, `search_messages` | Look through your other chats | Auto |
@@ -128,7 +131,7 @@ Tools that come from MCP servers always start as Ask.
 **Telegram**
 - Link your own Telegram account through the user API (MTProto, Telethon). Get the API ID and API hash at my.telegram.org, then sign in with the phone number, the login code and the two-step password if you have one.
 - The session is kept encrypted on the phone, like provider keys. Sign out here ends that session.
-- Scripts from `run_python` can use `import tg`: `me()`, `dialogs()`, `messages()`, `send()`, and `raw()` for the full Telethon client. The model reads the current Telethon docs at docs.telethon.dev before writing unfamiliar calls.
+- Scripts from `run_python` can use `import tg`: `me()`, `dialogs()`, `messages()`, `search()`, `send()`, `send_file()`, and `raw()` with `run()` for the full Telethon client. The model reads the current Telethon docs at docs.telethon.dev before writing unfamiliar calls.
 - Each script run asks first, so a message is never sent without your approval.
 
 **Skills**

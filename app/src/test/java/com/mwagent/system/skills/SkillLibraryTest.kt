@@ -1,6 +1,13 @@
 package com.mwagent.system.skills
 
+import com.mwagent.data.settings.ToolPermission
+import com.mwagent.data.settings.ToolSettings
 import com.mwagent.tools.skills.SkillRunTool
+import com.mwagent.tools.skills.SkillSaveTool
+import com.mwagent.tools.system.RunPythonTool
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -65,5 +72,16 @@ class SkillLibraryTest {
         assertTrue(code.lines().any { it.startsWith("params = json.loads(\"") })
         assertTrue(code.contains("__skill_file__ = \"/data/skills/a.py\""))
         assertTrue(code.trimEnd().endsWith("\"exec\"))"))
+    }
+
+    @Test
+    fun `skills stay off while python is turned off`() = runBlocking {
+        val off = ToolSettings(permissions = mapOf(RunPythonTool.NAME to ToolPermission.OFF))
+        val tool = SkillSaveTool(library)
+        val outcome = tool.execute(buildJsonObject { put("name", "x"); put("description", "d"); put("code", "pass") }, off)
+        assertTrue(outcome.isError)
+        assertNull(library.find("x"))
+        assertNull(tool.promptNote(off))
+        assertTrue(tool.promptNote(ToolSettings())!!.contains("skill_save"))
     }
 }

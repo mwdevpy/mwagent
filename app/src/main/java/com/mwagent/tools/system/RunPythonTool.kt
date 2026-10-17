@@ -25,7 +25,7 @@ class RunPythonTool(
     private val phone: ScriptPhone,
     private val telegram: TelegramUserApi? = null,
 ) : ContextualTool {
-    override val defaultPermission = ToolPermission.ASK
+    override val defaultPermission = DEFAULT_PERMISSION
 
     override val timeoutMs = (MAX_TIMEOUT_S + TIMEOUT_GRACE_S) * MS_PER_SECOND
 
@@ -63,6 +63,7 @@ class RunPythonTool(
 
     companion object {
         const val NAME = "run_python"
+        val DEFAULT_PERMISSION = ToolPermission.ASK
         private const val CODE = "code"
         private const val DEFAULT_TIMEOUT_S = 30L
         private const val MAX_TIMEOUT_S = 300L

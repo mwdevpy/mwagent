@@ -99,6 +99,8 @@ class Script:
             self.failed = True
             self.output.write(traceback.format_exc())
         finally:
+            if "tg_user" in sys.modules:
+                sys.modules["tg_user"].close_session()
             asyncio.set_event_loop(None)
             loop.close()
             phone.detach()

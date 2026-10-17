@@ -39,5 +39,17 @@ def messages(chat, limit):
     return _reply(lambda: [dict(item) for item in tg.messages(chat, int(limit))])
 
 
-def send(chat, text):
-    return _reply(lambda: dict(tg.send(chat, text)))
+def search(query, chat, limit):
+    return _reply(lambda: [dict(item) for item in tg.search(query, chat or None, int(limit))])
+
+
+def send(chat, text, reply_to):
+    return _reply(lambda: dict(tg.send(chat, text, reply_to=_message_id(reply_to))))
+
+
+def send_file(chat, path, caption, reply_to):
+    return _reply(lambda: dict(tg.send_file(chat, path, caption=caption or "", reply_to=_message_id(reply_to))))
+
+
+def _message_id(value):
+    return int(value) if value is not None else None
