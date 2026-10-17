@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Neurology
 import com.composables.icons.materialsymbols.rounded.Notifications_active
+import com.composables.icons.materialsymbols.rounded.Event_repeat
 import com.composables.icons.materialsymbols.rounded.Send
 import com.mwagent.data.telegram.TelegramAccount
 import com.composables.icons.materialsymbols.rounded.Extension
@@ -58,6 +59,7 @@ import com.mwagent.ui.components.SettingsScaffold
 import com.mwagent.ui.components.ShapeBadge
 import com.mwagent.ui.components.appViewModel
 import com.mwagent.ui.components.groupedListColors
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 @Immutable
@@ -70,6 +72,7 @@ data class SettingsDestinations(
     val network: () -> Unit,
     val tools: () -> Unit,
     val reminders: () -> Unit,
+    val automations: () -> Unit,
     val telegram: () -> Unit,
     val voice: () -> Unit,
     val access: () -> Unit,
@@ -83,6 +86,9 @@ fun SettingsScreen(destinations: SettingsDestinations) {
     val container = (LocalContext.current.applicationContext as App).container
     val toolRegistry = container.tools
     val reminderCount by remember(container) { container.reminders.observeAll().map { it.size } }.collectAsStateWithLifecycle(initialValue = 0)
+    val automationCount by remember(container) {
+        container.tasks.observeAll().combine(container.watches.observeAll()) { tasks, watches -> tasks.size + watches.size }
+    }.collectAsStateWithLifecycle(initialValue = 0)
     val telegramAccount by container.telegramAccounts.account.collectAsStateWithLifecycle(initialValue = null)
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -155,6 +161,12 @@ fun SettingsScreen(destinations: SettingsDestinations) {
                 title = stringResource(R.string.settings_reminders),
                 summary = remindersSummary(reminderCount),
                 onClick = destinations.reminders,
+            ),
+            SettingsEntry(
+                icon = MaterialSymbols.Rounded.Event_repeat,
+                title = stringResource(R.string.settings_automations),
+                summary = automationsSummary(automationCount),
+                onClick = destinations.automations,
             ),
             SettingsEntry(
                 icon = MaterialSymbols.Rounded.Send,
@@ -256,6 +268,10 @@ private fun telegramSummary(account: TelegramAccount?): String = when {
 @Composable
 private fun remindersSummary(count: Int): String =
     if (count == 0) stringResource(R.string.settings_reminders_none) else pluralStringResource(R.plurals.settings_reminders_upcoming, count, count)
+
+@Composable
+private fun automationsSummary(count: Int): String =
+    if (count == 0) stringResource(R.string.settings_automations_none) else pluralStringResource(R.plurals.settings_automations_count, count, count)
 
 @Composable
 private fun networkSummary(settings: AppSettings): String =

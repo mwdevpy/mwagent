@@ -97,9 +97,13 @@ class ConversationRunner(
         return chat
     }
 
-    suspend fun send(chatId: String, text: String, attached: List<Attachment>) {
-        chats.appendUserMessage(chatId, text.trim(), attached, systemPrompt.contextNote())
+    suspend fun send(chatId: String, text: String, attached: List<Attachment>, note: String? = null) {
+        chats.appendUserMessage(chatId, text.trim(), attached, listOfNotNull(systemPrompt.contextNote(), note).joinToString("\n"))
         launchReply(chatId)
+    }
+
+    suspend fun await(chatId: String) {
+        jobs[chatId]?.join()
     }
 
     suspend fun regenerate(assistantMessage: MessageEntity) {

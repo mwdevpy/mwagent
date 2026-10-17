@@ -6,6 +6,20 @@ import com.mwagent.data.files.FileLibrary
 import com.mwagent.data.chat.SearchHistory
 import com.mwagent.ui.haptics.HapticEngine
 import com.mwagent.assistant.ScreenContextStore
+import com.mwagent.automation.AutoRuns
+import com.mwagent.automation.Automations
+import com.mwagent.data.automation.TaskRepository
+import com.mwagent.data.automation.WatchRepository
+import com.mwagent.system.automation.TaskAlarms
+import com.mwagent.system.notifications.NotificationLog
+import com.mwagent.telegram.TelegramWatcher
+import com.mwagent.tools.automation.AddWatchTool
+import com.mwagent.tools.automation.CancelTaskTool
+import com.mwagent.tools.automation.ListTasksTool
+import com.mwagent.tools.automation.ListWatchesTool
+import com.mwagent.tools.automation.RemoveWatchTool
+import com.mwagent.tools.automation.ScheduleTaskTool
+import com.mwagent.tools.notifications.ReadNotificationsTool
 import com.mwagent.conversation.BackgroundWorkService
 import com.mwagent.conversation.ConversationRunner
 import com.mwagent.system.lifecycle.AppVisibility
@@ -141,6 +155,9 @@ class AppContainer(context: Context) {
     val chats = ChatRepository(database.chatDao(), database.messageDao(), database.folderDao(), attachments, ChatDrafts(appContext))
     val searchHistory = SearchHistory(appContext)
     val reminders = ReminderRepository(database.reminderDao(), ReminderAlarms(appContext))
+    val tasks = TaskRepository(database.taskDao(), TaskAlarms(appContext))
+    val watches = WatchRepository(database.watchDao())
+    private val notificationLog = NotificationLog()
     val memories = MemoryStore(database.memoryDao(), EmbeddingClient(httpClients), settings.settings.map { it.tools.memory })
 
     val completions = ChatCompletionClient(httpClients)
@@ -226,6 +243,13 @@ class AppContainer(context: Context) {
             SetReminderTool(reminders),
             ListRemindersTool(reminders),
             CancelReminderTool(reminders),
+            ScheduleTaskTool(tasks),
+            ListTasksTool(tasks),
+            CancelTaskTool(tasks),
+            AddWatchTool(watches, { telegramAccounts.current().linked }, { NotificationLog.isEnabled(appContext) }),
+            ListWatchesTool(watches),
+            RemoveWatchTool(watches),
+            ReadNotificationsTool(notificationLog, { NotificationLog.isEnabled(appContext) }),
             SetAlarmTool(clockApp),
             SetTimerTool(clockApp),
             AddCalendarEventTool(phoneIntents),
@@ -264,6 +288,11 @@ class AppContainer(context: Context) {
     val conversations = ConversationRunner(
         chats, settings, completions, systemPrompt, tools, attachments, approvals, prompts,
         modelCatalog, GeneratedImages(attachments, httpClients), memories, applicationScope,
+    )
+
+    val automations = Automations(
+        appContext, tasks, watches, notificationLog, AutoRuns(appContext, chats, conversations, settings),
+        TelegramWatcher(python), telegramAccounts, applicationScope,
     )
 
     init {

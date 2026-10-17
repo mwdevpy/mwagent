@@ -30,6 +30,9 @@ data object ToolSettingsRoute
 data object RemindersRoute
 
 @Serializable
+data object AutomationsRoute
+
+@Serializable
 data object TelegramRoute
 
 @Serializable

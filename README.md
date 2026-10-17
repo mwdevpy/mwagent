@@ -1,12 +1,13 @@
 <p align="center">
-  <img src="docs/header.svg" alt="MW" width="240">
+  <img src="docs/header.png" alt="MW AGENT" width="100%">
 </p>
 
 <h3 align="center">MW AGENT: an AI agent that lives on your phone and actually does things</h3>
 
 <p align="center">
   Any model, your own key. It reads the screen, taps through apps, runs Python,<br>
-  downloads videos, works with your Telegram and writes new skills for itself.
+  downloads videos, works with your Telegram, acts on its own on a schedule<br>
+  or when a message arrives, and writes new skills for itself.
 </p>
 
 <p align="center">
@@ -16,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Version 0.11.0" src="https://img.shields.io/badge/version-0.11.0-FF7A45?style=flat-square"></a>
+  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Version 0.12.0" src="https://img.shields.io/badge/version-0.12.0-FF7A45?style=flat-square"></a>
   <a href="https://github.com/mwdevpy/mwagent/releases"><img alt="Releases" src="https://img.shields.io/badge/releases-GitHub-FF3D7F?style=flat-square&logo=github&logoColor=white"></a>
   <a href="LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPLv3-9B4DFF?style=flat-square"></a>
   <img alt="Android 10 and up" src="https://img.shields.io/badge/Android-10%2B-3DDC84?style=flat-square&logo=android&logoColor=white">
@@ -72,8 +73,8 @@
       No tool for it? It writes the logic in Python, saves it as a skill, fixes it on errors and reuses it later.
     </td>
     <td valign="top">
-      <h4>📍 Knows the context</h4>
-      Location with an address, battery, network, storage, the clipboard and the app you opened it over.
+      <h4>⚡ Works on its own</h4>
+      Tasks on a schedule and watches on Telegram messages or app notifications, results as a notification.
     </td>
   </tr>
   <tr>
@@ -112,6 +113,9 @@ The app is only a client. It sends your message to the model you chose, the mode
 | *"QR code for my Wi-Fi so guests can join"* | A scannable picture right in the chat |
 | *"Dentist on Friday at 15:30, put it in my calendar"* | A filled-in event, you tap save |
 | *"Count my unread Telegram chats by folder"* | It writes a skill once and reuses it next time |
+| *"Every weekday at 8:00 send me the weather and the dollar rate"* | A scheduled task, the brief arrives as a notification |
+| *"Tell me when mom writes in Telegram, with a short summary"* | A watch on new messages that wakes the agent up |
+| *"What did I miss in the last hour?"* | Notifications from all apps summed up |
 
 ## 📚 Features in detail
 
@@ -164,6 +168,19 @@ The app is only a client. It sends your message to the model you chose, the mode
 </details>
 
 <details>
+<summary><b>⚡ Automations</b></summary>
+<br>
+
+- Scheduled tasks: once, on chosen weekdays at a set time, or every N minutes. On each run the agent does the job with its tools and sends the result as a notification; tapping it opens the chat with the details.
+- Watches on new incoming Telegram messages: from a certain person or chat, or any private chat, optionally only with a keyword. A live connection runs in the background while at least one Telegram watch exists.
+- Watches on notifications from other apps, for example a bank or a delivery service, with the same filters.
+- Messages that arrive in a burst are handled in one run. The agent stays quiet when your rule says there is nothing to report.
+- Incoming messages are treated as third-party content: the agent follows only your rule, never instructions inside them, and tools keep their Off, Ask or Auto setting.
+- Everything is listed in Settings > Automations, where you can delete any task or watch.
+
+</details>
+
+<details>
 <summary><b>📱 Phone and device</b></summary>
 <br>
 
@@ -171,6 +188,7 @@ The app is only a client. It sends your message to the model you chose, the mode
 - Python 3.13 on the phone (Chaquopy) with a `phone` module for long flows and saved routines.
 - Shell in a sandbox (default), Termux, Shizuku or root.
 - Device status, flashlight, volume, clipboard, QR codes and exchange rates.
+- Notifications from other apps, readable once you allow notification access.
 - Calendar, dialer, SMS, email, maps and the share sheet open filled in, and you finish there.
 - Location from GPS or the network with the nearest address.
 - Files limited to the app folder by default, or phone storage with All files access, or root.
@@ -211,10 +229,10 @@ The app is only a client. It sends your message to the model you chose, the mode
 
 ## 🧰 Tools
 
-**55 built-in tools** plus any MCP server. Each one is **Off**, **Ask** or **Auto**, globally and per agent. An Ask tool pauses the reply with a card: Allow, Deny, or Always allow in this session.
+**62 built-in tools** plus any MCP server. Each one is **Off**, **Ask** or **Auto**, globally and per agent. An Ask tool pauses the reply with a card: Allow, Deny, or Always allow in this session.
 
 <details>
-<summary><b>Show all 55 tools</b></summary>
+<summary><b>Show all 62 tools</b></summary>
 <br>
 
 #### 🌐 Web and world
@@ -253,6 +271,7 @@ The app is only a client. It sends your message to the model you chose, the mode
 | `copy_to_clipboard` | Put text on the clipboard | Auto |
 | `read_clipboard` | Read the copied text | Ask |
 | `make_qr_code` | QR code for a link, Wi-Fi, contact or text | Auto |
+| `read_notifications` | Notifications from other apps, filtered by app, text and time | Ask |
 
 #### 🗓️ Other apps
 | Tool | What it does | Default |
@@ -287,6 +306,14 @@ The app is only a client. It sends your message to the model you chose, the mode
 |---|---|---|
 | `set_reminder`, `list_reminders`, `cancel_reminder` | Reminders that notify you and open the chat | Auto |
 | `set_alarm`, `set_timer` | Alarm or timer in the clock app | Auto |
+
+#### ⚡ Automations
+| Tool | What it does | Default |
+|---|---|---|
+| `schedule_task` | A task the agent runs on its own, once or on repeat | Auto |
+| `list_tasks`, `cancel_task` | See and cancel scheduled tasks | Auto |
+| `add_watch` | React to new Telegram messages or app notifications by a rule | Ask |
+| `list_watches`, `remove_watch` | See and remove watches | Auto |
 
 #### 🧠 Memory and chats
 | Tool | What it does | Default |
@@ -383,7 +410,7 @@ The video may be private, age-restricted, region-locked or larger than the limit
 | 🗝️ **Local and encrypted** | Chats sit in a local database. Provider keys, tool settings and the Telegram session are encrypted with an Android Keystore key. |
 | ➡️ **Direct traffic only** | Messages go to the provider you set up, Telegram traffic only to Telegram, downloads only to the site of the link. Defaults that use public services, each replaceable in Settings: DuckDuckGo, r.jina.ai and Open-Meteo. Exchange rates come from open.er-api.com. The update check calls GitHub when you tap it. |
 | ✋ **You approve the risky parts** | Sending, reading private data, running code and changing settings ask first by default. Calls, SMS, emails and calendar events are only prepared; you finish them yourself. |
-| 📋 **Permissions** | Internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders), location (only after you grant it) and a foreground service (background replies). Termux, All files access and the accessibility service stay off until you enable them. No camera or contacts permission. |
+| 📋 **Permissions** | Internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders and tasks), location (only after you grant it) and a foreground service (background replies and Telegram watches). Termux, All files access, notification access and the accessibility service stay off until you enable them. No camera or contacts permission. |
 
 ## 🇷🇺 По-русски
 
@@ -393,6 +420,7 @@ The video may be private, age-restricted, region-locked or larger than the limit
 - ✈️ Telegram через user API: чаты, поиск, отправка сообщений и файлов, скрипты на Telethon.
 - 🎬 Видео и звук по ссылке: YouTube, TikTok, Instagram, X, VK и другие, сразу в Загрузки.
 - 🛠️ Навыки: агент сам пишет, сохраняет и чинит недостающую логику на Python.
+- ⚡ Автоматизации: задачи по расписанию и слежение за новыми сообщениями в Telegram и уведомлениями приложений, результат приходит уведомлением.
 - 🔦 Курсы валют, фонарик, громкость, буфер обмена, QR-коды, календарь, звонки, SMS, письма, маршруты и «Поделиться».
 - 🔒 Без сервера, аккаунта и аналитики. Ключи и сессия Telegram зашифрованы, опасные действия спрашивают разрешение.
 

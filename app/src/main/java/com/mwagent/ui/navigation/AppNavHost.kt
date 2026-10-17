@@ -23,6 +23,7 @@ import com.mwagent.feature.settings.AppearanceScreen
 import com.mwagent.feature.settings.TelegramSettingsScreen
 import com.mwagent.feature.settings.ModelsScreen
 import com.mwagent.feature.settings.RemindersScreen
+import com.mwagent.feature.settings.AutomationsScreen
 import com.mwagent.feature.settings.DeviceAccessScreen
 import com.mwagent.feature.settings.PhoneUseSettingsScreen
 import com.mwagent.feature.settings.MemorySettingsScreen
@@ -69,6 +70,7 @@ fun AppNavHost(chatToOpen: String?, onChatOpened: () -> Unit) {
                     network = { navController.navigate(NetworkSettingsRoute) },
                     tools = { navController.navigate(ToolSettingsRoute) },
                     reminders = { navController.navigate(RemindersRoute) },
+                    automations = { navController.navigate(AutomationsRoute) },
                     telegram = { navController.navigate(TelegramRoute) },
                     voice = { navController.navigate(VoiceSettingsRoute) },
                     access = { navController.navigate(DeviceAccessRoute) },
@@ -94,6 +96,7 @@ fun AppNavHost(chatToOpen: String?, onChatOpened: () -> Unit) {
         screen<NetworkSettingsRoute>(navController) { NetworkSettingsScreen(onBack = navController::popBackStack) }
         screen<ToolSettingsRoute>(navController) { ToolSettingsScreen(onBack = navController::popBackStack) }
         screen<RemindersRoute>(navController) { RemindersScreen(onBack = navController::popBackStack) }
+        screen<AutomationsRoute>(navController) { AutomationsScreen(onBack = navController::popBackStack) }
         screen<TelegramRoute>(navController) { TelegramSettingsScreen(onBack = navController::popBackStack) }
         screen<DeviceAccessRoute>(navController) { DeviceAccessScreen(onBack = navController::popBackStack) }
         screen<PhoneUseRoute>(navController) { PhoneUseSettingsScreen(onBack = navController::popBackStack) }

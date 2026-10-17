@@ -104,3 +104,29 @@ data class ReminderEntity(
     val chatId: String?,
     val createdAt: Long,
 )
+
+@Entity(tableName = "tasks", indices = [Index("triggerAt")])
+data class TaskEntity(
+    @PrimaryKey val id: String,
+    val title: String,
+    val prompt: String,
+    val chatId: String,
+    val triggerAt: Long,
+    val days: Int,
+    val everyMinutes: Int?,
+    val createdAt: Long,
+)
+
+enum class WatchSource { TELEGRAM, NOTIFICATIONS }
+
+@Entity(tableName = "watches")
+data class WatchEntity(
+    @PrimaryKey val id: String,
+    val title: String,
+    val source: WatchSource,
+    val sender: String?,
+    val keyword: String?,
+    val instruction: String,
+    val chatId: String,
+    val createdAt: Long,
+)

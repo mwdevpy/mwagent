@@ -2,6 +2,7 @@ package com.mwagent.feature.settings
 
 import android.Manifest
 import com.mwagent.system.notifications.AppNotifications
+import com.mwagent.system.notifications.NotificationLog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -25,7 +26,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-enum class DevicePermission { ASSISTANT, MICROPHONE, NOTIFICATIONS, LOCATION, ALL_FILES, PHONE_CONTROL, TERMUX, SHIZUKU, ROOT }
+enum class DevicePermission { ASSISTANT, MICROPHONE, NOTIFICATIONS, LOCATION, ALL_FILES, PHONE_CONTROL, NOTIFICATION_ACCESS, TERMUX, SHIZUKU, ROOT }
 
 class DeviceAccessViewModel(
     private val context: Context,
@@ -57,6 +58,7 @@ class DeviceAccessViewModel(
             ),
             DevicePermission.ALL_FILES to allFilesStatus(),
             DevicePermission.PHONE_CONTROL to phoneControlStatus(),
+            DevicePermission.NOTIFICATION_ACCESS to readyIf(NotificationLog.isEnabled(context)),
         )
         _permissions.update { it + local }
         viewModelScope.launch {

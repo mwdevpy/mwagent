@@ -3,3 +3,4 @@
 -keep class org.scilab.forge.jlatexmath.** { *; }
 -keep class ru.noties.jlatexmath.** { *; }
 -keep class com.mwagent.tools.phone.PhoneScriptBridge { public *; }
+-keep interface com.mwagent.telegram.TelegramSink { *; }

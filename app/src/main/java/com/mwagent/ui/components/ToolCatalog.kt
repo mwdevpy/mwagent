@@ -7,7 +7,14 @@ import com.composables.icons.materialsymbols.rounded.Account_circle
 import com.composables.icons.materialsymbols.rounded.Chat
 import com.composables.icons.materialsymbols.rounded.Construction
 import com.composables.icons.materialsymbols.rounded.Battery_android_full
+import com.composables.icons.materialsymbols.rounded.Event_busy
+import com.composables.icons.materialsymbols.rounded.Event_repeat
 import com.composables.icons.materialsymbols.rounded.Flashlight_on
+import com.composables.icons.materialsymbols.rounded.Notifications_unread
+import com.composables.icons.materialsymbols.rounded.Pending_actions
+import com.composables.icons.materialsymbols.rounded.Radar
+import com.composables.icons.materialsymbols.rounded.Visibility
+import com.composables.icons.materialsymbols.rounded.Visibility_off
 import com.composables.icons.materialsymbols.rounded.Volume_up
 import com.composables.icons.materialsymbols.rounded.Qr_code_2
 import com.composables.icons.materialsymbols.rounded.Event
@@ -102,6 +109,13 @@ import com.mwagent.tools.memory.MemorySaveTool
 import com.mwagent.tools.memory.MemorySearchTool
 import com.mwagent.tools.memory.MemoryUpdateTool
 import com.mwagent.tools.reminders.CancelReminderTool
+import com.mwagent.tools.automation.AddWatchTool
+import com.mwagent.tools.automation.CancelTaskTool
+import com.mwagent.tools.automation.ListTasksTool
+import com.mwagent.tools.automation.ListWatchesTool
+import com.mwagent.tools.automation.RemoveWatchTool
+import com.mwagent.tools.automation.ScheduleTaskTool
+import com.mwagent.tools.notifications.ReadNotificationsTool
 import com.mwagent.tools.reminders.ListRemindersTool
 import com.mwagent.tools.reminders.SetAlarmTool
 import com.mwagent.tools.reminders.SetReminderTool
@@ -128,6 +142,7 @@ enum class ToolCategory(@StringRes val title: Int) {
     TELEGRAM(R.string.tools_category_telegram),
     FILES(R.string.tools_category_files),
     TIME(R.string.tools_category_time),
+    AUTOMATION(R.string.tools_category_automation),
     SYSTEM(R.string.tools_category_system),
     SKILLS(R.string.tools_category_skills),
     MCP(R.string.tools_category_mcp),
@@ -191,6 +206,13 @@ object ToolCatalog {
         SetReminderTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Notification_add, R.string.tools_set_reminder_title, R.string.tools_set_reminder_summary),
         ListRemindersTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Event_upcoming, R.string.tools_list_reminders_title, R.string.tools_list_reminders_summary),
         CancelReminderTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Notifications_off, R.string.tools_cancel_reminder_title, R.string.tools_cancel_reminder_summary),
+        ScheduleTaskTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Event_repeat, R.string.tools_schedule_task_title, R.string.tools_schedule_task_summary),
+        ListTasksTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Pending_actions, R.string.tools_list_tasks_title, R.string.tools_list_tasks_summary),
+        CancelTaskTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Event_busy, R.string.tools_cancel_task_title, R.string.tools_cancel_task_summary),
+        AddWatchTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Visibility, R.string.tools_add_watch_title, R.string.tools_add_watch_summary),
+        ListWatchesTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Radar, R.string.tools_list_watches_title, R.string.tools_list_watches_summary),
+        RemoveWatchTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Visibility_off, R.string.tools_remove_watch_title, R.string.tools_remove_watch_summary),
+        ReadNotificationsTool.NAME to known(ToolCategory.DEVICE, MaterialSymbols.Rounded.Notifications_unread, R.string.tools_read_notifications_title, R.string.tools_read_notifications_summary),
         SetAlarmTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Alarm_add, R.string.tools_set_alarm_title, R.string.tools_set_alarm_summary),
         SetTimerTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Timer, R.string.tools_set_timer_title, R.string.tools_set_timer_summary),
     )

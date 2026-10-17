@@ -209,3 +209,45 @@ interface ReminderDao {
     @Query("DELETE FROM reminders WHERE id = :id")
     suspend fun delete(id: String): Int
 }
+
+@Dao
+interface TaskDao {
+    @Query("SELECT * FROM tasks ORDER BY triggerAt ASC")
+    fun observeAll(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM tasks ORDER BY triggerAt ASC")
+    suspend fun listAll(): List<TaskEntity>
+
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    suspend fun get(id: String): TaskEntity?
+
+    @Upsert
+    suspend fun upsert(task: TaskEntity)
+
+    @Query("UPDATE tasks SET chatId = :chatId WHERE id = :id")
+    suspend fun moveTo(id: String, chatId: String)
+
+    @Query("DELETE FROM tasks WHERE id = :id")
+    suspend fun delete(id: String): Int
+}
+
+@Dao
+interface WatchDao {
+    @Query("SELECT * FROM watches ORDER BY createdAt ASC")
+    fun observeAll(): Flow<List<WatchEntity>>
+
+    @Query("SELECT * FROM watches ORDER BY createdAt ASC")
+    suspend fun listAll(): List<WatchEntity>
+
+    @Query("SELECT * FROM watches WHERE id = :id")
+    suspend fun get(id: String): WatchEntity?
+
+    @Insert
+    suspend fun insert(watch: WatchEntity)
+
+    @Query("UPDATE watches SET chatId = :chatId WHERE id = :id")
+    suspend fun moveTo(id: String, chatId: String)
+
+    @Query("DELETE FROM watches WHERE id = :id")
+    suspend fun delete(id: String): Int
+}

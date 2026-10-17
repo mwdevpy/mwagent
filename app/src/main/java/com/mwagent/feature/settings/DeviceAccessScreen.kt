@@ -61,6 +61,7 @@ import com.composables.icons.materialsymbols.rounded.Folder
 import com.composables.icons.materialsymbols.rounded.Location_on
 import com.composables.icons.materialsymbols.rounded.Mic
 import com.composables.icons.materialsymbols.rounded.Notifications
+import com.composables.icons.materialsymbols.rounded.Notifications_unread
 import com.composables.icons.materialsymbols.rounded.Shield_lock
 import com.composables.icons.materialsymbols.rounded.Smartphone
 import com.composables.icons.materialsymbols.rounded.Storage
@@ -71,6 +72,7 @@ import com.mwagent.assistant.AssistantRole
 import com.mwagent.data.settings.FileScope
 import com.mwagent.data.settings.ShellMode
 import com.mwagent.system.control.PhoneControlService
+import com.mwagent.system.notifications.NotificationListener
 import com.mwagent.system.shell.AccessStatus
 import com.mwagent.system.shell.TermuxShell
 import com.mwagent.ui.components.FoldableHeader
@@ -132,6 +134,7 @@ fun DeviceAccessScreen(onBack: () -> Unit) {
             }
             DevicePermission.ALL_FILES -> PermissionAction(R.string.access_action_open_settings) { context.openAllFilesAccess() }.takeIf { status != AccessStatus.UNAVAILABLE }
             DevicePermission.PHONE_CONTROL -> PermissionAction(R.string.access_action_open_settings) { context.openAccessibilitySettings() }
+            DevicePermission.NOTIFICATION_ACCESS -> PermissionAction(R.string.access_action_open_settings) { context.openNotificationAccess() }
             DevicePermission.TERMUX -> when (status) {
                 AccessStatus.NOT_INSTALLED -> PermissionAction(R.string.access_action_install) { context.openUrl(TERMUX_URL) }
                 else -> PermissionAction(R.string.access_action_grant) { askTermux.launch(TermuxShell.PERMISSION) }
@@ -220,7 +223,7 @@ fun DeviceAccessScreen(onBack: () -> Unit) {
 private enum class PermissionGroup(@StringRes val title: Int, val permissions: List<DevicePermission>) {
     ESSENTIALS(R.string.access_group_essentials, listOf(DevicePermission.ASSISTANT, DevicePermission.MICROPHONE, DevicePermission.NOTIFICATIONS, DevicePermission.LOCATION)),
     STORAGE(R.string.access_group_storage, listOf(DevicePermission.ALL_FILES)),
-    CONTROL(R.string.access_group_control, listOf(DevicePermission.PHONE_CONTROL)),
+    CONTROL(R.string.access_group_control, listOf(DevicePermission.PHONE_CONTROL, DevicePermission.NOTIFICATION_ACCESS)),
     ELEVATED(R.string.access_group_elevated, listOf(DevicePermission.TERMUX, DevicePermission.SHIZUKU, DevicePermission.ROOT)),
 }
 
@@ -371,6 +374,7 @@ private val DevicePermission.presentation: Presentation
         DevicePermission.LOCATION -> Presentation(R.string.permission_location, R.string.permission_location_summary, MaterialSymbols.Rounded.Location_on)
         DevicePermission.ALL_FILES -> Presentation(R.string.permission_all_files, R.string.permission_all_files_summary, MaterialSymbols.Rounded.Storage)
         DevicePermission.PHONE_CONTROL -> Presentation(R.string.permission_phone_control, R.string.permission_phone_control_summary, MaterialSymbols.Rounded.Touch_app)
+        DevicePermission.NOTIFICATION_ACCESS -> Presentation(R.string.permission_notification_access, R.string.permission_notification_access_summary, MaterialSymbols.Rounded.Notifications_unread)
         DevicePermission.TERMUX -> Presentation(R.string.access_mode_termux, R.string.permission_termux_summary, MaterialSymbols.Rounded.Terminal)
         DevicePermission.SHIZUKU -> Presentation(R.string.access_mode_shizuku, R.string.permission_shizuku_summary, MaterialSymbols.Rounded.Adb)
         DevicePermission.ROOT -> Presentation(R.string.access_mode_root, R.string.access_mode_root_summary, MaterialSymbols.Rounded.Shield_lock)
@@ -416,6 +420,17 @@ private fun Context.openAccessibilitySettings() {
             .putExtra(SETTINGS_FRAGMENT_ARG, service)
             .putExtra(SETTINGS_FRAGMENT_ARGS, highlighted),
     )
+}
+
+private fun Context.openNotificationAccess() {
+    val list = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return startActivity(list)
+    val component = ComponentName(this, NotificationListener::class.java).flattenToString()
+    try {
+        startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_DETAIL_SETTINGS).putExtra(Settings.EXTRA_NOTIFICATION_LISTENER_COMPONENT_NAME, component))
+    } catch (e: ActivityNotFoundException) {
+        startActivity(list)
+    }
 }
 
 private fun Context.openNotificationSettings() =

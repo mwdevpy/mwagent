@@ -16,6 +16,8 @@ enum class AppChannel(val id: String, @StringRes val title: Int, val importance:
     BACKGROUND_WORK("background_work", R.string.notification_channel_work, NotificationManager.IMPORTANCE_LOW),
     APPROVALS("approvals", R.string.notification_channel_approvals, NotificationManager.IMPORTANCE_HIGH),
     REMINDERS("reminders", R.string.notification_channel_reminders, NotificationManager.IMPORTANCE_HIGH),
+    AUTOMATIONS("automations", R.string.notification_channel_automations, NotificationManager.IMPORTANCE_HIGH),
+    WATCHING("watching", R.string.notification_channel_watching, NotificationManager.IMPORTANCE_MIN),
 }
 
 object AppNotifications {
