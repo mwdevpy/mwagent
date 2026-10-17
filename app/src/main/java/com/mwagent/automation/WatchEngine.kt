@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 
 class WatchEngine(private val watches: WatchRepository, private val runs: AutoRuns, private val scope: CoroutineScope) {
-    private val active = watches.observeAll().stateIn(scope, SharingStarted.Eagerly, emptyList())
+    private val active = watches.observeAll().map { list -> list.filterNot { it.paused } }.stateIn(scope, SharingStarted.Eagerly, emptyList())
     private val queues = ConcurrentHashMap<String, Channel<WatchEvent>>()
 
     val sources: Flow<Set<WatchSource>> = active.map { list -> list.mapTo(mutableSetOf()) { it.source } }.distinctUntilChanged()
@@ -37,7 +37,7 @@ class WatchEngine(private val watches: WatchRepository, private val runs: AutoRu
         for (first in channel) {
             delay(SETTLE_MS)
             val batch = generateSequence(first) { channel.tryReceive().getOrNull() }.toList()
-            val watch = watches.get(id) ?: break
+            val watch = watches.get(id)?.takeUnless { it.paused } ?: break
             try {
                 val chatId = runs.run(watch.title, watch.chatId, describe(batch), note(watch))
                 if (chatId != null && chatId != watch.chatId) watches.moveTo(id, chatId)

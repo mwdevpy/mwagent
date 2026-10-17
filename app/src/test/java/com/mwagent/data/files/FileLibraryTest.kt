@@ -5,12 +5,14 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeNoException
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
 import java.io.IOException
 import java.nio.file.AccessDeniedException
+import java.nio.file.FileSystemException
 import java.nio.file.Files
 
 class FileLibraryTest {
@@ -166,7 +168,11 @@ class FileLibraryTest {
     fun `deleting a folder removes a symlink inside it but never what it points to`() = runTest {
         val outside = temp.newFolder("outside").also { File(it, "keep.txt").withBytes("keep") }
         File(workspace, "linked").mkdirs()
-        Files.createSymbolicLink(File(workspace, "linked/shortcut").toPath(), outside.toPath())
+        try {
+            Files.createSymbolicLink(File(workspace, "linked/shortcut").toPath(), outside.toPath())
+        } catch (e: FileSystemException) {
+            assumeNoException(e)
+        }
         val location = LibraryLocation(LibraryRoot.AGENT)
 
         library.delete(location, library.list(location))

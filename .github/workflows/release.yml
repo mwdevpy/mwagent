@@ -1,9 +1,6 @@
 name: release
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -42,6 +39,15 @@ jobs:
         run: |
           if [ "$GITHUB_REF_NAME" != "v$APP_VERSION" ]; then
             echo "::error::tag $GITHUB_REF_NAME does not match versionName $APP_VERSION"
+            exit 1
+          fi
+
+      - name: Check the signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::No signing key in the repository secrets. Releases are built and signed locally, see the README."
             exit 1
           fi
 

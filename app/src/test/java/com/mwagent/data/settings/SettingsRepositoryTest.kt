@@ -1,28 +1,36 @@
 package com.mwagent.data.settings
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TemporaryFolder
-import java.io.File
 import java.security.GeneralSecurityException
 
 class SettingsRepositoryTest {
-    @get:Rule
-    val temp = TemporaryFolder()
+    private class MemoryStore : DataStore<Preferences> {
+        private val state = MutableStateFlow(emptyPreferences())
+        private val lock = Mutex()
+
+        override val data: Flow<Preferences> = state
+
+        override suspend fun updateData(transform: suspend (Preferences) -> Preferences): Preferences =
+            lock.withLock { transform(state.value).toPreferences().also { state.value = it } }
+    }
 
     private class CountingCipher : TextCipher {
         var decryptions = 0
@@ -43,9 +51,7 @@ class SettingsRepositoryTest {
 
     private val cipher = CountingCipher()
 
-    private fun TestScope.store() = PreferenceDataStoreFactory.create(scope = backgroundScope) {
-        File(temp.root, "settings.preferences_pb")
-    }
+    private fun store(): DataStore<Preferences> = MemoryStore()
 
     private fun TestScope.repository(store: DataStore<Preferences> = store()) = SettingsRepository(store, cipher, backgroundScope)
 

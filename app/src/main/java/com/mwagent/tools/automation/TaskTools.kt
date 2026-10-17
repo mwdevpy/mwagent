@@ -32,7 +32,8 @@ private fun TaskEntity.describe(clock: ReminderClock): String {
         days != 0 -> "weekly on " + TaskSchedule.days(days).joinToString { it.name.lowercase() }
         else -> "once"
     }
-    return "[$id] \"$title\", next ${clock.format(triggerAt)}, $repeat: ${prompt.take(PROMPT_PREVIEW)}"
+    val state = if (paused) ", paused" else ""
+    return "[$id] \"$title\", next ${clock.format(triggerAt)}, $repeat$state: ${prompt.take(PROMPT_PREVIEW)}"
 }
 
 private const val PROMPT_PREVIEW = 120

@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Version 0.12.0" src="https://img.shields.io/badge/version-0.12.0-FF7A45?style=flat-square"></a>
+  <a href="https://github.com/mwdevpy/mwagent/releases/latest"><img alt="Version 0.13.0" src="https://img.shields.io/badge/version-0.13.0-FF7A45?style=flat-square"></a>
   <a href="https://github.com/mwdevpy/mwagent/releases"><img alt="Releases" src="https://img.shields.io/badge/releases-GitHub-FF3D7F?style=flat-square&logo=github&logoColor=white"></a>
   <a href="LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPLv3-9B4DFF?style=flat-square"></a>
   <img alt="Android 10 and up" src="https://img.shields.io/badge/Android-10%2B-3DDC84?style=flat-square&logo=android&logoColor=white">
@@ -116,6 +116,10 @@ The app is only a client. It sends your message to the model you chose, the mode
 | *"Every weekday at 8:00 send me the weather and the dollar rate"* | A scheduled task, the brief arrives as a notification |
 | *"Tell me when mom writes in Telegram, with a short summary"* | A watch on new messages that wakes the agent up |
 | *"What did I miss in the last hour?"* | Notifications from all apps summed up |
+| *"Who called me yesterday? Call Anna back"* | The call log, the contact, then the dialer with her number |
+| *"Find the photo of the receipt from last week"* | Gallery previews, then the right photo in full size |
+| *"Where did I write about the trip budget?"* | A search by meaning through your files and chats |
+| *"Compare three laptops under 1000 € in the background"* | A helper researches in its own chat while you keep talking |
 
 ## 📚 Features in detail
 
@@ -164,6 +168,8 @@ The app is only a client. It sends your message to the model you chose, the mode
 - Saved skills are listed for the model in every chat, so it reuses them.
 - Skills can use the standard library, Telegram through `import tg`, and the `phone` module when phone control from Python is on.
 - Saving and running ask first, and skills follow the `run_python` switch.
+- Comes with ready skills: an unread Telegram digest, a storage report, strong passwords and date math.
+- Share skills as `.py` files: export puts one in Downloads, import adds one you received.
 
 </details>
 
@@ -176,7 +182,21 @@ The app is only a client. It sends your message to the model you chose, the mode
 - Watches on notifications from other apps, for example a bank or a delivery service, with the same filters.
 - Messages that arrive in a burst are handled in one run. The agent stays quiet when your rule says there is nothing to report.
 - Incoming messages are treated as third-party content: the agent follows only your rule, never instructions inside them, and tools keep their Off, Ask or Auto setting.
-- Everything is listed in Settings > Automations, where you can delete any task or watch.
+- Everything is listed in Settings > Automations: pause and resume with a switch, tap to edit the name, the prompt or the rule, or delete.
+- Automation chats send the model only their last 10 exchanges, so a busy watch does not grow the token bill.
+- Background helpers: the agent hands a long task to a helper that works in a chat of its own with the same model and tools, then picks up its answer. Up to 3 run at once.
+
+</details>
+
+<details>
+<summary><b>🔎 Your data</b></summary>
+<br>
+
+- Contacts by name or number, ready for a call, an SMS or a Telegram message.
+- Call history: who called, missed calls and how long calls took.
+- Gallery search: the agent looks at small previews to find a receipt, a document or a screenshot, then opens the right photo in full size.
+- Search by meaning through your text files and all chats. Words match in any form and order, and with embeddings set up in memory settings, passages with the same meaning match too.
+- Each of these asks first and needs its permission, which stays off until you grant it in Access and permissions.
 
 </details>
 
@@ -189,6 +209,7 @@ The app is only a client. It sends your message to the model you chose, the mode
 - Shell in a sandbox (default), Termux, Shizuku or root.
 - Device status, flashlight, volume, clipboard, QR codes and exchange rates.
 - Notifications from other apps, readable once you allow notification access.
+- A Quick Settings tile and a home screen widget start a new chat or a voice question in one tap.
 - Calendar, dialer, SMS, email, maps and the share sheet open filled in, and you finish there.
 - Location from GPS or the network with the nearest address.
 - Files limited to the app folder by default, or phone storage with All files access, or root.
@@ -229,10 +250,10 @@ The app is only a client. It sends your message to the model you chose, the mode
 
 ## 🧰 Tools
 
-**62 built-in tools** plus any MCP server. Each one is **Off**, **Ask** or **Auto**, globally and per agent. An Ask tool pauses the reply with a card: Allow, Deny, or Always allow in this session.
+**71 built-in tools** plus any MCP server. Each one is **Off**, **Ask** or **Auto**, globally and per agent. An Ask tool pauses the reply with a card: Allow, Deny, or Always allow in this session.
 
 <details>
-<summary><b>Show all 62 tools</b></summary>
+<summary><b>Show all 71 tools</b></summary>
 <br>
 
 #### 🌐 Web and world
@@ -282,6 +303,8 @@ The app is only a client. It sends your message to the model you chose, the mode
 | `navigate_to` | A route in your maps app | Auto |
 | `open_link` | A link in the browser or its app | Auto |
 | `share` | The share sheet with text or files | Ask |
+| `find_contacts` | People from your contacts with numbers and emails | Ask |
+| `call_log` | Call history, filtered by person, kind and days | Ask |
 
 #### 🛠️ Code and skills
 | Tool | What it does | Default |
@@ -292,6 +315,8 @@ The app is only a client. It sends your message to the model you chose, the mode
 | `skill_run` | Run a saved skill | Ask |
 | `skill_list` | List skills or show the source of one | Auto |
 | `skill_delete` | Delete a skill | Ask |
+| `skill_export` | Save a skill as a .py file to share | Auto |
+| `skill_import` | Add a skill from a .py file | Ask |
 
 #### 📁 Files
 | Tool | What it does | Default |
@@ -300,6 +325,9 @@ The app is only a client. It sends your message to the model you chose, the mode
 | `write_file` | Write or append text | Ask |
 | `send_files` | Show files and images in the chat | Auto |
 | `save_to_downloads` | Put a file in Downloads/MW AGENT | Auto |
+| `search_local` | Search by meaning through your files and chats | Auto |
+| `find_photos` | Gallery previews by date, album or name | Ask |
+| `get_photo` | One gallery photo in full size | Ask |
 
 #### ⏰ Time
 | Tool | What it does | Default |
@@ -314,6 +342,8 @@ The app is only a client. It sends your message to the model you chose, the mode
 | `list_tasks`, `cancel_task` | See and cancel scheduled tasks | Auto |
 | `add_watch` | React to new Telegram messages or app notifications by a rule | Ask |
 | `list_watches`, `remove_watch` | See and remove watches | Auto |
+| `start_subagent` | Hand a long task to a background helper | Auto |
+| `check_subagent` | See whether a helper is done and take its answer | Auto |
 
 #### 🧠 Memory and chats
 | Tool | What it does | Default |
@@ -410,7 +440,7 @@ The video may be private, age-restricted, region-locked or larger than the limit
 | 🗝️ **Local and encrypted** | Chats sit in a local database. Provider keys, tool settings and the Telegram session are encrypted with an Android Keystore key. |
 | ➡️ **Direct traffic only** | Messages go to the provider you set up, Telegram traffic only to Telegram, downloads only to the site of the link. Defaults that use public services, each replaceable in Settings: DuckDuckGo, r.jina.ai and Open-Meteo. Exchange rates come from open.er-api.com. The update check calls GitHub when you tap it. |
 | ✋ **You approve the risky parts** | Sending, reading private data, running code and changing settings ask first by default. Calls, SMS, emails and calendar events are only prepared; you finish them yourself. |
-| 📋 **Permissions** | Internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders and tasks), location (only after you grant it) and a foreground service (background replies and Telegram watches). Termux, All files access, notification access and the accessibility service stay off until you enable them. No camera or contacts permission. |
+| 📋 **Permissions** | Internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders and tasks), location, contacts, call history and photos (each only after you grant it) and a foreground service (background replies and watches). Termux, All files access, notification access and the accessibility service stay off until you enable them. No camera permission. |
 
 ## 🇷🇺 По-русски
 
@@ -420,7 +450,9 @@ The video may be private, age-restricted, region-locked or larger than the limit
 - ✈️ Telegram через user API: чаты, поиск, отправка сообщений и файлов, скрипты на Telethon.
 - 🎬 Видео и звук по ссылке: YouTube, TikTok, Instagram, X, VK и другие, сразу в Загрузки.
 - 🛠️ Навыки: агент сам пишет, сохраняет и чинит недостающую логику на Python.
-- ⚡ Автоматизации: задачи по расписанию и слежение за новыми сообщениями в Telegram и уведомлениями приложений, результат приходит уведомлением.
+- ⚡ Автоматизации: задачи по расписанию и слежение за новыми сообщениями в Telegram и уведомлениями приложений, результат приходит уведомлением. Длинные задачи агент отдаёт фоновым помощникам.
+- 🔎 Контакты, журнал звонков, поиск фото в галерее и поиск по смыслу в твоих файлах и чатах.
+- 📲 Плитка в шторке и виджет: новый чат или вопрос голосом в одно касание.
 - 🔦 Курсы валют, фонарик, громкость, буфер обмена, QR-коды, календарь, звонки, SMS, письма, маршруты и «Поделиться».
 - 🔒 Без сервера, аккаунта и аналитики. Ключи и сессия Telegram зашифрованы, опасные действия спрашивают разрешение.
 

@@ -26,6 +26,12 @@ object TurnAssembler {
     fun decodeTrace(raw: String?): ReasoningTrace? =
         raw?.let { runCatching { json.decodeFromString(ReasoningTrace.serializer(), it) }.getOrNull() }
 
+    fun recent(history: List<MessageEntity>, turns: Int?): List<MessageEntity> {
+        if (turns == null) return history
+        val starts = history.indices.filter { history[it].role == MessageRole.USER }
+        return if (starts.size <= turns) history else history.drop(starts[starts.size - turns])
+    }
+
     fun assemble(
         systemPrompt: String,
         history: List<MessageEntity>,

@@ -67,7 +67,7 @@ import com.mwagent.ui.avatar.knockoutObstacle
 import kotlinx.coroutines.launch
 
 @Composable
-fun ChatScreen(chatId: String?, onBack: () -> Unit, focusMessageId: String? = null) {
+fun ChatScreen(chatId: String?, onBack: () -> Unit, focusMessageId: String? = null, listen: Boolean = false) {
     val viewModel = appViewModel(key = "chat-$chatId") { ChatViewModel(chatId, focusMessageId, it.chats, it.conversations, it.attachments, it.approvals, it.prompts, it.settings, it.modelCatalog, it.applicationScope, it::newSpeechSynthesizer) }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val error by viewModel.errors.collectAsStateWithLifecycle()
@@ -107,6 +107,13 @@ fun ChatScreen(chatId: String?, onBack: () -> Unit, focusMessageId: String? = nu
         },
         onPermissionMissing = { askMicrophone.launch(Manifest.permission.RECORD_AUDIO) },
     )
+    var listened by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(listen) {
+        if (listen && !listened) {
+            listened = true
+            dictation.onStart()
+        }
+    }
 
     LaunchedEffect(error) {
         error?.let {

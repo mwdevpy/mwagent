@@ -34,6 +34,8 @@ class ChatRepository(
 
     suspend fun searchMessages(query: String, limit: Int): List<MessageHit> = chatDao.searchMessages(likePattern(query), limit)
 
+    suspend fun recentMessages(limit: Int): List<MessageHit> = chatDao.recentMessages(limit)
+
     val trashEvents: SharedFlow<Set<String>> get() = _trashEvents
 
     private val _trashEvents = MutableSharedFlow<Set<String>>(extraBufferCapacity = 1)
@@ -46,7 +48,7 @@ class ChatRepository(
 
     suspend fun history(chatId: String): List<MessageEntity> = messageDao.listForChat(chatId)
 
-    suspend fun createChat(title: String, selection: ModelSelection, agentId: String): ChatEntity {
+    suspend fun createChat(title: String, selection: ModelSelection, agentId: String, contextTurns: Int? = null): ChatEntity {
         val now = clock()
         val chat = ChatEntity(
             id = UUID.randomUUID().toString(),
@@ -57,6 +59,7 @@ class ChatRepository(
             modelId = selection.modelId,
             reasoningEffort = selection.reasoningEffort?.wireName,
             agentId = agentId,
+            contextTurns = contextTurns,
         )
         chatDao.insert(chat)
         return chat

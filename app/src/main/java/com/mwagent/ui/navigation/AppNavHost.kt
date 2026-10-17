@@ -39,11 +39,11 @@ import com.mwagent.ui.haptics.clickHaptics
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AppNavHost(chatToOpen: String?, onChatOpened: () -> Unit) {
+fun AppNavHost(chatToOpen: ChatRoute?, onChatOpened: () -> Unit) {
     val navController = rememberNavController()
     LaunchedEffect(chatToOpen) {
-        val chatId = chatToOpen ?: return@LaunchedEffect
-        navController.navigate(ChatRoute(chatId)) { popUpTo(HomeRoute) }
+        val route = chatToOpen ?: return@LaunchedEffect
+        navController.navigate(route) { popUpTo(HomeRoute) }
         onChatOpened()
     }
     NavHost(
@@ -81,7 +81,7 @@ fun AppNavHost(chatToOpen: String?, onChatOpened: () -> Unit) {
         }
         screen<ChatRoute>(navController) { entry ->
             val route = entry.toRoute<ChatRoute>()
-            ChatScreen(chatId = route.chatId, focusMessageId = route.focusMessageId, onBack = navController::popBackStack)
+            ChatScreen(chatId = route.chatId, focusMessageId = route.focusMessageId, listen = route.listen, onBack = navController::popBackStack)
         }
         screen<ProviderEditorRoute>(navController) { entry ->
             ProviderEditorScreen(providerId = entry.toRoute<ProviderEditorRoute>().providerId, onDone = navController::popBackStack)

@@ -29,6 +29,7 @@ data class ChatEntity(
     val archivedAt: Long? = null,
     val trashedAt: Long? = null,
     val agentId: String? = null,
+    val contextTurns: Int? = null,
 )
 
 val ChatEntity.selection: ModelSelection?
@@ -115,6 +116,7 @@ data class TaskEntity(
     val days: Int,
     val everyMinutes: Int?,
     val createdAt: Long,
+    @ColumnInfo(defaultValue = "0") val paused: Boolean = false,
 )
 
 enum class WatchSource { TELEGRAM, NOTIFICATIONS }
@@ -129,4 +131,5 @@ data class WatchEntity(
     val instruction: String,
     val chatId: String,
     val createdAt: Long,
+    @ColumnInfo(defaultValue = "0") val paused: Boolean = false,
 )

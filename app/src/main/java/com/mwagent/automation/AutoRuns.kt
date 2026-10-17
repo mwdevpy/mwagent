@@ -44,7 +44,7 @@ class AutoRuns(
     private suspend fun newChat(title: String): ChatEntity? {
         val current = settings.current()
         val selection = current.activeSelection ?: return null
-        return chats.createChat(title, selection, current.agent(null).id)
+        return chats.createChat(title, selection, current.agent(null).id, CONTEXT_TURNS)
     }
 
     private fun MessageEntity.summary(): String? = when (status) {
@@ -70,6 +70,7 @@ class AutoRuns(
 
     companion object {
         const val QUIET = "SKIP"
+        private const val CONTEXT_TURNS = 10
         private const val NOTIFICATION_ID = 4_200
         private const val MAX_TEXT = 1_500
         private val MARKUP = Regex("""\*\*|__|`|^#{1,6}\s+""", RegexOption.MULTILINE)

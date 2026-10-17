@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,10 +34,14 @@ class Automations(
         account.takeIf { WatchSource.TELEGRAM in sources && it.linked }
     }.distinctUntilChanged()
 
+    val watching: Flow<Boolean> = combine(engine.sources, telegramAccount) { sources, account ->
+        account != null || WatchSource.NOTIFICATIONS in sources
+    }.distinctUntilChanged()
+
     init {
         notifications.onPosted = { engine.offer(it.toEvent()) }
         scope.launch {
-            telegramAccount.map { it != null }.distinctUntilChanged().filter { it }.collect {
+            watching.filter { it }.collect {
                 withContext(Dispatchers.Main) { WatchService.start(context) }
             }
         }

@@ -23,7 +23,8 @@ import kotlinx.serialization.json.JsonObject
 private fun WatchEntity.describe(): String {
     val who = sender ?: if (source == WatchSource.TELEGRAM) "any private chat" else "any app"
     val word = keyword?.let { ", containing \"$it\"" }.orEmpty()
-    return "[$id] \"$title\", ${source.name.lowercase()} from $who$word: $instruction"
+    val state = if (paused) ", paused" else ""
+    return "[$id] \"$title\", ${source.name.lowercase()} from $who$word$state: $instruction"
 }
 
 class AddWatchTool(

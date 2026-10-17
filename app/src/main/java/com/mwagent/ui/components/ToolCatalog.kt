@@ -4,15 +4,23 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Account_circle
+import com.composables.icons.materialsymbols.rounded.Call_log
 import com.composables.icons.materialsymbols.rounded.Chat
 import com.composables.icons.materialsymbols.rounded.Construction
 import com.composables.icons.materialsymbols.rounded.Battery_android_full
 import com.composables.icons.materialsymbols.rounded.Event_busy
 import com.composables.icons.materialsymbols.rounded.Event_repeat
 import com.composables.icons.materialsymbols.rounded.Flashlight_on
+import com.composables.icons.materialsymbols.rounded.Groups
+import com.composables.icons.materialsymbols.rounded.Image_search
 import com.composables.icons.materialsymbols.rounded.Notifications_unread
 import com.composables.icons.materialsymbols.rounded.Pending_actions
+import com.composables.icons.materialsymbols.rounded.Person_search
+import com.composables.icons.materialsymbols.rounded.Photo_library
 import com.composables.icons.materialsymbols.rounded.Radar
+import com.composables.icons.materialsymbols.rounded.Share_windows
+import com.composables.icons.materialsymbols.rounded.Smart_toy
+import com.composables.icons.materialsymbols.rounded.Upload_file
 import com.composables.icons.materialsymbols.rounded.Visibility
 import com.composables.icons.materialsymbols.rounded.Visibility_off
 import com.composables.icons.materialsymbols.rounded.Volume_up
@@ -110,6 +118,15 @@ import com.mwagent.tools.memory.MemorySearchTool
 import com.mwagent.tools.memory.MemoryUpdateTool
 import com.mwagent.tools.reminders.CancelReminderTool
 import com.mwagent.tools.automation.AddWatchTool
+import com.mwagent.tools.contacts.FindContactsTool
+import com.mwagent.tools.contacts.CallLogTool
+import com.mwagent.tools.media.FindPhotosTool
+import com.mwagent.tools.media.GetPhotoTool
+import com.mwagent.tools.files.SearchLocalTool
+import com.mwagent.tools.skills.SkillExportTool
+import com.mwagent.tools.skills.SkillImportTool
+import com.mwagent.tools.automation.StartSubagentTool
+import com.mwagent.tools.automation.CheckSubagentTool
 import com.mwagent.tools.automation.CancelTaskTool
 import com.mwagent.tools.automation.ListTasksTool
 import com.mwagent.tools.automation.ListWatchesTool
@@ -213,6 +230,15 @@ object ToolCatalog {
         ListWatchesTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Radar, R.string.tools_list_watches_title, R.string.tools_list_watches_summary),
         RemoveWatchTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Visibility_off, R.string.tools_remove_watch_title, R.string.tools_remove_watch_summary),
         ReadNotificationsTool.NAME to known(ToolCategory.DEVICE, MaterialSymbols.Rounded.Notifications_unread, R.string.tools_read_notifications_title, R.string.tools_read_notifications_summary),
+        FindContactsTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Person_search, R.string.tools_find_contacts_title, R.string.tools_find_contacts_summary),
+        CallLogTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Call_log, R.string.tools_call_log_title, R.string.tools_call_log_summary),
+        FindPhotosTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Image_search, R.string.tools_find_photos_title, R.string.tools_find_photos_summary),
+        GetPhotoTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Photo_library, R.string.tools_get_photo_title, R.string.tools_get_photo_summary),
+        SearchLocalTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Manage_search, R.string.tools_search_local_title, R.string.tools_search_local_summary),
+        SkillExportTool.NAME to known(ToolCategory.SKILLS, MaterialSymbols.Rounded.Share_windows, R.string.tools_skill_export_title, R.string.tools_skill_export_summary),
+        SkillImportTool.NAME to known(ToolCategory.SKILLS, MaterialSymbols.Rounded.Upload_file, R.string.tools_skill_import_title, R.string.tools_skill_import_summary),
+        StartSubagentTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Smart_toy, R.string.tools_start_subagent_title, R.string.tools_start_subagent_summary),
+        CheckSubagentTool.NAME to known(ToolCategory.AUTOMATION, MaterialSymbols.Rounded.Groups, R.string.tools_check_subagent_title, R.string.tools_check_subagent_summary),
         SetAlarmTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Alarm_add, R.string.tools_set_alarm_title, R.string.tools_set_alarm_summary),
         SetTimerTool.NAME to known(ToolCategory.TIME, MaterialSymbols.Rounded.Timer, R.string.tools_set_timer_title, R.string.tools_set_timer_summary),
     )

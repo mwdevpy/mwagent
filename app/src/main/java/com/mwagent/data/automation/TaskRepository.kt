@@ -50,8 +50,28 @@ class TaskRepository(
 
     suspend fun moveTo(id: String, chatId: String) = dao.moveTo(id, chatId)
 
+    suspend fun rename(id: String, title: String, prompt: String) {
+        require(title.isNotBlank()) { "The task title is empty" }
+        require(prompt.isNotBlank()) { "The task prompt is empty" }
+        require(prompt.length <= MAX_PROMPT) { "The task prompt is longer than $MAX_PROMPT characters" }
+        dao.rename(id, title.trim().take(MAX_TITLE), prompt.trim())
+    }
+
+    suspend fun setPaused(id: String, paused: Boolean) {
+        val task = dao.get(id) ?: return
+        if (paused) {
+            alarms.cancel(id)
+            dao.upsert(task.copy(paused = true))
+            return
+        }
+        val now = clock()
+        val next = TaskSchedule.next(task, now, zone()) ?: (now + RESUME_DELAY_MS)
+        dao.upsert(task.copy(paused = false, triggerAt = next))
+        alarms.schedule(id, next)
+    }
+
     suspend fun fire(id: String): TaskEntity? {
-        val task = dao.get(id) ?: return null
+        val task = dao.get(id)?.takeUnless { it.paused } ?: return null
         val now = clock()
         advance(task, now)
         val repeats = task.days != 0 || task.everyMinutes != null
@@ -60,7 +80,7 @@ class TaskRepository(
 
     suspend fun restore(): List<TaskEntity> {
         val now = clock()
-        val (due, later) = dao.listAll().partition { it.triggerAt <= now }
+        val (due, later) = dao.listAll().filterNot { it.paused }.partition { it.triggerAt <= now }
         later.forEach { alarms.schedule(it.id, it.triggerAt) }
         return due.mapNotNull { fire(it.id) }
     }
@@ -81,6 +101,7 @@ class TaskRepository(
         const val MAX_EVERY = 7 * 24 * 60
         private const val MAX_TITLE = 80
         private const val ID_LENGTH = 8
+        private const val RESUME_DELAY_MS = 60_000L
         private const val STALE_MS = 2L * 60 * 60 * 1000
         private const val MAX_AHEAD_MS = 366L * 24 * 60 * 60 * 1000
     }

@@ -56,12 +56,15 @@ import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Touch_app
 import com.composables.icons.materialsymbols.rounded.Adb
 import com.composables.icons.materialsymbols.rounded.Assistant
+import com.composables.icons.materialsymbols.rounded.Call_log
+import com.composables.icons.materialsymbols.rounded.Contacts
 import com.composables.icons.materialsymbols.rounded.Content_copy
 import com.composables.icons.materialsymbols.rounded.Folder
 import com.composables.icons.materialsymbols.rounded.Location_on
 import com.composables.icons.materialsymbols.rounded.Mic
 import com.composables.icons.materialsymbols.rounded.Notifications
 import com.composables.icons.materialsymbols.rounded.Notifications_unread
+import com.composables.icons.materialsymbols.rounded.Photo_library
 import com.composables.icons.materialsymbols.rounded.Shield_lock
 import com.composables.icons.materialsymbols.rounded.Smartphone
 import com.composables.icons.materialsymbols.rounded.Storage
@@ -109,6 +112,12 @@ fun DeviceAccessScreen(onBack: () -> Unit) {
         viewModel.refresh()
     }
     val askTermux = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { viewModel.refresh() }
+    var deniedData by rememberSaveable { mutableStateOf(listOf<String>()) }
+    var askingData by rememberSaveable { mutableStateOf<String?>(null) }
+    val askData = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        askingData?.takeUnless { granted }?.let { deniedData = deniedData + it }
+        viewModel.refresh()
+    }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.refresh() }
 
     val statusOf = { permission: DevicePermission? -> permission?.let { permissions[it] } ?: AccessStatus.READY }
@@ -130,6 +139,14 @@ fun DeviceAccessScreen(onBack: () -> Unit) {
             } else {
                 PermissionAction(R.string.access_action_grant) {
                     askLocation.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+                }
+            }
+            DevicePermission.CONTACTS, DevicePermission.CALL_LOG, DevicePermission.PHOTOS -> if (permission.name in deniedData) {
+                PermissionAction(R.string.access_action_open_settings) { context.openAppDetails() }
+            } else {
+                PermissionAction(R.string.access_action_grant) {
+                    askingData = permission.name
+                    permission.runtimePermission?.let(askData::launch)
                 }
             }
             DevicePermission.ALL_FILES -> PermissionAction(R.string.access_action_open_settings) { context.openAllFilesAccess() }.takeIf { status != AccessStatus.UNAVAILABLE }
@@ -222,6 +239,7 @@ fun DeviceAccessScreen(onBack: () -> Unit) {
 
 private enum class PermissionGroup(@StringRes val title: Int, val permissions: List<DevicePermission>) {
     ESSENTIALS(R.string.access_group_essentials, listOf(DevicePermission.ASSISTANT, DevicePermission.MICROPHONE, DevicePermission.NOTIFICATIONS, DevicePermission.LOCATION)),
+    PERSONAL(R.string.access_group_personal, listOf(DevicePermission.CONTACTS, DevicePermission.CALL_LOG, DevicePermission.PHOTOS)),
     STORAGE(R.string.access_group_storage, listOf(DevicePermission.ALL_FILES)),
     CONTROL(R.string.access_group_control, listOf(DevicePermission.PHONE_CONTROL, DevicePermission.NOTIFICATION_ACCESS)),
     ELEVATED(R.string.access_group_elevated, listOf(DevicePermission.TERMUX, DevicePermission.SHIZUKU, DevicePermission.ROOT)),
@@ -372,6 +390,9 @@ private val DevicePermission.presentation: Presentation
         DevicePermission.MICROPHONE -> Presentation(R.string.permission_microphone, R.string.permission_microphone_summary, MaterialSymbols.Rounded.Mic)
         DevicePermission.NOTIFICATIONS -> Presentation(R.string.permission_notifications, R.string.permission_notifications_summary, MaterialSymbols.Rounded.Notifications)
         DevicePermission.LOCATION -> Presentation(R.string.permission_location, R.string.permission_location_summary, MaterialSymbols.Rounded.Location_on)
+        DevicePermission.CONTACTS -> Presentation(R.string.permission_contacts, R.string.permission_contacts_summary, MaterialSymbols.Rounded.Contacts)
+        DevicePermission.CALL_LOG -> Presentation(R.string.permission_call_log, R.string.permission_call_log_summary, MaterialSymbols.Rounded.Call_log)
+        DevicePermission.PHOTOS -> Presentation(R.string.permission_photos, R.string.permission_photos_summary, MaterialSymbols.Rounded.Photo_library)
         DevicePermission.ALL_FILES -> Presentation(R.string.permission_all_files, R.string.permission_all_files_summary, MaterialSymbols.Rounded.Storage)
         DevicePermission.PHONE_CONTROL -> Presentation(R.string.permission_phone_control, R.string.permission_phone_control_summary, MaterialSymbols.Rounded.Touch_app)
         DevicePermission.NOTIFICATION_ACCESS -> Presentation(R.string.permission_notification_access, R.string.permission_notification_access_summary, MaterialSymbols.Rounded.Notifications_unread)

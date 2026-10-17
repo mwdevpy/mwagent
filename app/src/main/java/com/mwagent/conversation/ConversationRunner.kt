@@ -106,6 +106,8 @@ class ConversationRunner(
         jobs[chatId]?.join()
     }
 
+    fun isRunning(chatId: String): Boolean = jobs[chatId]?.isActive == true
+
     suspend fun regenerate(assistantMessage: MessageEntity) {
         cancel(assistantMessage.chatId)
         val history = chats.history(assistantMessage.chatId)
@@ -163,7 +165,7 @@ class ConversationRunner(
             explicitCaching = info.family == ModelFamily.CLAUDE,
         )
         val toolSpecs = if (traits.output == ModelOutput.IMAGE || info.toolUse == false) emptyList() else tools.specs(toolSettings)
-        val turns = buildTurns(agent, toolSettings, chats.history(chatId))
+        val turns = buildTurns(agent, toolSettings, TurnAssembler.recent(chats.history(chatId), chats.chat(chatId)?.contextTurns))
         val prompt = promptFingerprint(turns, toolSpecs)
         val message = chats.startAssistantMessage(chatId, model.modelId)
         val accumulator = ToolCallAccumulator()

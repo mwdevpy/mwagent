@@ -49,6 +49,25 @@ class WatchRepository(private val dao: WatchDao, private val clock: () -> Long =
         return watch
     }
 
+    suspend fun edit(id: String, title: String, sender: String?, keyword: String?, instruction: String) {
+        require(title.isNotBlank()) { "The watch title is empty" }
+        require(instruction.isNotBlank()) { "The instruction is empty" }
+        require(instruction.length <= MAX_INSTRUCTION) { "The instruction is longer than $MAX_INSTRUCTION characters" }
+        val watch = dao.get(id) ?: return
+        dao.upsert(
+            watch.copy(
+                title = title.trim().take(MAX_TITLE),
+                sender = sender?.trim()?.takeIf { it.isNotEmpty() },
+                keyword = keyword?.trim()?.takeIf { it.isNotEmpty() },
+                instruction = instruction.trim(),
+            ),
+        )
+    }
+
+    suspend fun setPaused(id: String, paused: Boolean) {
+        dao.get(id)?.let { dao.upsert(it.copy(paused = paused)) }
+    }
+
     suspend fun delete(id: String): Boolean = dao.delete(id) > 0
 
     suspend fun moveTo(id: String, chatId: String) = dao.moveTo(id, chatId)

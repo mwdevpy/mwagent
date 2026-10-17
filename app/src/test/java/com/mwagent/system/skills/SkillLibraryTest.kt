@@ -84,4 +84,33 @@ class SkillLibraryTest {
         assertNull(tool.promptNote(off))
         assertTrue(tool.promptNote(ToolSettings())!!.contains("skill_save"))
     }
+
+    private val bundled = mapOf(
+        "password" to "\"\"\"Strong passwords\"\"\"\nprint('x')\n",
+        "date_math" to "\"\"\"Days between dates\"\"\"\nprint('y')\n",
+    )
+
+    @Test
+    fun `bundled skills are installed once and stay deleted when the user removes them`() {
+        library.install(bundled)
+        assertEquals(listOf("date_math", "password"), library.list().map { it.name })
+
+        library.delete("password")
+        library.install(bundled)
+        assertNull(library.find("password"))
+        assertEquals("Days between dates", library.find("date_math")?.description)
+    }
+
+    @Test
+    fun `bundled skills never overwrite one the user already has`() {
+        library.save("password", "My own", "print('mine')")
+        library.install(bundled)
+        assertTrue(library.find("password")!!.file.readText().contains("mine"))
+    }
+
+    @Test
+    fun `import takes the description from the docstring and rejects files without one`() {
+        assertEquals("Counts things", library.import("counter", "\"\"\"Counts things\nmore\"\"\"\nprint(1)\n").description)
+        assertFalse(runCatching { library.import("broken", "print(1)") }.isSuccess)
+    }
 }

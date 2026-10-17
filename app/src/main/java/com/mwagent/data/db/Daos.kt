@@ -127,6 +127,17 @@ interface ChatDao {
         """,
     )
     suspend fun searchMessages(query: String, limit: Int): List<MessageHit>
+
+    @Query(
+        """
+        SELECT m.id AS messageId, m.chatId, c.title AS chatTitle, m.role, m.createdAt, m.content
+        FROM messages m JOIN chats c ON c.id = m.chatId
+        WHERE c.trashedAt IS NULL AND m.role IN ('USER', 'ASSISTANT') AND m.content != ''
+        ORDER BY m.createdAt DESC
+        LIMIT :limit
+        """,
+    )
+    suspend fun recentMessages(limit: Int): List<MessageHit>
 }
 
 @Dao
@@ -224,6 +235,9 @@ interface TaskDao {
     @Upsert
     suspend fun upsert(task: TaskEntity)
 
+    @Query("UPDATE tasks SET title = :title, prompt = :prompt WHERE id = :id")
+    suspend fun rename(id: String, title: String, prompt: String)
+
     @Query("UPDATE tasks SET chatId = :chatId WHERE id = :id")
     suspend fun moveTo(id: String, chatId: String)
 
@@ -244,6 +258,9 @@ interface WatchDao {
 
     @Insert
     suspend fun insert(watch: WatchEntity)
+
+    @Upsert
+    suspend fun upsert(watch: WatchEntity)
 
     @Query("UPDATE watches SET chatId = :chatId WHERE id = :id")
     suspend fun moveTo(id: String, chatId: String)

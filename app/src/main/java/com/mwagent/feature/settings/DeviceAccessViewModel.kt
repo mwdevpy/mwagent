@@ -3,6 +3,7 @@ package com.mwagent.feature.settings
 import android.Manifest
 import com.mwagent.system.notifications.AppNotifications
 import com.mwagent.system.notifications.NotificationLog
+import com.mwagent.system.media.PhotoLibrary
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -26,7 +27,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-enum class DevicePermission { ASSISTANT, MICROPHONE, NOTIFICATIONS, LOCATION, ALL_FILES, PHONE_CONTROL, NOTIFICATION_ACCESS, TERMUX, SHIZUKU, ROOT }
+enum class DevicePermission { ASSISTANT, MICROPHONE, NOTIFICATIONS, LOCATION, CONTACTS, CALL_LOG, PHOTOS, ALL_FILES, PHONE_CONTROL, NOTIFICATION_ACCESS, TERMUX, SHIZUKU, ROOT }
+
+val DevicePermission.runtimePermission: String?
+    get() = when (this) {
+        DevicePermission.CONTACTS -> Manifest.permission.READ_CONTACTS
+        DevicePermission.CALL_LOG -> Manifest.permission.READ_CALL_LOG
+        DevicePermission.PHOTOS -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+        else -> null
+    }
 
 class DeviceAccessViewModel(
     private val context: Context,
@@ -56,6 +65,9 @@ class DeviceAccessViewModel(
             DevicePermission.LOCATION to readyIf(
                 isGranted(Manifest.permission.ACCESS_FINE_LOCATION) || isGranted(Manifest.permission.ACCESS_COARSE_LOCATION),
             ),
+            DevicePermission.CONTACTS to readyIf(isGranted(Manifest.permission.READ_CONTACTS)),
+            DevicePermission.CALL_LOG to readyIf(isGranted(Manifest.permission.READ_CALL_LOG)),
+            DevicePermission.PHOTOS to readyIf(PhotoLibrary(context).canRead),
             DevicePermission.ALL_FILES to allFilesStatus(),
             DevicePermission.PHONE_CONTROL to phoneControlStatus(),
             DevicePermission.NOTIFICATION_ACCESS to readyIf(NotificationLog.isEnabled(context)),

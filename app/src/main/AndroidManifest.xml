@@ -9,6 +9,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission
         android:name="android.permission.SCHEDULE_EXACT_ALARM"
@@ -149,7 +156,7 @@
             android:foregroundServiceType="specialUse">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Keeps a live connection to the user's Telegram account to react to new messages as the user asked" />
+                android:value="Keeps a live connection to the user's Telegram account and keeps the app alive to react to new messages and notifications as the user asked" />
         </service>
 
         <service
@@ -161,6 +168,32 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".system.shortcuts.AskTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_notification"
+            android:label="@string/tile_ask"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+        </service>
+
+        <receiver
+            android:name=".system.shortcuts.AskWidget"
+            android:exported="false"
+            android:label="@string/widget_ask">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_ask" />
+        </receiver>
 
         <receiver
             android:name=".system.automation.AutomationReceiver"

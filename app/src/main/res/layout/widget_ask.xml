@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="6dp">
+
+    <LinearLayout
+        android:id="@+id/widget_ask"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/widget_pill"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_notification"
+            android:tint="@color/widget_accent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/widget_ask"
+            android:textColor="@color/widget_text"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/widget_listen"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/widget_pill"
+        android:contentDescription="@string/widget_listen"
+        android:padding="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_widget_mic"
+        android:tint="@color/widget_accent" />
+</LinearLayout>

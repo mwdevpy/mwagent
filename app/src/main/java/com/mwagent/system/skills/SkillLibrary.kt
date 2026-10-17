@@ -28,11 +28,27 @@ class SkillLibrary(val directory: File) {
 
     fun delete(name: String): Boolean = isValidName(name) && file(name).delete()
 
+    fun install(bundled: Map<String, String>) {
+        directory.mkdirs()
+        val marker = File(directory, MARKER)
+        val installed = marker.takeIf { it.isFile }?.readLines().orEmpty().toSet()
+        val fresh = bundled.filterKeys { it !in installed && isValidName(it) }
+        fresh.forEach { (name, source) -> file(name).takeUnless { it.exists() }?.writeText(source) }
+        if (fresh.isNotEmpty()) marker.writeText((installed + fresh.keys).sorted().joinToString("\n"))
+    }
+
+    fun import(name: String, source: String): Skill {
+        val description = describe(source)
+        require(description.isNotEmpty()) { "The skill file has no description: start it with a docstring line" }
+        return save(name, description, source)
+    }
+
     private fun file(name: String) = File(directory, "$name.$EXTENSION")
 
     companion object {
         const val EXTENSION = "py"
         const val MAX_NAME_LENGTH = 40
+        private const val MARKER = ".bundled"
         private val NAME = Regex("^[a-z][a-z0-9_]{0,${MAX_NAME_LENGTH - 1}}$")
         private val DOCSTRING = Regex("^\\s*(\"\"\"|''')(.*?)\\1", RegexOption.DOT_MATCHES_ALL)
 

@@ -184,11 +184,11 @@ class FileLibrary(
         return generateSequence(2) { it + 1 }.map { File(folder, "$base ($it)$extension") }.first { !it.exists() }
     }
 
-    private fun sanitized(name: String) = name.replace(File.separatorChar, '_').trim().ifEmpty { FALLBACK_NAME }
+    private fun sanitized(name: String) = name.replace(File.separatorChar, '_').replace('/', '_').trim().ifEmpty { FALLBACK_NAME }
 
     private fun validName(name: String): String {
         val clean = name.trim()
-        if (clean.isEmpty() || clean == "." || clean == ".." || File.separatorChar in clean) throw InvalidFileNameException(name)
+        if (clean.isEmpty() || clean == "." || clean == ".." || File.separatorChar in clean || '/' in clean) throw InvalidFileNameException(name)
         return clean
     }
 

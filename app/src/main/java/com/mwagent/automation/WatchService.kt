@@ -20,6 +20,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -33,12 +34,14 @@ class WatchService : Service() {
         super.onCreate()
         startInForeground()
         scope.launch {
-            automations.telegramAccount.collectLatest { account ->
-                if (account != null) {
-                    automations.listen(account)
-                } else {
-                    ServiceCompat.stopForeground(this@WatchService, ServiceCompat.STOP_FOREGROUND_REMOVE)
-                    stopSelf()
+            automations.watching.combine(automations.telegramAccount) { watching, account -> watching to account }.collectLatest { (watching, account) ->
+                when {
+                    !watching -> {
+                        ServiceCompat.stopForeground(this@WatchService, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                        stopSelf()
+                    }
+                    account != null -> automations.listen(account)
+                    else -> automations.unlisten()
                 }
             }
         }
@@ -74,7 +77,7 @@ class WatchService : Service() {
             try {
                 ContextCompat.startForegroundService(context, Intent(context, WatchService::class.java))
             } catch (e: IllegalStateException) {
-                Log.w(TAG, "Could not start watching Telegram", e)
+                Log.w(TAG, "Could not start watching", e)
             } catch (e: SecurityException) {
                 Log.w(TAG, "Foreground service is not allowed", e)
             }

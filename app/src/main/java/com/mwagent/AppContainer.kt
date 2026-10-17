@@ -8,6 +8,19 @@ import com.mwagent.ui.haptics.HapticEngine
 import com.mwagent.assistant.ScreenContextStore
 import com.mwagent.automation.AutoRuns
 import com.mwagent.automation.Automations
+import com.mwagent.automation.Subagents
+import com.mwagent.data.search.LocalSearch
+import com.mwagent.system.contacts.PhoneContacts
+import com.mwagent.system.media.PhotoLibrary
+import com.mwagent.tools.automation.CheckSubagentTool
+import com.mwagent.tools.automation.StartSubagentTool
+import com.mwagent.tools.contacts.CallLogTool
+import com.mwagent.tools.contacts.FindContactsTool
+import com.mwagent.tools.files.SearchLocalTool
+import com.mwagent.tools.media.FindPhotosTool
+import com.mwagent.tools.media.GetPhotoTool
+import com.mwagent.tools.skills.SkillExportTool
+import com.mwagent.tools.skills.SkillImportTool
 import com.mwagent.data.automation.TaskRepository
 import com.mwagent.data.automation.WatchRepository
 import com.mwagent.system.automation.TaskAlarms
@@ -158,7 +171,8 @@ class AppContainer(context: Context) {
     val tasks = TaskRepository(database.taskDao(), TaskAlarms(appContext))
     val watches = WatchRepository(database.watchDao())
     private val notificationLog = NotificationLog()
-    val memories = MemoryStore(database.memoryDao(), EmbeddingClient(httpClients), settings.settings.map { it.tools.memory })
+    private val embeddings = EmbeddingClient(httpClients)
+    val memories = MemoryStore(database.memoryDao(), embeddings, settings.settings.map { it.tools.memory })
 
     val completions = ChatCompletionClient(httpClients)
     val modelCatalogClient = ModelCatalogClient(httpClients)
@@ -197,6 +211,12 @@ class AppContainer(context: Context) {
 
     val skills = SkillLibrary(File(shellAccess.workspace, SKILLS_DIR))
     private val runPython = RunPythonTool(python, shellAccess.workspace, phoneControl, telegram)
+    private val contacts = PhoneContacts(appContext)
+    private val photos = PhotoLibrary(appContext)
+    private val localSearch = LocalSearch(
+        { listOf(deviceFiles.workspace, deviceFiles.uploads) }, chats, embeddings, settings.settings.map { it.tools.memory },
+        File(appContext.filesDir, SEARCH_VECTORS_FILE),
+    )
 
     val tools = ToolRegistry(
         listOf(
@@ -229,6 +249,15 @@ class AppContainer(context: Context) {
             SkillRunTool(skills, runPython),
             SkillListTool(skills),
             SkillDeleteTool(skills),
+            SkillExportTool(skills, attachments),
+            SkillImportTool(skills, deviceFiles),
+            SearchLocalTool(localSearch),
+            FindContactsTool(contacts),
+            CallLogTool(contacts),
+            FindPhotosTool(photos, attachments),
+            GetPhotoTool(photos, attachments),
+            StartSubagentTool { subagents },
+            CheckSubagentTool { subagents },
             ListFilesTool(deviceFiles),
             ReadFileTool(deviceFiles, attachments),
             WriteFileTool(deviceFiles),
@@ -290,12 +319,14 @@ class AppContainer(context: Context) {
         modelCatalog, GeneratedImages(attachments, httpClients), memories, applicationScope,
     )
 
-    val automations = Automations(
-        appContext, tasks, watches, notificationLog, AutoRuns(appContext, chats, conversations, settings),
-        TelegramWatcher(python), telegramAccounts, applicationScope,
-    )
+    private val runs: AutoRuns by lazy { AutoRuns(appContext, chats, conversations, settings) }
+
+    private val subagents: Subagents by lazy { Subagents(chats, conversations, settings, runs, applicationScope) }
+
+    val automations = Automations(appContext, tasks, watches, notificationLog, runs, TelegramWatcher(python), telegramAccounts, applicationScope)
 
     init {
+        applicationScope.launch(Dispatchers.IO) { skills.install(bundledSkills()) }
         applicationScope.launch {
             settings.settings.map { it.tools.mcpServers }.distinctUntilChanged().collect(mcp::sync)
         }
@@ -319,6 +350,10 @@ class AppContainer(context: Context) {
         }
     }
 
+    private fun bundledSkills(): Map<String, String> = appContext.assets.list(SKILLS_DIR).orEmpty()
+        .filter { it.endsWith(".${SkillLibrary.EXTENSION}") }
+        .associate { name -> name.removeSuffix(".${SkillLibrary.EXTENSION}") to appContext.assets.open("$SKILLS_DIR/$name").bufferedReader().use { it.readText() } }
+
     private fun ToolCall.drivesPhone(): Boolean = name in PHONE_TOOLS || (name == RunPythonTool.NAME && runCatching { RunPythonTool.usesPhone(Json.parseToJsonElement(arguments).jsonObject) }.getOrDefault(false))
 
     private companion object {
@@ -328,5 +363,6 @@ class AppContainer(context: Context) {
         const val MODEL_CATALOG_DIR = "model-catalog"
         const val SKILLS_DIR = "skills"
         const val DOWNLOADS_DIR = "downloads"
+        const val SEARCH_VECTORS_FILE = "search-vectors.json"
     }
 }

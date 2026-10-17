@@ -2,4 +2,8 @@
 <resources>
     <color name="ic_launcher_background">#FF3C4048</color>
     <color name="ic_launcher_body">#FFC3D9F5</color>
+    <color name="widget_surface">#F21B1E24</color>
+    <color name="widget_pill">#FF2A2E36</color>
+    <color name="widget_text">#FFF1F3F7</color>
+    <color name="widget_accent">#FFC3D9F5</color>
 </resources>
