@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="docs/header.svg" alt="MW AGENT" width="563">
+  <img src="docs/header.svg" alt="MW AGENT" width="505">
 </h1>
 
 <p align="center">
@@ -31,7 +31,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.svg" alt="Colorful Material 3 shapes with faces look up at the words Android Agent System">
+  <img src="docs/banner.svg" alt="MW AGENT, an AI agent that does things on your Android phone: any model, phone control, Telegram, Python, own skills, GPS">
 </p>
 
 <p align="center">
