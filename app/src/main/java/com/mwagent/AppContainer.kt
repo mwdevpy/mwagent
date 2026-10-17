@@ -94,6 +94,12 @@ import com.mwagent.tools.apps.AddCalendarEventTool
 import com.mwagent.tools.apps.ComposeMessageTool
 import com.mwagent.tools.apps.DialTool
 import com.mwagent.tools.apps.NavigateTool
+import com.mwagent.tools.apps.OpenLinkTool
+import com.mwagent.tools.apps.ShareTool
+import com.mwagent.tools.media.DownloadMediaTool
+import com.mwagent.tools.media.SaveToDownloadsTool
+import com.mwagent.tools.web.CurrencyTool
+import com.mwagent.system.media.MediaDownloader
 import com.mwagent.tools.device.DeviceStatusTool
 import com.mwagent.tools.device.FlashlightTool
 import com.mwagent.tools.device.QrCodeTool
@@ -180,6 +186,8 @@ class AppContainer(context: Context) {
             WebSearchTool(WebSearcher(httpClients)),
             ReadWebpageTool(PageFetcher(httpClients)),
             WeatherTool(httpClients),
+            CurrencyTool(httpClients),
+            DownloadMediaTool(MediaDownloader(python, File(shellAccess.workspace, DOWNLOADS_DIR)), attachments),
             LocationTool(deviceLocation),
             TelegramMeTool(telegram),
             TelegramChatsTool(telegram),
@@ -208,6 +216,7 @@ class AppContainer(context: Context) {
             ReadFileTool(deviceFiles, attachments),
             WriteFileTool(deviceFiles),
             SendFilesTool(deviceFiles, attachments),
+            SaveToDownloadsTool(deviceFiles, attachments),
             CopyToClipboardTool(clipboard),
             ReadClipboardTool(clipboard),
             DeviceStatusTool(DeviceStatus(appContext)),
@@ -223,6 +232,8 @@ class AppContainer(context: Context) {
             DialTool(phoneIntents),
             ComposeMessageTool(phoneIntents),
             NavigateTool(phoneIntents),
+            OpenLinkTool(phoneIntents),
+            ShareTool(phoneIntents, deviceFiles, attachments),
             ListChatsTool(chats),
             ReadChatTool(chats),
             SearchMessagesTool(chats),
@@ -287,5 +298,6 @@ class AppContainer(context: Context) {
         const val UPLOADS_DIR = "uploads"
         const val MODEL_CATALOG_DIR = "model-catalog"
         const val SKILLS_DIR = "skills"
+        const val DOWNLOADS_DIR = "downloads"
     }
 }

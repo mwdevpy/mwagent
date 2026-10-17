@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="docs/header.svg" alt="MW AGENT" width="505">
+  <img src="docs/header.svg" alt="MW" width="275">
 </h1>
 
 <p align="center">
@@ -82,6 +82,10 @@
 >
 > **"Where am I, and build a walking route to the nearest pharmacy"** GPS, web search, maps
 >
+> **"Download this TikTok and the sound from this YouTube video"** saved to Downloads and shown in the chat
+>
+> **"How much is 250 euros in rubles?"** today's rate and the amount
+>
 > **"Make a QR code for my Wi-Fi so guests can join"** a scannable picture right in the chat
 >
 > **"Put a dentist appointment on Friday at 15:30 in my calendar"** a filled-in event, you tap save
@@ -131,6 +135,7 @@
 - Python 3.13 on the phone (Chaquopy) with a `phone` module for long automated flows and saved routines.
 - Shell in a sandbox (default), Termux, Shizuku or root.
 - Device status, flashlight, volume, clipboard and QR codes.
+- Video downloads by link: YouTube up to 1080p with the sound joined on the phone, TikTok videos, photo posts and sounds, plus Instagram, X, VK, Reddit and the other sites yt-dlp supports. Files land in Downloads/MW AGENT.
 - Calendar events, the dialer, SMS and email drafts and map routes open in your own apps, and you finish the action there.
 - Location from GPS or the network with the nearest street address.
 - File access limited to the app folder by default, or phone storage with All files access, or root.
@@ -184,10 +189,10 @@
 
 ## Tools
 
-50 built-in tools plus any number of MCP servers. Each one is **Off**, **Ask** or **Auto**, globally in Settings and per agent. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session.
+55 built-in tools plus any number of MCP servers. Each one is **Off**, **Ask** or **Auto**, globally in Settings and per agent. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session.
 
 <details>
-<summary><b>See all 50 tools</b></summary>
+<summary><b>See all 55 tools</b></summary>
 
 **Web and world**
 
@@ -197,6 +202,8 @@
 | `read_webpage` | A page as clean text through Jina Reader, directly or your own reader | Auto |
 | `get_weather` | Current weather and a 1 to 7 day forecast from Open-Meteo | Auto |
 | `get_location` | GPS or network position with the nearest address | Ask |
+| `currency_rates` | Rates for 160 currencies and conversion, from exchangerate-api.com | Auto |
+| `download_media` | Video, sound or photos by link: YouTube, TikTok, Instagram, X, VK and more | Auto |
 
 **Telegram**
 
@@ -236,6 +243,8 @@
 | `dial_number` | The dialer with the number | Ask |
 | `compose_message` | A ready SMS or email | Ask |
 | `navigate_to` | A route in your maps app | Auto |
+| `open_link` | A link in the browser or the app that handles it | Auto |
+| `share` | The share sheet with text or files | Ask |
 
 **Code and skills**
 
@@ -255,6 +264,7 @@
 | `list_files`, `read_file` | Browse and read files in the allowed scope | Auto |
 | `write_file` | Write or append text | Ask |
 | `send_files` | Show files and images in the chat | Auto |
+| `save_to_downloads` | Put a file in Downloads/MW AGENT | Auto |
 
 **Time**
 
@@ -341,7 +351,7 @@ Android only lets an app open other apps while it is on screen. Keep MW AGENT op
 
 - **Nothing goes to us.** No analytics, no crash reports, no accounts, cloud backup off.
 - **Local and encrypted.** Chats sit in a local database. Provider keys, tool settings and the Telegram session are encrypted with an Android Keystore key.
-- **Direct traffic only.** Your messages go to the provider you set up, Telegram traffic only to Telegram. Defaults that touch public services, each replaceable in Settings: DuckDuckGo (`web_search`), r.jina.ai (`read_webpage`), Open-Meteo (`get_weather`). Source pills load favicons from the sites themselves. The update check calls `api.github.com` when you tap it.
+- **Direct traffic only.** Your messages go to the provider you set up, Telegram traffic only to Telegram. Defaults that touch public services, each replaceable in Settings: DuckDuckGo (`web_search`), r.jina.ai (`read_webpage`), Open-Meteo (`get_weather`). `currency_rates` asks open.er-api.com, and `download_media` talks only to the site of the link. Source pills load favicons from the sites themselves. The update check calls `api.github.com` when you tap it.
 - **You approve the risky parts.** Sending, reading private data, running code and changing settings ask first by default. Calls, SMS, emails and calendar events are only prepared, you finish them yourself.
 - **Permissions:** internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders), location (only after you grant it in Device access) and a foreground service (background streaming). Termux, All files access and the accessibility service are optional and off until you enable them. No camera or contacts permission. Location is read only when a reply calls `get_location`; address lookup uses the system geocoder, which on some phones contacts the phone maker's service.
 
@@ -352,7 +362,8 @@ Android only lets an app open other apps while it is on screen. Keep MW AGENT op
 - Любая модель через свой ключ: OpenAI-совместимые, Anthropic, Gemini, OpenRouter, Ollama, LM Studio.
 - Telegram через user API: чаты, поиск, отправка сообщений и файлов, скрипты на Telethon.
 - Навыки: агент пишет недостающую логику на Python, сохраняет и исправляет её сам.
-- Фонарик, громкость, буфер обмена, QR-коды, события в календаре, звонилка, SMS, письма и маршруты.
+- Скачивание видео и звука по ссылке: YouTube, TikTok, Instagram, X, VK и другие, сразу в Загрузки.
+- Курсы валют, фонарик, громкость, буфер обмена, QR-коды, события в календаре, звонилка, SMS, письма, маршруты и «Поделиться».
 - Без сервера, аккаунта и аналитики. Ключи и сессия Telegram зашифрованы, опасные действия спрашивают разрешение.
 
 Скачать: [последний релиз](https://github.com/mwdevpy/mwagent/releases/latest). Интерфейс на русском и английском.

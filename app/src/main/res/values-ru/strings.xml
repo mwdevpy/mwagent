@@ -826,4 +826,14 @@
     <string name="tools_compose_message_summary">Открывает готовое сообщение, отправляете вы</string>
     <string name="tools_navigate_title">Маршрут</string>
     <string name="tools_navigate_summary">Открывает маршрут в картах</string>
+    <string name="tools_currency_title">Курсы валют</string>
+    <string name="tools_currency_summary">Курсы 160 валют и пересчёт суммы</string>
+    <string name="tools_download_media_title">Скачать видео</string>
+    <string name="tools_download_media_summary">YouTube, TikTok, Instagram и другие по ссылке, видео или звук</string>
+    <string name="tools_open_link_title">Открыть ссылку</string>
+    <string name="tools_open_link_summary">Открывает ссылку в браузере или нужном приложении</string>
+    <string name="tools_share_title">Поделиться</string>
+    <string name="tools_share_summary">Открывает меню «Поделиться» с текстом или файлами</string>
+    <string name="tools_save_downloads_title">Сохранить в Загрузки</string>
+    <string name="tools_save_downloads_summary">Кладёт файл в Загрузки/MW AGENT</string>
 </resources>

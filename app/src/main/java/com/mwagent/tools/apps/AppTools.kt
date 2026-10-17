@@ -1,8 +1,11 @@
 package com.mwagent.tools.apps
 
+import android.net.Uri
+import com.mwagent.data.attachments.AttachmentStore
 import com.mwagent.data.settings.ToolPermission
 import com.mwagent.data.settings.ToolSettings
 import com.mwagent.llm.ToolSpec
+import com.mwagent.system.files.DeviceFiles
 import com.mwagent.system.intents.IntentResult
 import com.mwagent.system.intents.PhoneIntents
 import com.mwagent.system.intents.TravelMode
@@ -11,12 +14,16 @@ import com.mwagent.tools.ToolArgumentException
 import com.mwagent.tools.ToolOutcome
 import com.mwagent.tools.enumProperty
 import com.mwagent.tools.objectSchema
+import com.mwagent.tools.optionalArray
 import com.mwagent.tools.optionalString
 import com.mwagent.tools.requireString
+import com.mwagent.tools.stringArrayProperty
 import com.mwagent.tools.stringProperty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -111,6 +118,62 @@ class NavigateTool(private val intents: PhoneIntents) : Tool {
         const val NAME = "navigate_to"
         private const val DESTINATION = "destination"
         private const val MODE = "mode"
+    }
+}
+
+class OpenLinkTool(private val intents: PhoneIntents) : Tool {
+    override val spec = ToolSpec(
+        name = NAME,
+        description = "Opens a web link in the user's browser, or in the app that handles it (YouTube, maps, a store page).",
+        parameters = objectSchema(required = listOf(URL)) {
+            stringProperty(URL, "Full http(s) link")
+        },
+    )
+
+    override suspend fun execute(arguments: JsonObject, settings: ToolSettings): ToolOutcome {
+        val url = arguments.requireString(URL).trim()
+        val uri = Uri.parse(url)
+        if (uri.scheme !in setOf("http", "https") || uri.host.isNullOrEmpty()) throw ToolArgumentException("Only http(s) links can be opened")
+        return withContext(Dispatchers.Main) { intents.openLink(uri) }.toOutcome("Opened $url.")
+    }
+
+    companion object {
+        const val NAME = "open_link"
+        private const val URL = "url"
+    }
+}
+
+class ShareTool(private val intents: PhoneIntents, private val files: DeviceFiles, private val attachments: AttachmentStore) : Tool {
+    override val spec = ToolSpec(
+        name = NAME,
+        description = "Opens the Android share sheet with text and/or files, so the user picks where to send them: a messenger, mail, Drive, Bluetooth and so on.",
+        parameters = objectSchema(required = emptyList()) {
+            stringProperty(TEXT, "Text to share")
+            stringArrayProperty(PATHS, "Files on the phone to share, up to $MAX_FILES")
+        },
+    )
+
+    override val defaultPermission = ToolPermission.ASK
+
+    override suspend fun execute(arguments: JsonObject, settings: ToolSettings): ToolOutcome {
+        val text = arguments.optionalString(TEXT)?.takeIf(String::isNotBlank)
+        val paths = arguments.optionalArray(PATHS).mapNotNull { (it as? JsonPrimitive)?.contentOrNull?.trim()?.takeIf(String::isNotEmpty) }
+        if (text == null && paths.isEmpty()) throw ToolArgumentException("Give text, files, or both")
+        if (paths.size > MAX_FILES) throw ToolArgumentException("At most $MAX_FILES files")
+        val shared = paths.map { path ->
+            val file = files.resolve(path)
+            val attachment = files.withLocalCopy(file, settings.access.files, MAX_BYTES) { attachments.importLinked(it) }
+            attachments.viewable(attachment).copy(name = file.name)
+        }
+        return withContext(Dispatchers.Main) { intents.share(text, shared) }.toOutcome("The share sheet is open. The user picks where to send it.")
+    }
+
+    companion object {
+        const val NAME = "share"
+        private const val TEXT = "text"
+        private const val PATHS = "paths"
+        private const val MAX_FILES = 10
+        private const val MAX_BYTES = 2L * 1024 * 1024 * 1024
     }
 }
 

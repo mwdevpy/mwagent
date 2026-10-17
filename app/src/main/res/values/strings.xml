@@ -821,4 +821,14 @@
     <string name="tools_compose_message_summary">Opens a ready message, you tap send</string>
     <string name="tools_navigate_title">Route</string>
     <string name="tools_navigate_summary">Opens a route in your maps app</string>
+    <string name="tools_currency_title">Exchange rates</string>
+    <string name="tools_currency_summary">Rates for 160 currencies and conversion of an amount</string>
+    <string name="tools_download_media_title">Download video</string>
+    <string name="tools_download_media_summary">YouTube, TikTok, Instagram and more by link, video or sound</string>
+    <string name="tools_open_link_title">Open link</string>
+    <string name="tools_open_link_summary">Opens a link in the browser or the right app</string>
+    <string name="tools_share_title">Share</string>
+    <string name="tools_share_summary">Opens the share sheet with text or files</string>
+    <string name="tools_save_downloads_title">Save to Downloads</string>
+    <string name="tools_save_downloads_summary">Puts a file in Downloads/MW AGENT</string>
 </resources>

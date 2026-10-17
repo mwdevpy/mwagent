@@ -32,4 +32,6 @@ Vendor glyphs in `app/src/main/res/drawable/ic_vendor_*.xml` are monochrome trac
 - [Telethon](https://github.com/LonamiWebs/Telethon) 1.42.0 (MIT): Telegram user API, `app/src/main/python/telethon/`
 - [pyaes](https://github.com/ricmoo/pyaes) 1.6.1 (MIT): AES for Telethon, `app/src/main/python/pyaes/`
 - [rsa](https://github.com/sybrenstuvel/python-rsa) 4.9.1 (Apache-2.0): RSA for Telethon, `app/src/main/python/rsa/`
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) 2026.08.19 (Unlicense): video downloads for download_media, `app/src/main/python/yt_dlp/`
+- [certifi](https://github.com/certifi/python-certifi) 2026.07.22 (MPL-2.0): root certificates for HTTPS in Python, `app/src/main/python/certifi/`
 - [pyasn1](https://github.com/pyasn1/pyasn1) 0.6.1 (BSD-2-Clause): ASN.1 for rsa, `app/src/main/python/pyasn1/`

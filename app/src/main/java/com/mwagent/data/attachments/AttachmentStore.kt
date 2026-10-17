@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.system.ErrnoException
+import android.system.Os
 import android.util.Base64
 import android.webkit.MimeTypeMap
 import kotlinx.coroutines.Dispatchers
@@ -78,6 +80,20 @@ class AttachmentStore(private val context: Context) {
         } else {
             storeRaw(name, mimeType, forModel) { target -> source.inputStream().use { copyCapped(it, target) } }
         }
+    }
+
+    /** Shows a large local file in the chat without a second copy: a hard link when possible, a capped copy otherwise. */
+    suspend fun importLinked(source: File): Attachment = withContext(Dispatchers.IO) {
+        val name = source.name
+        val target = File(directory, newId(TextFormats.extension(name)))
+        val linked = try {
+            Os.link(source.absolutePath, target.absolutePath)
+            true
+        } catch (e: ErrnoException) {
+            false
+        }
+        if (!linked) return@withContext storeRaw(name, TextFormats.guessMimeType(name), forModel = false) { copy -> source.inputStream().use { copyCapped(it, copy) } }
+        Attachment(target.name, name, TextFormats.guessMimeType(name), target.length(), forModel = false)
     }
 
     suspend fun importBytes(name: String, bytes: ByteArray, forModel: Boolean): Attachment = withContext(Dispatchers.IO) {

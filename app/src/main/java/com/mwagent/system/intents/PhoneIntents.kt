@@ -1,10 +1,14 @@
 package com.mwagent.system.intents
 
 import android.content.ActivityNotFoundException
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.CalendarContract
+import androidx.core.content.FileProvider
+import com.mwagent.data.files.ViewableFile
+import com.mwagent.ui.files.commonMimeType
 
 /**
  * Opens other apps with everything filled in: the dialer, a message, a calendar event, navigation.
@@ -46,6 +50,29 @@ class PhoneIntents(private val context: Context, private val isAppVisible: () ->
         return launch(intent)
     }
 
+    fun openLink(url: Uri): IntentResult = launch(Intent(Intent.ACTION_VIEW, url).addCategory(Intent.CATEGORY_BROWSABLE))
+
+    /** The system share sheet with text and/or files; files must sit in a folder the app's FileProvider serves. */
+    fun share(text: String?, files: List<ViewableFile>): IntentResult {
+        val uris = try {
+            files.map { FileProvider.getUriForFile(context, context.packageName + FILE_PROVIDER_SUFFIX, it.file, it.name) }
+        } catch (e: IllegalArgumentException) {
+            return IntentResult.BLOCKED
+        }
+        val send = when {
+            uris.size > 1 -> Intent(Intent.ACTION_SEND_MULTIPLE).putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(uris))
+            uris.size == 1 -> Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_STREAM, uris.single())
+            else -> Intent(Intent.ACTION_SEND)
+        }
+        send.type = if (uris.isEmpty()) "text/plain" else commonMimeType(files.map { it.mimeType })
+        text?.let { send.putExtra(Intent.EXTRA_TEXT, it) }
+        if (uris.isNotEmpty()) {
+            send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            send.clipData = ClipData.newRawUri(null, uris.first()).also { clip -> uris.drop(1).forEach { clip.addItem(ClipData.Item(it)) } }
+        }
+        return launch(Intent.createChooser(send, null))
+    }
+
     private fun launch(intent: Intent): IntentResult {
         if (!isAppVisible()) return IntentResult.APP_HIDDEN
         if (intent.resolveActivity(context.packageManager) == null) return IntentResult.NO_APP
@@ -59,6 +86,8 @@ class PhoneIntents(private val context: Context, private val isAppVisible: () ->
         }
     }
 }
+
+private const val FILE_PROVIDER_SUFFIX = ".files"
 
 enum class IntentResult { OPENED, APP_HIDDEN, NO_APP, BLOCKED }
 

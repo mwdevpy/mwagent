@@ -14,6 +14,11 @@ import com.composables.icons.materialsymbols.rounded.Event
 import com.composables.icons.materialsymbols.rounded.Call
 import com.composables.icons.materialsymbols.rounded.Sms
 import com.composables.icons.materialsymbols.rounded.Directions
+import com.composables.icons.materialsymbols.rounded.Download
+import com.composables.icons.materialsymbols.rounded.Download_done
+import com.composables.icons.materialsymbols.rounded.Currency_exchange
+import com.composables.icons.materialsymbols.rounded.Share
+import com.composables.icons.materialsymbols.rounded.Open_in_new
 import com.composables.icons.materialsymbols.rounded.Content_copy
 import com.composables.icons.materialsymbols.rounded.Content_paste
 import com.composables.icons.materialsymbols.rounded.Delete
@@ -82,6 +87,11 @@ import com.mwagent.tools.apps.AddCalendarEventTool
 import com.mwagent.tools.apps.ComposeMessageTool
 import com.mwagent.tools.apps.DialTool
 import com.mwagent.tools.apps.NavigateTool
+import com.mwagent.tools.apps.OpenLinkTool
+import com.mwagent.tools.apps.ShareTool
+import com.mwagent.tools.media.DownloadMediaTool
+import com.mwagent.tools.media.SaveToDownloadsTool
+import com.mwagent.tools.web.CurrencyTool
 import com.mwagent.tools.device.DeviceStatusTool
 import com.mwagent.tools.device.FlashlightTool
 import com.mwagent.tools.device.QrCodeTool
@@ -139,6 +149,8 @@ object ToolCatalog {
         ExportChatTool.NAME to known(ToolCategory.CHATS, MaterialSymbols.Rounded.File_save, R.string.tools_export_chat_title, R.string.tools_export_chat_summary),
         WebSearchTool.NAME to known(ToolCategory.WEB, MaterialSymbols.Rounded.Travel_explore, R.string.tools_web_search_title, R.string.tools_web_search_summary),
         ReadWebpageTool.NAME to known(ToolCategory.WEB, MaterialSymbols.Rounded.Language, R.string.tools_read_webpage_title, R.string.tools_read_webpage_summary),
+        CurrencyTool.NAME to known(ToolCategory.WEB, MaterialSymbols.Rounded.Currency_exchange, R.string.tools_currency_title, R.string.tools_currency_summary),
+        DownloadMediaTool.NAME to known(ToolCategory.WEB, MaterialSymbols.Rounded.Download, R.string.tools_download_media_title, R.string.tools_download_media_summary),
         WeatherTool.NAME to known(ToolCategory.WEB, MaterialSymbols.Rounded.Partly_cloudy_day, R.string.tools_weather_title, R.string.tools_weather_summary),
         ReadScreenTool.NAME to known(ToolCategory.SCREEN, MaterialSymbols.Rounded.Screenshot_monitor, R.string.tools_read_screen_title, R.string.tools_read_screen_summary),
         ShowUiTool.NAME to known(ToolCategory.SCREEN, MaterialSymbols.Rounded.Smart_button, R.string.tools_show_ui_title, R.string.tools_show_ui_summary),
@@ -166,7 +178,10 @@ object ToolCatalog {
         AddCalendarEventTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Event, R.string.tools_calendar_event_title, R.string.tools_calendar_event_summary),
         DialTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Call, R.string.tools_dial_title, R.string.tools_dial_summary),
         ComposeMessageTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Sms, R.string.tools_compose_message_title, R.string.tools_compose_message_summary),
+        OpenLinkTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Open_in_new, R.string.tools_open_link_title, R.string.tools_open_link_summary),
+        ShareTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Share, R.string.tools_share_title, R.string.tools_share_summary),
         NavigateTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Directions, R.string.tools_navigate_title, R.string.tools_navigate_summary),
+        SaveToDownloadsTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Download_done, R.string.tools_save_downloads_title, R.string.tools_save_downloads_summary),
         CopyToClipboardTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Content_copy, R.string.tools_copy_clipboard_title, R.string.tools_copy_clipboard_summary),
         ReadClipboardTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Content_paste, R.string.tools_read_clipboard_title, R.string.tools_read_clipboard_summary),
         ListFilesTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Folder_open, R.string.tools_list_files_title, R.string.tools_list_files_summary),
