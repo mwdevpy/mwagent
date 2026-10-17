@@ -82,6 +82,12 @@ fun JsonObjectBuilder.stringProperty(name: String, description: String, maxLengt
     maxLength?.let { put("maxLength", it) }
 }
 
+fun JsonObjectBuilder.enumProperty(name: String, description: String, values: List<String>) = putJsonObject(name) {
+    put("type", "string")
+    put("description", description)
+    putJsonArray("enum") { values.forEach { add(JsonPrimitive(it)) } }
+}
+
 fun JsonObjectBuilder.integerProperty(name: String, description: String, minimum: Int, maximum: Int) = putJsonObject(name) {
     put("type", "integer")
     put("description", description)

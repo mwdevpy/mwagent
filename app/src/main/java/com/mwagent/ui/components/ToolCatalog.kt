@@ -6,6 +6,14 @@ import com.composables.icons.materialsymbols.MaterialSymbols
 import com.composables.icons.materialsymbols.rounded.Account_circle
 import com.composables.icons.materialsymbols.rounded.Chat
 import com.composables.icons.materialsymbols.rounded.Construction
+import com.composables.icons.materialsymbols.rounded.Battery_android_full
+import com.composables.icons.materialsymbols.rounded.Flashlight_on
+import com.composables.icons.materialsymbols.rounded.Volume_up
+import com.composables.icons.materialsymbols.rounded.Qr_code_2
+import com.composables.icons.materialsymbols.rounded.Event
+import com.composables.icons.materialsymbols.rounded.Call
+import com.composables.icons.materialsymbols.rounded.Sms
+import com.composables.icons.materialsymbols.rounded.Directions
 import com.composables.icons.materialsymbols.rounded.Content_copy
 import com.composables.icons.materialsymbols.rounded.Content_paste
 import com.composables.icons.materialsymbols.rounded.Delete
@@ -70,6 +78,14 @@ import com.mwagent.tools.telegram.TelegramMessagesTool
 import com.mwagent.tools.telegram.TelegramSearchTool
 import com.mwagent.tools.system.CopyToClipboardTool
 import com.mwagent.tools.system.ReadClipboardTool
+import com.mwagent.tools.apps.AddCalendarEventTool
+import com.mwagent.tools.apps.ComposeMessageTool
+import com.mwagent.tools.apps.DialTool
+import com.mwagent.tools.apps.NavigateTool
+import com.mwagent.tools.device.DeviceStatusTool
+import com.mwagent.tools.device.FlashlightTool
+import com.mwagent.tools.device.QrCodeTool
+import com.mwagent.tools.device.SetVolumeTool
 import com.mwagent.tools.telegram.TelegramSendTool
 import com.mwagent.tools.memory.MemoryDeleteTool
 import com.mwagent.tools.memory.MemorySaveTool
@@ -97,6 +113,8 @@ enum class ToolCategory(@StringRes val title: Int) {
     WEB(R.string.tools_category_web),
     SCREEN(R.string.tools_category_screen),
     PHONE(R.string.tools_category_phone),
+    DEVICE(R.string.tools_category_device),
+    APPS(R.string.tools_category_apps),
     TELEGRAM(R.string.tools_category_telegram),
     FILES(R.string.tools_category_files),
     TIME(R.string.tools_category_time),
@@ -141,6 +159,14 @@ object ToolCatalog {
         PhoneActionTool.NAME to known(ToolCategory.PHONE, MaterialSymbols.Rounded.Touch_app, R.string.tools_phone_action_title, R.string.tools_phone_action_summary),
         RunCommandTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Terminal, R.string.tools_run_command_title, R.string.tools_run_command_summary),
         RunPythonTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Code, R.string.tools_run_python_title, R.string.tools_run_python_summary),
+        DeviceStatusTool.NAME to known(ToolCategory.DEVICE, MaterialSymbols.Rounded.Battery_android_full, R.string.tools_device_status_title, R.string.tools_device_status_summary),
+        FlashlightTool.NAME to known(ToolCategory.DEVICE, MaterialSymbols.Rounded.Flashlight_on, R.string.tools_flashlight_title, R.string.tools_flashlight_summary),
+        SetVolumeTool.NAME to known(ToolCategory.DEVICE, MaterialSymbols.Rounded.Volume_up, R.string.tools_set_volume_title, R.string.tools_set_volume_summary),
+        QrCodeTool.NAME to known(ToolCategory.DEVICE, MaterialSymbols.Rounded.Qr_code_2, R.string.tools_qr_code_title, R.string.tools_qr_code_summary),
+        AddCalendarEventTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Event, R.string.tools_calendar_event_title, R.string.tools_calendar_event_summary),
+        DialTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Call, R.string.tools_dial_title, R.string.tools_dial_summary),
+        ComposeMessageTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Sms, R.string.tools_compose_message_title, R.string.tools_compose_message_summary),
+        NavigateTool.NAME to known(ToolCategory.APPS, MaterialSymbols.Rounded.Directions, R.string.tools_navigate_title, R.string.tools_navigate_summary),
         CopyToClipboardTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Content_copy, R.string.tools_copy_clipboard_title, R.string.tools_copy_clipboard_summary),
         ReadClipboardTool.NAME to known(ToolCategory.SYSTEM, MaterialSymbols.Rounded.Content_paste, R.string.tools_read_clipboard_title, R.string.tools_read_clipboard_summary),
         ListFilesTool.NAME to known(ToolCategory.FILES, MaterialSymbols.Rounded.Folder_open, R.string.tools_list_files_title, R.string.tools_list_files_summary),

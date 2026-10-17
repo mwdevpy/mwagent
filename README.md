@@ -74,7 +74,7 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 
 **Tools**
 
-41 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
+49 built-in tools plus any number of [MCP](https://modelcontextprotocol.io) servers. Each tool is Off, Ask or Auto, globally in Settings and per agent in the agent editor. An Ask tool pauses the reply and shows a card with the arguments: Allow, Deny, or Always allow in this session. A notification asks if the app is in the background.
 
 <details>
 <summary>All built-in tools</summary>
@@ -109,6 +109,14 @@ The project is at version 0.8, so expect some rough edges. Bug reports are welco
 | `send_files` | Show phone files and images in the chat | Auto |
 | `copy_to_clipboard` | Put text on the clipboard | Auto |
 | `read_clipboard` | Read the copied text | Ask |
+| `device_status` | Battery, charging, network, storage, RAM, volume, brightness | Auto |
+| `flashlight` | Flashlight on or off | Auto |
+| `set_volume` | Media, ring, notification, alarm or call volume | Ask |
+| `make_qr_code` | QR code for a link, Wi-Fi, contact or text, shown in the chat | Auto |
+| `add_calendar_event` | Filled-in event in your calendar app, you save it | Ask |
+| `dial_number` | Dialer with the number filled in, you tap call | Ask |
+| `compose_message` | Ready SMS or email in your app, you tap send | Ask |
+| `navigate_to` | Route in your maps app | Auto |
 | `set_reminder`, `list_reminders`, `cancel_reminder` | Reminders that notify you and open the chat | Auto |
 | `set_alarm`, `set_timer` | Alarm or timer in the system clock app, needs MW AGENT on screen | Auto |
 | `list_chats`, `read_chat`, `search_messages` | Look through your other chats | Auto |

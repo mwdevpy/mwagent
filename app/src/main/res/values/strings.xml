@@ -803,4 +803,22 @@
     <string name="files_error_delete">Could not delete</string>
     <string name="files_error_share">Could not share the files</string>
     <string name="files_error_name">That name can\'t be used</string>
+    <string name="tools_category_device">Device</string>
+    <string name="tools_category_apps">Other apps</string>
+    <string name="tools_device_status_title">Phone status</string>
+    <string name="tools_device_status_summary">Battery, network, storage, memory, volume and brightness</string>
+    <string name="tools_flashlight_title">Flashlight</string>
+    <string name="tools_flashlight_summary">Turns the flashlight on and off</string>
+    <string name="tools_set_volume_title">Volume</string>
+    <string name="tools_set_volume_summary">Sets media, ring, notification, alarm or call volume</string>
+    <string name="tools_qr_code_title">QR code</string>
+    <string name="tools_qr_code_summary">Makes a QR code for a link, Wi-Fi, a contact or any text</string>
+    <string name="tools_calendar_event_title">Calendar event</string>
+    <string name="tools_calendar_event_summary">Opens a filled-in event in your calendar for you to save</string>
+    <string name="tools_dial_title">Dial a number</string>
+    <string name="tools_dial_summary">Opens the dialer with the number, you tap call</string>
+    <string name="tools_compose_message_title">SMS or email</string>
+    <string name="tools_compose_message_summary">Opens a ready message, you tap send</string>
+    <string name="tools_navigate_title">Route</string>
+    <string name="tools_navigate_summary">Opens a route in your maps app</string>
 </resources>

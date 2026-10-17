@@ -102,9 +102,3 @@ class ShowDiagramTool : Tool {
         const val NAME = "show_diagram"
     }
 }
-
-private fun JsonObjectBuilder.enumProperty(name: String, description: String, values: List<String>) = putJsonObject(name) {
-    put("type", "string")
-    put("description", description)
-    putJsonArray("enum") { values.forEach { add(it) } }
-}

@@ -87,6 +87,17 @@ import com.mwagent.tools.telegram.TelegramSearchTool
 import com.mwagent.tools.system.CopyToClipboardTool
 import com.mwagent.tools.system.ReadClipboardTool
 import com.mwagent.system.clipboard.DeviceClipboard
+import com.mwagent.system.device.DeviceControls
+import com.mwagent.system.device.DeviceStatus
+import com.mwagent.system.intents.PhoneIntents
+import com.mwagent.tools.apps.AddCalendarEventTool
+import com.mwagent.tools.apps.ComposeMessageTool
+import com.mwagent.tools.apps.DialTool
+import com.mwagent.tools.apps.NavigateTool
+import com.mwagent.tools.device.DeviceStatusTool
+import com.mwagent.tools.device.FlashlightTool
+import com.mwagent.tools.device.QrCodeTool
+import com.mwagent.tools.device.SetVolumeTool
 import com.mwagent.tools.telegram.TelegramSendTool
 import com.mwagent.tools.weather.WeatherTool
 import com.mwagent.tools.web.PageFetcher
@@ -152,9 +163,11 @@ class AppContainer(context: Context) {
     val phoneSounds = PhoneUseSounds(appContext)
     val deviceLocation = DeviceLocation(appContext)
     private val clipboard = DeviceClipboard(appContext)
+    private val deviceControls = DeviceControls(appContext)
 
     val prompts = UserPrompts()
     private val clockApp = ClockApp(appContext) { visibility.isVisible.value }
+    private val phoneIntents = PhoneIntents(appContext) { visibility.isVisible.value }
     private val mcpOAuth = McpOAuth(httpClients::current)
     val mcpSignIn = McpSignIn(mcpOAuth, settings)
     val mcp = McpToolbox(httpClients, attachments, prompts, mcpOAuth, ::saveMcpSession, applicationScope)
@@ -197,11 +210,19 @@ class AppContainer(context: Context) {
             SendFilesTool(deviceFiles, attachments),
             CopyToClipboardTool(clipboard),
             ReadClipboardTool(clipboard),
+            DeviceStatusTool(DeviceStatus(appContext)),
+            FlashlightTool(deviceControls),
+            SetVolumeTool(deviceControls),
+            QrCodeTool(attachments),
             SetReminderTool(reminders),
             ListRemindersTool(reminders),
             CancelReminderTool(reminders),
             SetAlarmTool(clockApp),
             SetTimerTool(clockApp),
+            AddCalendarEventTool(phoneIntents),
+            DialTool(phoneIntents),
+            ComposeMessageTool(phoneIntents),
+            NavigateTool(phoneIntents),
             ListChatsTool(chats),
             ReadChatTool(chats),
             SearchMessagesTool(chats),

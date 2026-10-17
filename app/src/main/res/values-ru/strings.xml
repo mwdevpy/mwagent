@@ -808,4 +808,22 @@
     <string name="files_error_delete">Не удалось удалить</string>
     <string name="files_error_share">Не удалось поделиться файлами</string>
     <string name="files_error_name">Такое название не подходит</string>
+    <string name="tools_category_device">Устройство</string>
+    <string name="tools_category_apps">Другие приложения</string>
+    <string name="tools_device_status_title">Состояние телефона</string>
+    <string name="tools_device_status_summary">Батарея, сеть, память, громкость и яркость</string>
+    <string name="tools_flashlight_title">Фонарик</string>
+    <string name="tools_flashlight_summary">Включает и выключает фонарик</string>
+    <string name="tools_set_volume_title">Громкость</string>
+    <string name="tools_set_volume_summary">Меняет громкость медиа, звонка, уведомлений, будильника или разговора</string>
+    <string name="tools_qr_code_title">QR-код</string>
+    <string name="tools_qr_code_summary">Делает QR-код для ссылки, Wi-Fi, контакта или любого текста</string>
+    <string name="tools_calendar_event_title">Событие в календаре</string>
+    <string name="tools_calendar_event_summary">Открывает заполненное событие, вы его сохраняете</string>
+    <string name="tools_dial_title">Набор номера</string>
+    <string name="tools_dial_summary">Открывает звонилку с номером, звоните вы</string>
+    <string name="tools_compose_message_title">SMS или письмо</string>
+    <string name="tools_compose_message_summary">Открывает готовое сообщение, отправляете вы</string>
+    <string name="tools_navigate_title">Маршрут</string>
+    <string name="tools_navigate_summary">Открывает маршрут в картах</string>
 </resources>

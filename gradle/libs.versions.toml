@@ -1,4 +1,5 @@
 [versions]
+zxing = "3.5.3"
 agp = "9.4.1"
 kotlin = "2.4.20"
 chaquopy = "17.0.0"
@@ -25,6 +26,7 @@ shizuku = "13.1.5"
 dyn4j = "6.0.0"
 
 [libraries]
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }

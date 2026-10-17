@@ -21,8 +21,8 @@ android {
         applicationId = "com.mwagent"
         minSdk = 29
         targetSdk = 36
-        versionCode = 19
-        versionName = "0.9.9"
+        versionCode = 20
+        versionName = "0.10.0"
 
         ndk { abiFilters += "arm64-v8a" }
     }
@@ -83,6 +83,7 @@ ksp {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.zxing.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
