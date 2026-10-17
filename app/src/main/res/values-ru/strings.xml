@@ -87,6 +87,11 @@
     <string name="settings_telegram_summary_none">Не привязан</string>
     <string name="settings_telegram_summary_linked">Привязан как @%1$s</string>
     <string name="settings_telegram_summary_linked_unnamed">Привязан</string>
+    <string name="telegram_step_keys">Подключение приложения</string>
+    <string name="telegram_step_phone">Номер телефона</string>
+    <string name="telegram_step_code">Введите код</string>
+    <string name="telegram_step_password">Пароль двухэтапной проверки</string>
+    <string name="telegram_step_linked">Аккаунт привязан</string>
     <string name="telegram_intro">Вход в ваш собственный аккаунт Telegram через официальный пользовательский API. API ID и API hash берутся на my.telegram.org в разделе API development tools. Хранятся зашифрованными на этом телефоне.</string>
     <string name="telegram_keys_title">Ключи API</string>
     <string name="telegram_api_id">API ID</string>

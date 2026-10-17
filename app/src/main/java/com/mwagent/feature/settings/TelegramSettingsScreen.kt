@@ -1,32 +1,48 @@
 package com.mwagent.feature.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.composables.icons.materialsymbols.MaterialSymbols
+import com.composables.icons.materialsymbols.rounded.Send
 import com.mwagent.R
 import com.mwagent.data.telegram.TelegramAccount
 import com.mwagent.data.telegram.TelegramAccountStore
@@ -35,7 +51,6 @@ import com.mwagent.telegram.TelegramErrors
 import com.mwagent.telegram.TelegramReply
 import com.mwagent.telegram.TelegramUserApi
 import com.mwagent.ui.components.FormField
-import com.mwagent.ui.components.SectionHeader
 import com.mwagent.ui.components.SettingsScaffold
 import com.mwagent.ui.components.appViewModel
 import kotlinx.coroutines.CancellationException
@@ -171,6 +186,7 @@ class TelegramSettingsViewModel(
     }
 }
 
+
 @Composable
 fun TelegramSettingsScreen(onBack: () -> Unit) {
     val viewModel = appViewModel { TelegramSettingsViewModel(it.telegramAccounts, it.telegram) }
@@ -180,118 +196,278 @@ fun TelegramSettingsScreen(onBack: () -> Unit) {
 
     SettingsScaffold(stringResource(R.string.settings_telegram), onBack) { padding ->
         val current = account ?: return@SettingsScaffold
+        val step = current.step()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text(stringResource(R.string.telegram_intro), style = MaterialTheme.typography.bodyMedium)
-            when (current.step()) {
-                TelegramStep.CREDENTIALS -> KeysForm(viewModel, current, busy)
-                TelegramStep.PHONE -> PhoneForm(viewModel, busy)
-                TelegramStep.CODE -> CodeForm(viewModel, current, busy)
-                TelegramStep.PASSWORD -> PasswordForm(viewModel, busy)
+            HeroCard(step)
+            if (step != TelegramStep.LINKED) {
+                LinearProgressIndicator(
+                    progress = { step.progress() },
+                    modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+                )
+            }
+            when (step) {
+                TelegramStep.CREDENTIALS -> KeysCard(viewModel, current, busy)
+                TelegramStep.PHONE -> PhoneCard(viewModel, busy)
+                TelegramStep.CODE -> CodeCard(viewModel, current, busy)
+                TelegramStep.PASSWORD -> PasswordCard(viewModel, busy)
                 TelegramStep.LINKED -> LinkedCard(viewModel, current, busy)
             }
-            error?.let { Text(errorText(it), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium) }
-            if (busy) CircularProgressIndicator()
+            error?.let { ErrorCard(errorText(it)) }
         }
     }
 }
 
 @Composable
-private fun KeysForm(viewModel: TelegramSettingsViewModel, current: TelegramAccount, busy: Boolean) {
+private fun HeroCard(step: TelegramStep) {
+    Surface(
+        shape = RoundedCornerShape(28.dp),
+        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    MaterialSymbols.Rounded.Send,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(28.dp),
+                )
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = stringResource(step.title()),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+                Text(
+                    text = stringResource(R.string.telegram_intro),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FormCard(content: @Composable ColumnScope.() -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            content = content,
+        )
+    }
+}
+
+@Composable
+private fun KeysCard(viewModel: TelegramSettingsViewModel, current: TelegramAccount, busy: Boolean) {
     var apiId by rememberSaveable { mutableStateOf(current.apiId?.toString().orEmpty()) }
     var apiHash by rememberSaveable { mutableStateOf(current.apiHash) }
-    SectionHeader(stringResource(R.string.telegram_keys_title), topPadding = 8.dp)
-    FormField(
-        value = apiId,
-        onValueChange = { apiId = it },
-        label = stringResource(R.string.telegram_api_id),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-    )
-    FormField(
-        value = apiHash,
-        onValueChange = { apiHash = it },
-        label = stringResource(R.string.telegram_api_hash),
-    )
-    Button(onClick = { viewModel.saveKeys(apiId, apiHash) }, enabled = !busy, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(R.string.telegram_save_keys))
+    FormCard {
+        FormField(
+            value = apiId,
+            onValueChange = { apiId = it },
+            label = stringResource(R.string.telegram_api_id),
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        FormField(
+            value = apiHash,
+            onValueChange = { apiHash = it },
+            label = stringResource(R.string.telegram_api_hash),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        PrimaryButton(stringResource(R.string.telegram_save_keys), enabled = !busy) {
+            viewModel.saveKeys(apiId, apiHash)
+        }
     }
 }
 
 @Composable
-private fun PhoneForm(viewModel: TelegramSettingsViewModel, busy: Boolean) {
+private fun PhoneCard(viewModel: TelegramSettingsViewModel, busy: Boolean) {
     var phone by rememberSaveable { mutableStateOf("") }
-    SectionHeader(stringResource(R.string.telegram_login_title), topPadding = 8.dp)
-    FormField(
-        value = phone,
-        onValueChange = { phone = it },
-        label = stringResource(R.string.telegram_phone),
-        placeholder = stringResource(R.string.telegram_phone_hint),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-    )
-    Button(onClick = { viewModel.sendCode(phone) }, enabled = !busy && phone.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(R.string.telegram_send_code))
+    FormCard {
+        FormField(
+            value = phone,
+            onValueChange = { phone = it },
+            label = stringResource(R.string.telegram_phone),
+            placeholder = stringResource(R.string.telegram_phone_hint),
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+        )
+        PrimaryButton(stringResource(R.string.telegram_send_code), enabled = !busy && phone.isNotBlank()) {
+            viewModel.sendCode(phone)
+        }
     }
 }
 
 @Composable
-private fun CodeForm(viewModel: TelegramSettingsViewModel, current: TelegramAccount, busy: Boolean) {
+private fun CodeCard(viewModel: TelegramSettingsViewModel, current: TelegramAccount, busy: Boolean) {
     var code by rememberSaveable { mutableStateOf("") }
-    SectionHeader(stringResource(R.string.telegram_login_title), topPadding = 8.dp)
-    Text(stringResource(R.string.telegram_code_hint, current.phone), style = MaterialTheme.typography.bodyMedium)
-    FormField(
-        value = code,
-        onValueChange = { code = it },
-        label = stringResource(R.string.telegram_code),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-    )
-    Button(onClick = { viewModel.submitCode(code) }, enabled = !busy && code.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(R.string.telegram_confirm))
-    }
-    TextButton(onClick = viewModel::cancelPending, enabled = !busy) {
-        Text(stringResource(R.string.telegram_other_number))
+    FormCard {
+        Text(
+            stringResource(R.string.telegram_code_hint, current.phone),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        FormField(
+            value = code,
+            onValueChange = { code = it },
+            label = stringResource(R.string.telegram_code),
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        PrimaryButton(stringResource(R.string.telegram_confirm), enabled = !busy && code.isNotBlank()) {
+            viewModel.submitCode(code)
+        }
+        SecondaryAction(stringResource(R.string.telegram_other_number), enabled = !busy, onClick = viewModel::cancelPending)
     }
 }
 
 @Composable
-private fun PasswordForm(viewModel: TelegramSettingsViewModel, busy: Boolean) {
+private fun PasswordCard(viewModel: TelegramSettingsViewModel, busy: Boolean) {
     var password by rememberSaveable { mutableStateOf("") }
-    SectionHeader(stringResource(R.string.telegram_login_title), topPadding = 8.dp)
-    FormField(
-        value = password,
-        onValueChange = { password = it },
-        label = stringResource(R.string.telegram_password),
-        visualTransformation = PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-    )
-    Button(onClick = { viewModel.submitPassword(password) }, enabled = !busy && password.isNotEmpty(), modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(R.string.telegram_confirm))
-    }
-    TextButton(onClick = viewModel::cancelPending, enabled = !busy) {
-        Text(stringResource(R.string.telegram_other_number))
+    FormCard {
+        Text(
+            stringResource(R.string.telegram_password),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        FormField(
+            value = password,
+            onValueChange = { password = it },
+            label = stringResource(R.string.telegram_password),
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        )
+        PrimaryButton(stringResource(R.string.telegram_confirm), enabled = !busy && password.isNotEmpty()) {
+            viewModel.submitPassword(password)
+        }
+        SecondaryAction(stringResource(R.string.telegram_other_number), enabled = !busy, onClick = viewModel::cancelPending)
     }
 }
 
 @Composable
 private fun LinkedCard(viewModel: TelegramSettingsViewModel, current: TelegramAccount, busy: Boolean) {
-    SectionHeader(stringResource(R.string.telegram_linked_title), topPadding = 8.dp)
-    Text(
-        text = when {
-            current.username.isNotEmpty() -> stringResource(R.string.telegram_linked_as, current.username)
-            current.firstName.isNotEmpty() -> stringResource(R.string.telegram_linked_name, current.firstName)
-            else -> stringResource(R.string.telegram_linked_plain)
-        },
-        style = MaterialTheme.typography.bodyLarge,
-    )
-    Text(stringResource(R.string.telegram_unlink_hint), style = MaterialTheme.typography.bodyMedium)
-    Button(onClick = viewModel::unlink, enabled = !busy, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(R.string.telegram_unlink))
+    val name = when {
+        current.username.isNotEmpty() -> "@${current.username}"
+        current.firstName.isNotEmpty() -> current.firstName
+        else -> stringResource(R.string.telegram_linked_plain)
     }
+    val initial = (current.firstName.ifEmpty { current.username }.firstOrNull() ?: '?').uppercaseChar().toString()
+    FormCard {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.tertiaryContainer),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = initial,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                )
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text(
+                    stringResource(R.string.telegram_linked_title),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        Text(
+            stringResource(R.string.telegram_unlink_hint),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        OutlinedButton(
+            onClick = viewModel::unlink,
+            enabled = !busy,
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            shape = RoundedCornerShape(26.dp),
+        ) {
+            Text(stringResource(R.string.telegram_unlink))
+        }
+    }
+}
+
+@Composable
+private fun PrimaryButton(label: String, enabled: Boolean, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.fillMaxWidth().height(52.dp),
+        shape = RoundedCornerShape(26.dp),
+    ) {
+        Text(label, style = MaterialTheme.typography.titleSmall)
+    }
+}
+
+@Composable
+private fun SecondaryAction(label: String, enabled: Boolean, onClick: () -> Unit) {
+    TextButton(onClick = onClick, enabled = enabled, modifier = Modifier.fillMaxWidth()) {
+        Text(label)
+    }
+}
+
+@Composable
+private fun ErrorCard(message: String) {
+    Surface(
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.errorContainer,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = message,
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onErrorContainer,
+            textAlign = TextAlign.Start,
+        )
+    }
+}
+
+private fun TelegramStep.progress(): Float = when (this) {
+    TelegramStep.CREDENTIALS -> 0.2f
+    TelegramStep.PHONE -> 0.4f
+    TelegramStep.CODE -> 0.7f
+    TelegramStep.PASSWORD -> 0.85f
+    TelegramStep.LINKED -> 1f
+}
+
+private fun TelegramStep.title(): Int = when (this) {
+    TelegramStep.CREDENTIALS -> R.string.telegram_step_keys
+    TelegramStep.PHONE -> R.string.telegram_step_phone
+    TelegramStep.CODE -> R.string.telegram_step_code
+    TelegramStep.PASSWORD -> R.string.telegram_step_password
+    TelegramStep.LINKED -> R.string.telegram_step_linked
 }
 
 @Composable
