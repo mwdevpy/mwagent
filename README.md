@@ -31,10 +31,6 @@
 </p>
 
 <p align="center">
-  <img src="docs/banner.svg" alt="MW AGENT, an AI agent that does things on your Android phone: any model, phone control, Telegram, Python, own skills, GPS">
-</p>
-
-<p align="center">
   <img src="docs/screenshots/chats.png" width="32%" alt="The chat list, each chat with its own icon, color and shape">
   <img src="docs/screenshots/chat-tools.png" width="32%" alt="A reply that checked the weather and searched the web">
   <img src="docs/screenshots/chat-chart.png" width="32%" alt="A chart drawn inside a reply">
@@ -348,26 +344,6 @@ Android only lets an app open other apps while it is on screen. Keep MW AGENT op
 - **Direct traffic only.** Your messages go to the provider you set up, Telegram traffic only to Telegram. Defaults that touch public services, each replaceable in Settings: DuckDuckGo (`web_search`), r.jina.ai (`read_webpage`), Open-Meteo (`get_weather`). Source pills load favicons from the sites themselves. The update check calls `api.github.com` when you tap it.
 - **You approve the risky parts.** Sending, reading private data, running code and changing settings ask first by default. Calls, SMS, emails and calendar events are only prepared, you finish them yourself.
 - **Permissions:** internet and network state, vibration, microphone (dictation), notifications, exact alarms and boot (reminders), location (only after you grant it in Device access) and a foreground service (background streaming). Termux, All files access and the accessibility service are optional and off until you enable them. No camera or contacts permission. Location is read only when a reply calls `get_location`; address lookup uses the system geocoder, which on some phones contacts the phone maker's service.
-
-## Build
-
-```bash
-git clone https://github.com/mwdevpy/mwagent.git
-cd mwagent
-./gradlew assembleDebug
-./gradlew testDebugUnitTest
-```
-
-- JDK 17 and the Android SDK with platform 37 (`sdk.dir` in `local.properties`, or `ANDROID_HOME`). The wrapper downloads Gradle 9.8.
-- Python 3.13 on the path is optional; Chaquopy uses it to precompile bytecode.
-- The debug APK lands in `app/build/outputs/apk/debug/`. Unit tests run on the JVM, no device needed.
-- `assembleRelease` needs your own key: create `keystore/keystore.properties` (git-ignored) with `storeFile`, `storePassword`, `keyAlias` and `keyPassword`.
-
-Built with Kotlin, Jetpack Compose, Room, DataStore, OkHttp, Coil, Chaquopy, Telethon, ZXing, Shizuku and dyn4j.
-
-## Contributing
-
-Issues and pull requests are welcome. For anything bigger than a small fix, open an issue first so we agree on the direction, and run `./gradlew testDebugUnitTest` before sending a change.
 
 ## По-русски
 
